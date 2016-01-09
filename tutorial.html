@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.9">
+<meta name="Forrest-skin-name" content="pelt">
+<title>Two Minute Tutorial</title>
+<link type="text/css" href="skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="skin/print.css" rel="stylesheet">
+<link type="text/css" href="skin/profile.css" rel="stylesheet">
+<script src="skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="favicon.ico">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://scriptella.org"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogo">
+<a href="http://scriptella.org/"><img class="logoImage" alt="Scriptella" src="images/site-logo.png" title="Open Source ETL and Script Execution Tool."></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Search
+    +-->
+<div class="searchbox">
+<form action="http://www.google.com/search" method="get" class="roundtopsmall">
+<input value="scriptella.org" name="sitesearch" type="hidden"><input onFocus="getBlank (this, 'Search the site with google');" size="25" name="q" id="query" type="text" value="Search the site with google">&nbsp; 
+                    <input name="Search" value="Search" type="submit">
+</form>
+</div>
+<!--+
+    |end search
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li class="current">
+<a class="selected" href="index.html">Home</a>
+</li>
+<li>
+<a class="unselected" href="reference/index.html">Reference</a>
+</li>
+<li>
+<a class="unselected" href="howto/migrate-from-ant.html">How-Tos</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+<script src="skin/breadcrumbs.js" language="JavaScript" type="text/javascript"></script>
+</div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_1.1', 'skin/')" id="menu_1.1Title" class="menutitle">Scriptella</div>
+<div id="menu_1.1" class="menuitemgroup">
+<div class="menuitem">
+<a href="index.html" title="About Scriptella">About</a>
+</div>
+<div class="menuitem">
+<a href="license.html" title="Scriptella License">License</a>
+</div>
+<div class="menuitem">
+<a href="changes.html">Change History</a>
+</div>
+<div class="menuitem">
+<a href="support.html" title="Scriptella Project Support">Support</a>
+</div>
+<div class="menuitem">
+<a href="download.html" title="Download Scriptella Binary and Source Distribution">Download</a>
+</div>
+<div class="menuitem">
+<a href="links.html" title="Scriptella Related Links">Links</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_selected_1.2', 'skin/')" id="menu_selected_1.2Title" class="menutitle" style="background-image: url('skin/images/chapter_open.gif');">Getting Started</div>
+<div id="menu_selected_1.2" class="selectedmenuitemgroup" style="display: block;">
+<div class="menupage">
+<div class="menupagetitle">Two Minute Tutorial</div>
+</div>
+<div class="menuitem">
+<a href="faq.html" title="Frequently Asked Questions">FAQ</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.3', 'skin/')" id="menu_1.3Title" class="menutitle">Documentation</div>
+<div id="menu_1.3" class="menuitemgroup">
+<div class="menuitem">
+<a href="reference/index.html" title="Scriptella Reference Documentation">Reference Documentation</a>
+</div>
+<div class="menuitem">
+<a href="reference/drivers.html">Drivers Matrix</a>
+</div>
+<div class="menuitem">
+<a href="docs/api/index.html">API Docs</a>
+</div>
+<div class="menuitem">
+<a href="docs/dtd/index.html">DTD Reference</a>
+</div>
+<div onclick="SwitchMenu('menu_1.3.5', 'skin/')" id="menu_1.3.5Title" class="menutitle">How-Tos</div>
+<div id="menu_1.3.5" class="menuitemgroup">
+<div class="menuitem">
+<a href="howto/migrate-from-ant.html">Migrate from Ant SQL Task</a>
+</div>
+<div class="menuitem">
+<a href="howto/initialize-database.html">Automated Database Initialization</a>
+</div>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="tutorial.pdf"><img alt="PDF -icon" src="skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<div class="trail">Font size: 
+	          &nbsp;<input value="Reset" class="resetfont" title="Reset text" onclick="ndeSetTextSize('reset'); return false;" type="button">      
+	          &nbsp;<input value="-a" class="smallerfont" title="Shrink text" onclick="ndeSetTextSize('decr'); return false;" type="button">
+	          &nbsp;<input value="+a" class="biggerfont" title="Enlarge text" onclick="ndeSetTextSize('incr'); return false;" type="button">
+</div>
+<h1>Two Minute Tutorial</h1>
+<div id="front-matter">
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#Installation">Installation</a>
+</li>
+<li>
+<a href="#Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</a>
+</li>
+<li>
+<a href="#Command-Line+Execution">Command-Line Execution</a>
+</li>
+<li>
+<a href="#Executing+ETL+Files+from+Java">Executing ETL Files from Java</a>
+</li>
+<li>
+<a href="#Examples">Examples</a>
+<ul class="minitoc">
+<li>
+<a href="#Copy+table+to+another+database">Copy table to another database</a>
+</li>
+<li>
+<a href="#Working+with+BLOBs">Working with BLOBs</a>
+</li>
+<li>
+<a href="#Supporting+several+SQL+dialects">Supporting several SQL dialects</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+		
+<a name="Installation"></a>
+<h2 class="boxed">Installation</h2>
+<div class="section">
+<ul>
+				
+<li>
+<a href="download.html">Download</a> Scriptella binary distribution.</li>
+                
+<li>Unpack it and add a &lt;SCRIPTELLA_DIR&gt;/bin to a system <span class="codefrag">PATH</span> variable.
+                <p>Use <span class="codefrag">set PATH=%PATH%;SCRIPTELLA_DIR\bin</span> for Windows and
+                    <span class="codefrag">export PATH=${PATH}:SCRIPTELLA_DIR/bin</span> for Unix.</p>
+</li>
+                
+<li>Check if JRE has been installed correctly by running java -version.</li>
+                
+<li>
+<em>Optional step:</em> Put JDBC drivers required by your scripts to &lt;SCRIPTELLA_DIR&gt;/lib directory
+                    or directly specify classpath attribute in script connection elements.</li>
+			
+</ul>
+</div>
+		
+<a name="Use+Scriptella+as+Ant+Task"></a>
+<h2 class="boxed">Use Scriptella as Ant Task</h2>
+<div class="section">
+<p>In order to use Scriptella as Ant task you will need the following taskdef declaration:</p>
+<pre class="code">&lt;taskdef resource="antscriptella.properties" classpath="/path/to/scriptella.jar[;additional_drivers.jar]"/&gt;</pre>
+<div class="note">
+<div class="label">Note</div>
+<div class="content">Additional drivers classpath entries are optional. You may directly specify classpath attribute in
+            a connection XML element declaration. Example:<br>
+<span class="codefrag">&lt;connection driver="sybase" classpath="jconn3.jar"/&gt;
+            </span>
+</div>
+</div>
+<p>Running Scriptella files from Ant is simple:</p>
+<pre class="code">&lt;etl/&gt; &lt;!-- Execute etl.xml file in the current directory --&gt;</pre>
+<p>or</p>
+<pre class="code">&lt;etl file="path/to/your/file/&gt; &lt;!-- Execute ETL file from specified location --&gt;</pre>
+</div>
+		
+<a name="Command-Line+Execution"></a>
+<h2 class="boxed">Command-Line Execution</h2>
+<div class="section">
+<p>Just type <span class="codefrag">scriptella</span> to run the file named etl.xml in the current directory.
+			Alternatively you can use java launcher:</p>
+<pre class="code">java -jar scriptella.jar [arguments]</pre>
+</div>
+        
+<a name="Executing+ETL+Files+from+Java"></a>
+<h2 class="boxed">Executing ETL Files from Java</h2>
+<div class="section">
+<p>It is extremely easy to run Scriptella ETL files from java code.
+                Just make sure scriptella.jar is on classpath and use any of the following methods to execute an ETL file:</p>
+<pre class="code">
+EtlExecutor.newExecutor(new File("etl.xml")).execute(); //Execute etl.xml file
+EtlExecutor.newExecutor(getClass().getResource("etl.xml")).execute(); //Execute etl.xml file loaded from classpath
+EtlExecutor.newExecutor(
+    servletContext.getResource("/WEB-INF/db/init.etl.xml")).execute(); //Execute init.etl.xml file from web application WEB-INF directory</pre>
+<p>See <a href="../docs/api/scriptella/execution/EtlExecutor.html">EtlExecutor Javadoc</a>
+                for more details on how to execute ETL files from Java code.
+            </p>
+</div>
+
+        
+<a name="Examples"></a>
+<h2 class="boxed">Examples</h2>
+<div class="section">
+<p>For a quick start type <span class="codefrag">scriptella -t</span> to create a template etl.xml file.</p>
+<a name="Copy+table+to+another+database"></a>
+<h3 class="boxed">Copy table to another database</h3>
+<div style="text-align: center;">
+<img class="figure" alt="Migration of table records" src="./images/table_copy.png"></div>
+<p>Assume Database #1 contains Table Product with id, category and name columns. The following script
+                copies software products from this table to Database #2. Additionally Name column is changed to Product_Name.</p>
+<p>etl.xml:</p>
+<pre class="code">
+    &lt;etl&gt;
+        &lt;connection id="db1" url="jdbc:database1:sample" user="sa" password="" classpath="external.jar"/&gt;
+        &lt;connection id="db2" url="jdbc:database2:sample" user="sa" password=""/&gt;
+        &lt;query connection-id="db1"&gt;
+            &lt;!-- Select product from software category in db1--&gt;
+            SELECT * FROM Product WHERE category='software';
+            &lt;!-- for each row execute a script --&gt;
+            &lt;script connection-id="db2"&gt;
+                &lt;!-- Insert all selected products to db2
+                     use ? to reference properties, columns or ?{expressions}--&gt;
+                INSERT INTO Product(id, category, product_name) values (?id, ?{category}, ?name);
+            &lt;/script&gt;
+        &lt;/query&gt;
+    &lt;/etl&gt;
+                    </pre>
+<a name="Working+with+BLOBs"></a>
+<h3 class="boxed">Working with BLOBs</h3>
+<div style="text-align: center;">
+<img class="figure" alt="Inserting BLOB content from URL" src="./images/blob_insert.png"></div>
+<p>The following sample initializes table of music tracks. Each track has a DATA field containing
+ a file loaded from an external location. File song1.mp3 is stored in the same directory as etl.xml and song2.mp3
+ is loaded through the web.</p>
+<p>etl.xml:</p>
+<pre class="code">
+    &lt;etl&gt;
+        &lt;connection url="jdbc:hsqldb:file:tracks" user="sa" password=""/&gt;
+        &lt;script&gt;
+            CREATE TABLE Track (
+              ID INT,
+              ALBUM_ID INT,
+              NAME VARCHAR(100),
+              DATA LONGVARBINARY
+            );
+            &lt;!-- Inserts file with path relative to executed script location --&gt;
+            insert into Track(id, album_id, name, data) values
+                   (1, 1, 'Song1.mp3', ?{file 'song1.mp3'});
+            &lt;!-- Inserts file from URL--&gt;
+            insert into Track(id, album_id, name, data) values
+                   (2, 2, 'Song2.mp3', ?{file 'http://musicstoresample.com/song2.mp3'});
+        &lt;/script&gt;
+    &lt;/etl&gt;
+                    </pre>
+<a name="Supporting+several+SQL+dialects"></a>
+<h3 class="boxed">Supporting several SQL dialects</h3>
+<p>&lt;dialect&gt; element allows including vendor specific content.
+                    The following example creates database schema for Oracle/HSQLDB or MySql
+                    depending on a selected driver:</p>
+<pre class="code">
+    &lt;etl&gt;
+        &lt;properties&gt;&lt;!-- Load external properties --&gt;
+            &lt;include href="etl.properties"/&gt;
+        &lt;/properties&gt;
+        &lt;connection url="$url" user="$user"
+            password="$password" classpath="$classpath"/&gt;
+        &lt;script&gt;
+            -- In this example dialects are used to
+            -- include different DDLs for data types:
+            -- Example: oracle-schema.sql for Oracle
+            &lt;dialect name="hsql"&gt; &lt;!-- Regular expressions syntax supported--&gt;
+                &lt;include href="hsqldb-schema.sql"/&gt;
+            &lt;/dialect&gt;
+            &lt;dialect name="oracle"&gt;
+                &lt;include href="oracle-schema.sql"/&gt;
+            &lt;/dialect&gt;
+            &lt;dialect name="mysql"&gt;
+                &lt;include href="mysql-schema.sql"/&gt;
+            &lt;/dialect&gt;
+            -- SQL92 inserts - no need to use dialects
+            INSERT INTO Product(id, category, product_name)
+                VALUES (1, 'ETL', 'Scriptella ETL');
+            INSERT INTO Product(id, category, product_name)
+                VALUES (2, 'Development', 'Java SE 6');
+         &lt;/script&gt;
+    &lt;/etl&gt;</pre>
+<div class="note">
+<div class="label">Note</div>
+<div class="content">
+                See <a href="https://github.com/scriptella/scriptella-examples">Scriptella examples on GitHub</a>
+                or <a href="download.html">download</a> Scriptella examples distribution.
+            </div>
+</div>
+</div>
+    
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2006-2012 <a href="http://scriptella.org/license.html">The Scriptella Project Team.</a>
+</div>
+<div id="feedback">
+    Send feedback about the website to:
+  <a id="feedbackto" href="mailto:scriptella@gmail.com?subject=Feedback%C2%A0tutorial.html">Fyodor Kupolov</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

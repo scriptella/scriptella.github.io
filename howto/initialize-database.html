@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.9">
+<meta name="Forrest-skin-name" content="pelt">
+<title>How to Initialize a Database on Application Startup.</title>
+<link type="text/css" href="../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../skin/profile.css" rel="stylesheet">
+<script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../favicon.ico">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://scriptella.org"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogo">
+<a href="http://scriptella.org/"><img class="logoImage" alt="Scriptella" src="../images/site-logo.png" title="Open Source ETL and Script Execution Tool."></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Search
+    +-->
+<div class="searchbox">
+<form action="http://www.google.com/search" method="get" class="roundtopsmall">
+<input value="scriptella.org" name="sitesearch" type="hidden"><input onFocus="getBlank (this, 'Search the site with google');" size="25" name="q" id="query" type="text" value="Search the site with google">&nbsp; 
+                    <input name="Search" value="Search" type="submit">
+</form>
+</div>
+<!--+
+    |end search
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li>
+<a class="unselected" href="../index.html">Home</a>
+</li>
+<li>
+<a class="unselected" href="../reference/index.html">Reference</a>
+</li>
+<li class="current">
+<a class="selected" href="../howto/migrate-from-ant.html">How-Tos</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+<script src="../skin/breadcrumbs.js" language="JavaScript" type="text/javascript"></script>
+</div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_selected_1.1', '../skin/')" id="menu_selected_1.1Title" class="menutitle" style="background-image: url('../skin/images/chapter_open.gif');">How-Tos</div>
+<div id="menu_selected_1.1" class="selectedmenuitemgroup" style="display: block;">
+<div class="menuitem">
+<a href="../howto/migrate-from-ant.html">Migrate from Ant SQL Task</a>
+</div>
+<div class="menupage">
+<div class="menupagetitle">Automated Database Initialization</div>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="initialize-database.pdf"><img alt="PDF -icon" src="../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<div class="trail">Font size: 
+	          &nbsp;<input value="Reset" class="resetfont" title="Reset text" onclick="ndeSetTextSize('reset'); return false;" type="button">      
+	          &nbsp;<input value="-a" class="smallerfont" title="Shrink text" onclick="ndeSetTextSize('decr'); return false;" type="button">
+	          &nbsp;<input value="+a" class="biggerfont" title="Enlarge text" onclick="ndeSetTextSize('incr'); return false;" type="button">
+</div>
+<h1>How to Initialize a Database on Application Startup.</h1>
+<div id="front-matter">
+<div class="abstract">This How-To describes the steps for automated database schema initialization.</div>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#Intended-Audience">Intended Audience</a>
+</li>
+<li>
+<a href="#Purpose">Purpose</a>
+</li>
+<li>
+<a href="#Prerequisites">Prerequisites</a>
+</li>
+<li>
+<a href="#Steps">Steps</a>
+<ul class="minitoc">
+<li>
+<a href="#Database+Schema+Initialization+Script">Database Schema Initialization Script</a>
+</li>
+<li>
+<a href="#Integration+with+a+web+application">Integration with a web application</a>
+</li>
+<li>
+<a href="#Automatic+initialization+in+a+ServletContextListener">Automatic initialization in a ServletContextListener</a>
+</li>
+<li>
+<a href="#Integration+with+Spring+Framework">Integration with Spring Framework</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#Resources">Resources</a>
+</li>
+</ul>
+</div>
+</div>
+<a name="Intended-Audience"></a>
+<h2 class="boxed">Intended Audience</h2>
+<div class="section">
+<p>Developers/DBAs.</p>
+</div>
+<a name="Purpose"></a>
+<h2 class="boxed">Purpose</h2>
+<div class="section">
+<p>Database initialization is an important part of application deployment.
+        Typically a DBA applies a set of SQL scripts to initialize a database or perform an upgrade.
+        While this manual step is reasonable for large applications with complex deployment scenarios
+        there are plenty of projects where DB can be initialized automatically on application startup. Examples:</p>
+<ul>
+            
+<li>Demo applications. Many example applications require the user to run db init scripts thus making an entry level more complex.</li>
+            
+<li>Applications with automated installation procedure. The database can be initialized during a setup process or on application startup.</li>
+            
+<li>Small to medium-sized projects where deployment is performed by a customer and has to be as simple as possible.</li>
+        
+</ul>
+<p>This how-to we describes one of the possible approaches to automate DB initialization.
+        "Image Database" example from the Spring Framework distribution is used as a base application.</p>
+<p>The following diagram demonstates a simplified database initialization/upgrading scenario:</p>
+<div style="text-align: center;">
+<img class="figure" alt="Automatic Database Initialization Diagram" src="../images/howto/db-auto-init.png"></div>
+<p>MetaInf table is used as a flag to check if the database has already been created.
+            Additionally this table stores the database model meta information,
+            e.g. build number or an application version. For simple deployment cases
+            which do not require an upgrade procedure, this table may be omitted.</p>
+</div>
+<a name="Prerequisites"></a>
+<h2 class="boxed">Prerequisites</h2>
+<div class="section">
+<p>If you want to reproduce the how-to steps manually
+            <a href="http://sourceforge.net/project/showfiles.php?group_id=73357">download</a>
+            Spring 2.0 binary distribution with dependencies and unpack it.
+            The <em>ImageDB</em> example files are located in a <em>samples/imagedb</em> folder.</p>
+</div>
+<a name="Steps"></a>
+<h2 class="boxed">Steps</h2>
+<div class="section">
+<a name="Database+Schema+Initialization+Script"></a>
+<h3 class="boxed">Database Schema Initialization Script</h3>
+<div style="text-align: center;">
+<img class="figure" alt="ImageDB Schema" src="../images/howto/imagedb-schema.png"></div>
+<p>The ImageDB database model consists of the only one table. Nevertheless filling the database can be tricky
+                due to several reasons:</p>
+<ul>
+                
+<li>DB script contains vendor specific SQL data types, e.g. BLOB/LONGVARBINARY or LONGTEXT/CLOB etc.</li>
+                
+<li>It's problematic to upload BLOB content in a database neutral way.</li>
+            
+</ul>
+<p>And now Scriptella comes into play. The following script creates a database and populates it with the initial dataset:</p>
+<pre class="code">
+&lt;!DOCTYPE etl SYSTEM "http://scriptella.javaforge.com/dtd/etl.dtd"&gt;
+&lt;etl&gt;
+    &lt;properties&gt; &lt;!-- Just include external properties --&gt;
+        &lt;include href="webinit.etl.properties"/&gt;
+    &lt;/properties&gt;
+    &lt;connection driver="$driver" url="$url" user="$user" password="$password" /&gt;
+    &lt;script&gt;
+        &lt;!-- Metainf table stores version information --&gt;
+        CREATE TABLE Metainf (
+            buildnum INTEGER
+        );
+        INSERT INTO Metainf VALUES (1);
+        &lt;!-- Conditional schema creation scripts--&gt;
+        &lt;dialect name="hsql"&gt;
+            &lt;include href="hsqldb-schema.sql"/&gt;
+        &lt;/dialect&gt;
+        &lt;dialect name="oracle"&gt;
+            &lt;include href="oracle-schema.sql"/&gt;
+        &lt;/dialect&gt;
+        &lt;dialect name="mysql"&gt;
+            &lt;include href="mysql-schema.sql"/&gt;
+        &lt;/dialect&gt;
+        &lt;!-- Fill the table with data --&gt;
+        &lt;include href="data.sql"/&gt;
+
+        &lt;!-- If Metainf present (table Metainf already exists),
+             skip schema creation and continue --&gt;
+        &lt;onerror message=".*Metainf.*"/&gt;
+    &lt;/script&gt;
+    &lt;!-- Optional upgrade procedure --&gt;
+    &lt;query&gt;
+        &lt;!-- Selects current DB build --&gt;
+        SELECT * FROM Metainf
+        &lt;!-- Check if upgrade is necessary --&gt;
+        &lt;script if="buildnum lt 1"&gt;
+            &lt;!--Upgrades DB to build 1 --&gt;
+            &lt;!--...--&gt;
+            &lt;!-- Update Metainf to confirm successful upgrade --&gt;
+            UPDATE Metainf SET buildnum=1;
+        &lt;/script&gt;
+        &lt;!-- upgrade scripts for subsequent builds --&gt;
+    &lt;/query&gt;
+&lt;/etl&gt;
+            </pre>
+<ul>
+                
+<li>The <em>*-schema.sql</em> files are simple SQL files identical to the txt files located in a
+                    <em>db</em> folder of the ImageDB example.</li>
+                
+<li>The <em>data.sql</em> file contains insert statements for initial dataset:
+                    <pre class="code">
+-- ImageDB initial dataset.
+-- <span class="codefrag">?{file ... }</span> SQL syntax extension allows referencing BLOBs in external files.
+-- See <a href="../reference/index.html">Reference Manual</a> for more details on JDBC escaping and other syntax extensions.                        
+INSERT INTO imagedb(image_name, content,description) VALUES ('scriptella-logo.png',
+      <span class="codefrag">?{file 'blobs/scriptella-logo.png'}</span>, 'Scriptella ETL logo');
+INSERT INTO imagedb(image_name, content,description) VALUES ('scriptella-powered.gif',
+      <span class="codefrag">?{file 'blobs/scriptella-powered.gif'}</span>, 'Powered by Scriptella Logo');
+                    </pre>
+                
+</li>
+            
+</ul>
+<p>The database is created when a web application is started for the first time.
+               For subsequent startups the initializing procedure is skipped and the information message
+               similar to the following one is printed on the console:</p>
+<pre class="code">
+INFO: Script /etl/script[1] failed: scriptella.jdbc.JdbcException:
+Unable to execute statement. Error statement:
+CREATE TABLE Metainf (
+buildnum INTEGER
+). Error codes: [S0001, -21]
+Using onError handler: OnError{message=.*Metainf.*, codes=[], retry=false}</pre>
+<a name="Integration+with+a+web+application"></a>
+<h3 class="boxed">Integration with a web application</h3>
+<p>To integrate a DB initializing procedure with a web application put the following files into a folder inside the WAR file, e.g. <em>/WEB-INF/db</em>:</p>
+<ul>
+                
+<li>
+<em>webinit.etl.xml</em> &ndash; Scriptella database initialization file.</li>
+                
+<li>
+<em>webinit.etl.properties</em> &ndash; configuration properties for webinit.etl.xml. Spring or JNDI managed data sources or driver classes can be specified here.</li>
+                
+<li>
+<em>...-schema.sql</em> - schema creation scripts for different databases. These scripts are included by a main etl.xml file.</li>
+                
+<li>
+<em>data.sql</em> &ndash; initial dataset.</li>
+                
+<li>
+<em>blobs</em> &ndash; binary data referenced from data.sql file.</li>
+            
+</ul>
+<p>Additionally the <em>hsqldb.jar</em> (or other JDBC driver) should be copied to <em>WEB-INF/lib</em> dir.</p>
+<a name="Automatic+initialization+in+a+ServletContextListener"></a>
+<h3 class="boxed">Automatic initialization in a ServletContextListener</h3>
+<p>To execute <em>webinit.etl.xml</em> on web application startup create an implementation of
+                <span class="codefrag">ServletContextListener</span>:</p>
+<pre class="code">
+    public class WebDbInitializer implements ServletContextListener {
+        private static final String WEBINIT_ETL_PATH = "webinit.etl.path";
+        /**
+         * Executes script which inits the database.
+         * @param etlUrl ETL file URL.
+         * @throws EtlExecutorException if script execution fails.
+         */
+        static void initDatabase(URL etlUrl) throws EtlExecutorException {
+            EtlExecutor exec = EtlExecutor.newExecutor(etlUrl);
+            exec.execute();
+        }
+
+        public void contextInitialized(ServletContextEvent servletContextEvent) {
+            ServletContext ctx = servletContextEvent.getServletContext();
+            try {
+                initDatabase(ctx.getResource("/WEB-INF/db/webinit.etl.xml"));
+                ctx.log("DB script executed");
+            } catch (Exception e) {
+                ctx.log("Unable to execute DB script", e);
+            }
+        }
+    . . .
+    }</pre>
+<p>This listener is registered in the web.xml file using the following snippet:</p>
+<pre class="code">
+    &lt;web-app&gt;
+        &lt;listener&gt;
+            &lt;listener-class&gt;scriptella.imagedb.WebDbInitializer&lt;/listener-class&gt;
+        &lt;/listener&gt;
+    &lt;/web-app&gt;</pre>
+<p>The <em>webinit.etl.properties</em> file has the following content for deployment on Tomcat:</p>
+<pre class="code">
+    driver=hsqldb
+    url=jdbc:hsqldb:file:${catalina.home}/db/imagedb
+    user=sa
+    password=</pre>
+<a name="Integration+with+Spring+Framework"></a>
+<h3 class="boxed">Integration with Spring Framework</h3>
+<p>Integration with Spring is even simpler, just add the following XML bean declaration
+                to the application context xml file:</p>
+<pre class="code">
+    &lt;bean class="scriptella.driver.spring.EtlExecutorBean"&gt;
+        &lt;property name="configLocation" value="/WEB-INF/db/webinit.etl.xml"/&gt;
+        &lt;property name="autostart" value="true"/&gt;
+    &lt;/bean&gt;</pre>
+<p>In this case the <em>webinit.etl.properties</em> file has the following content:</p>
+<pre class="code">
+driver=spring
+url=dataSource</pre>
+</div>
+<a name="Resources"></a>
+<h2 class="boxed">Resources</h2>
+<div class="section">
+<p>Sample application downloads:</p>
+<ul>
+            
+<li>
+                
+<a href="http://www.javaforge.com/displayDocument/imagedb-spring.war?doc_id=28427">imagedb-spring.war</a> - Modified ImageDB WAR file for <a href="http://springframework.org">Spring Framework</a>.
+                Simply deploy it to Tomcat and <a href="http://localhost:8080/imagedb-spring">run</a>, the database will be created automatically in a &lt;TOMCAT_HOME&gt;/db directory.
+            </li>
+            
+<li>
+                
+<a href="http://www.javaforge.com/displayDocument/imagedb.war?doc_id=28426">imagedb.war</a> - Demo WAR file which creates ImageDB database automatically (No Spring integration).
+            </li>
+        
+</ul>
+<p>Articles:</p>
+<ul>
+            
+<li>"<a href="http://www.martinfowler.com/articles/evodb.html">Evolutionary Database Design</a>" (Martin Fowler, Pramod Sadalage)</li>
+        
+</ul>
+</div>
+<p align="right">
+<font size="-2">by&nbsp;Fyodor Kupolov</font>
+</p>
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2006-2012 <a href="http://scriptella.org/license.html">The Scriptella Project Team.</a>
+</div>
+<div id="feedback">
+    Send feedback about the website to:
+  <a id="feedbackto" href="mailto:scriptella@gmail.com?subject=Feedback%C2%A0howto/initialize-database.html">Fyodor Kupolov</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

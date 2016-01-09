@@ -1,0 +1,451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<meta http-equiv='CONTENT-TYPE' content='text/html; charset=UTF-8' />
+<link rel='StyleSheet' href='../../DTDDocStyle.css' type='text/css' media='screen' />
+<title>Scriptella ETL File DTD</title>
+</head><body>
+<p class='DTDSource'><b><code>etl.dtd</code></b>: <a href='etl.dtd.html'>Elements</a> - Entities - <a href='etl.dtd.org.html'>Source</a> | <a href='../../intro.html'>Intro</a> - <a href='../../elementsIndex.html'>Index</a><br /><a href='../../index.html' target='_top'>FRAMES</a>&nbsp;/&nbsp;<a href='etl.dtd.html' target='_top'>NO FRAMES</a></p><h1>Scriptella ETL File DTD</h1>
+<p><span class='inTextTitle'>Usage</span>: <code>&lt;!DOCTYPE etl SYSTEM "http://scriptella.javaforge.com/dtd/etl.dtd"&gt;</code></p>
+<p></p><pre>
+ Copyright 2006-2012 The Scriptella Project Team.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+</pre><p></p><br />
+<a name='etl'></a>
+<br /><table class='elementTitle' summary="etl"><tr><td class='leftElementTitle'>
+&lt;etl&gt;</td><td class='rightElementTitle'>
+Root element
+</td></tr></table>
+<p>Root element of Scriptella XML file.
+<p><u>Example:</u><br>
+A simple example of the script file with only one connection obtained via
+JNDI bound datasource.
+</p><pre>
+&lt;etl&gt;
+    &lt;connection driver="jndi" url="java:projectDS"/&gt;
+    &lt;script&gt;
+        INSERT INTO Test VALUES (1, "One")
+    &lt;/script&gt;
+&lt;/etl&gt;
+
+</pre><p></p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;etl&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;etl&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#connection'>connection</a></td><td>Any number</td></tr>
+<tr><td><a href='#description'>description</a></td><td>One or none</td></tr>
+<tr><td><a href='#properties'>properties</a></td><td>One or none</td></tr>
+<tr><td><a href='#query'>query</a></td><td>Any number</td></tr>
+<tr><td><a href='#script'>script</a></td><td>Any number</td></tr>
+</tbody></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(<a href='#description'>description</a>?, <a href='#properties'>properties</a>?, <a href='#connection'>connection</a>*, (<a href='#script'>script</a>*, <a href='#query'>query</a>*)*)</p><a name='description'></a>
+<br /><table class='elementTitle' summary="description"><tr><td class='leftElementTitle'>
+&lt;description&gt;</td><td class='rightElementTitle'>
+Child of <a href='#etl'>etl</a>
+</td></tr></table>
+<p>Contains description of ETL file.</p><a name='properties'></a>
+<br /><table class='elementTitle' summary="properties"><tr><td class='leftElementTitle'>
+&lt;properties&gt;</td><td class='rightElementTitle'>
+Child of <a href='#etl'>etl</a>
+</td></tr></table>
+<p>The properties element contains a set of properties available for script elements.
+The content of this element conforms to format supported by java.util.Properties.
+This element may contain plain text or includes.
+<p><u>Example:</u>
+</p><pre>
+&lt;properties&gt;
+    #standard properties syntax
+    table.size=10
+    tmp=c\:\\temp\\
+    #including content from external properties file
+    &lt;include href="etl.properties"/&gt;
+&lt;/properties&gt;</pre><p></p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;properties&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;properties&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#include'>include</a></td><td>Any number</td></tr>
+</tbody></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a>)*</p><a name='connection'></a>
+<br /><table class='elementTitle' summary="connection"><tr><td class='leftElementTitle'>
+&lt;connection&gt;</td><td class='rightElementTitle'>
+Child of <a href='#etl'>etl</a>
+</td></tr></table>
+<p>The connection element specifies connection to a database or other system.
+This element may contain properties as plain text with includes.
+<p><u>Example:</u>
+</p><pre>
+&lt;connection id="in" driver="com.octetstring.jdbcLdap.sql.JdbcLdapDriver"
+            url="jdbc:ldap://localhost:389/dc=scriptella"
+            user="cn=root,dc=scriptella" password="secret"&gt;
+    SEARCH_SCOPE=subTreeScope
+    ignore_transactions=true
+&lt;/connection&gt;
+
+&lt;connection driver="hsqldb"
+            url="jdbc:hsqldb:file:db"
+            user="sa" classpath="hsqldb.jar"/&gt;
+</pre><p></p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;connection&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;connection&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#include'>include</a></td><td>Any number</td></tr>
+</tbody></table></td><td class='construct'><table  summary="&lt;connection&gt;'s attributes"><tr>
+<th class='title' colspan='3'>&lt;connection&gt;'s attributes</th>
+</tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr>
+<th class='subtitle'>Name</th><th class='subtitle'>Values</th><th class='subtitle'>Default</th></tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr><td><a href='#connection_catalog'>catalog</a></td><td></td><td></td></tr><tr><td><a href='#connection_classpath'>classpath</a></td><td></td><td></td></tr><tr><td><a href='#connection_driver'>driver</a></td><td></td><td>auto</td></tr><tr><td><a href='#connection_id'>id</a></td><td><i>Match the ID rules.</i></td><td></td></tr><tr><td><a href='#connection_lazy-init'>lazy-init</a></td><td>true, false</td><td>false</td></tr><tr><td><a href='#connection_password'>password</a></td><td></td><td></td></tr><tr><td><a href='#connection_schema'>schema</a></td><td></td><td></td></tr><tr><td><a href='#connection_url'>url</a></td><td></td><td></td></tr><tr><td><a href='#connection_user'>user</a></td><td></td><td></td></tr></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a>)*</p><a name='connection_id'></a>
+<br /><table class='attributeTitle' summary="id"><tr><td class='leftAttributeTitle'>
+@id</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p>connection identifier. Connection is referenced by id in scripts and queries.
+For single connection ETL files this attribute is optional.</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the ID rules.</i></p><a name='connection_driver'></a>
+<br /><table class='attributeTitle' summary="driver"><tr><td class='leftAttributeTitle'>
+@driver</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p>driver class name or alias. The default value is "auto",
+in this case a target driver is guessed from an url attribute.</p><p><span class='inTextTitle'>Default value</span>: auto</p><a name='connection_url'></a>
+<br /><table class='attributeTitle' summary="url"><tr><td class='leftAttributeTitle'>
+@url</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p>connection url.</p><a name='connection_user'></a>
+<br /><table class='attributeTitle' summary="user"><tr><td class='leftAttributeTitle'>
+@user</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p>database login</p><a name='connection_password'></a>
+<br /><table class='attributeTitle' summary="password"><tr><td class='leftAttributeTitle'>
+@password</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p>database password</p><a name='connection_catalog'></a>
+<br /><table class='attributeTitle' summary="catalog"><tr><td class='leftAttributeTitle'>
+@catalog</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p>catalog</p><a name='connection_schema'></a>
+<br /><table class='attributeTitle' summary="schema"><tr><td class='leftAttributeTitle'>
+@schema</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p>schema</p><a name='connection_classpath'></a>
+<br /><table class='attributeTitle' summary="classpath"><tr><td class='leftAttributeTitle'>
+@classpath</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p>the classpath to use when loading the driver.
+Paths are colon/semicolon separated and resolved relative to a directory where ETL file resides.
+Absolute URLs are also supported, e.g. ftp://server/lib.jar</p><a name='connection_lazy-init'></a>
+<br /><table class='attributeTitle' summary="lazy-init"><tr><td class='leftAttributeTitle'>
+@lazy-init</td><td class='rightAttributeTitle'>
+Attribute of <a href='#connection'>connection</a>
+</td></tr></table>
+<p><b>true</b> if connection initialization should be deferred until it is actually used.
+The default value of <b>false</b> means that connection is initialized on ETL startup.</p><p><span class='inTextTitle'>Possible values</span>: true, false - <span class='inTextTitle'>Default value</span>: false</p><a name='fallback'></a>
+<br /><table class='elementTitle' summary="fallback"><tr><td class='leftElementTitle'>
+&lt;fallback&gt;</td><td class='rightElementTitle'>
+Child of <a href='#include'>include</a>
+</td></tr></table>
+<p>The fallback element contains alternate content to be used if the requested resource cannot be found.
+This element may contain plain text or includes.
+<p><u>Example:</u>
+</p><pre>
+&lt;include href="http://no-such-url/file.txt"&gt;
+    &lt;fallback&gt; //First fallback
+        &lt;include href="localFile.txt&gt;
+            &lt;fallback&gt; //If alternative location also failed
+                Failed to retrieve full text
+            &lt;/fallback&gt;
+        &lt;/include&gt;
+    &lt;/fallback&gt;
+&lt;/include&gt;
+</pre><p></p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;fallback&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;fallback&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#include'>include</a></td><td>Any number</td></tr>
+</tbody></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a>)*</p><a name='include'></a>
+<br /><table class='elementTitle' summary="include"><tr><td class='leftElementTitle'>
+&lt;include&gt;</td><td class='rightElementTitle'>
+Child of <a href='#query'>query</a>, <a href='#dialect'>dialect</a>, <a href='#properties'>properties</a>, <a href='#connection'>connection</a>, <a href='#script'>script</a>, <a href='#onerror'>onerror</a>, <a href='#fallback'>fallback</a>
+</td></tr></table>
+<p>The include element specifies content to include. Concept similar to XInclude.
+<p><u>Examples:</u>
+</p><pre>
+&lt;include href="http://host/file.sql"&gt;&lt;fallback&gt;SHUTDOWN&lt;/fallback&gt;&lt;/include&gt;
+&lt;include href="db/schema.sql"/&gt;
+</pre><p></p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;include&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;include&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#fallback'>fallback</a></td><td>One or none</td></tr>
+</tbody></table></td><td class='construct'><table  summary="&lt;include&gt;'s attributes"><tr>
+<th class='title' colspan='3'>&lt;include&gt;'s attributes</th>
+</tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr>
+<th class='subtitle'>Name</th><th class='subtitle'>Values</th><th class='subtitle'>Default</th></tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr><td><a href='#include_encoding'>encoding</a></td><td></td><td></td></tr><tr><td><a href='#include_href'>href</a></td><td></td><td></td></tr></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(<a href='#fallback'>fallback</a>?)</p><a name='include_href'></a>
+<br /><table class='attributeTitle' summary="href"><tr><td class='leftAttributeTitle'>
+@href</td><td class='rightAttributeTitle'>
+Attribute of <a href='#include'>include</a>
+</td></tr></table>
+<p>contains an URI pointing to the file to include. URIs are resolved relative to ETL file.</p><p><span class='inTextTitle'>Required</span></p><a name='include_encoding'></a>
+<br /><table class='attributeTitle' summary="encoding"><tr><td class='leftAttributeTitle'>
+@encoding</td><td class='rightAttributeTitle'>
+Attribute of <a href='#include'>include</a>
+</td></tr></table>
+<p>Included text encoding name.</p><a name='dialect'></a>
+<br /><table class='elementTitle' summary="dialect"><tr><td class='leftElementTitle'>
+&lt;dialect&gt;</td><td class='rightElementTitle'>
+Child of <a href='#query'>query</a>, <a href='#script'>script</a>, <a href='#onerror'>onerror</a>
+</td></tr></table>
+<p>The dialect element defines a vendor specific script. Scripting elements may contain any number of nested dialects.
+This element may contain plain text or includes.
+<u>Example:</u>
+</p><pre>
+&lt;dialect name="oracle" version="10\."&gt;
+    //Statements executed only for Oracle 10.x
+&lt;/dialect&gt;
+&lt;dialect name="oracle" exclude="true"&gt;
+    //Statements executed for any datasource except Oracle
+&lt;/dialect&gt;
+
+</pre><p></p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;dialect&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;dialect&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#include'>include</a></td><td>Any number</td></tr>
+</tbody></table></td><td class='construct'><table  summary="&lt;dialect&gt;'s attributes"><tr>
+<th class='title' colspan='3'>&lt;dialect&gt;'s attributes</th>
+</tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr>
+<th class='subtitle'>Name</th><th class='subtitle'>Values</th><th class='subtitle'>Default</th></tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr><td><a href='#dialect_exclude'>exclude</a></td><td>true, false</td><td>false</td></tr><tr><td><a href='#dialect_name'>name</a></td><td></td><td></td></tr><tr><td><a href='#dialect_version'>version</a></td><td></td><td></td></tr></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a>)*</p><a name='dialect_name'></a>
+<br /><table class='attributeTitle' summary="name"><tr><td class='leftAttributeTitle'>
+@name</td><td class='rightAttributeTitle'>
+Attribute of <a href='#dialect'>dialect</a>
+</td></tr></table>
+<p>case insensitive regular expression to match vendor name, e.g. .*oracle.*</p><a name='dialect_version'></a>
+<br /><table class='attributeTitle' summary="version"><tr><td class='leftAttributeTitle'>
+@version</td><td class='rightAttributeTitle'>
+Attribute of <a href='#dialect'>dialect</a>
+</td></tr></table>
+<p>case insensitive regular expression to match vendor version, e.g. 1\.0</p><a name='dialect_exclude'></a>
+<br /><table class='attributeTitle' summary="exclude"><tr><td class='leftAttributeTitle'>
+@exclude</td><td class='rightAttributeTitle'>
+Attribute of <a href='#dialect'>dialect</a>
+</td></tr></table>
+<p>optional attribute to invert the name/version matching.
+Use exclude="true" to skip content for dialects with specified name and version.</p><p><span class='inTextTitle'>Possible values</span>: true, false - <span class='inTextTitle'>Default value</span>: false</p><a name='onerror'></a>
+<br /><table class='elementTitle' summary="onerror"><tr><td class='leftElementTitle'>
+&lt;onerror&gt;</td><td class='rightElementTitle'>
+Child of <a href='#script'>script</a>
+</td></tr></table>
+<p>The onerror element defines fallback script to execute if error occurs.
+This element may contain plain text or includes.
+<p><u>Example:</u>
+</p><pre>
+&lt;onerror type="SQLException"&gt;
+    DROP TABLE MYTABLE
+&lt;/onerror&gt;
+</pre><p>
+Note: Attributes are applied using AND condition, so if you specified
+</p><pre>&lt;onerror type="ProviderException" codes="100,200"&gt;</pre><p>
+so only exceptions with class name *.ProviderException having 100 and/or 200 error code are handled.</p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;onerror&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;onerror&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#dialect'>dialect</a></td><td>Any number</td></tr>
+<tr><td><a href='#include'>include</a></td><td>Any number</td></tr>
+</tbody></table></td><td class='construct'><table  summary="&lt;onerror&gt;'s attributes"><tr>
+<th class='title' colspan='3'>&lt;onerror&gt;'s attributes</th>
+</tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr>
+<th class='subtitle'>Name</th><th class='subtitle'>Values</th><th class='subtitle'>Default</th></tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr><td><a href='#onerror_codes'>codes</a></td><td></td><td></td></tr><tr><td><a href='#onerror_connection-id'>connection-id</a></td><td><i>Match the IDREF rules.</i></td><td></td></tr><tr><td><a href='#onerror_message'>message</a></td><td></td><td></td></tr><tr><td><a href='#onerror_retry'>retry</a></td><td>true, false</td><td>false</td></tr><tr><td><a href='#onerror_type'>type</a></td><td></td><td></td></tr></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a> | <a href='#dialect'>dialect</a>)*</p><a name='onerror_type'></a>
+<br /><table class='attributeTitle' summary="type"><tr><td class='leftAttributeTitle'>
+@type</td><td class='rightAttributeTitle'>
+Attribute of <a href='#onerror'>onerror</a>
+</td></tr></table>
+<p>Regular expression pattern to match exception type. Partial matching is allowed.</p><a name='onerror_codes'></a>
+<br /><table class='attributeTitle' summary="codes"><tr><td class='leftAttributeTitle'>
+@codes</td><td class='rightAttributeTitle'>
+Attribute of <a href='#onerror'>onerror</a>
+</td></tr></table>
+<p>Comma-separated list of vendor codes/sql states. Triggered if any of these codes matches one of the codes reported by driver.</p><a name='onerror_message'></a>
+<br /><table class='attributeTitle' summary="message"><tr><td class='leftAttributeTitle'>
+@message</td><td class='rightAttributeTitle'>
+Attribute of <a href='#onerror'>onerror</a>
+</td></tr></table>
+<p>Regular expression pattern to match exception message. Partial matching is allowed.</p><a name='onerror_retry'></a>
+<br /><table class='attributeTitle' summary="retry"><tr><td class='leftAttributeTitle'>
+@retry</td><td class='rightAttributeTitle'>
+Attribute of <a href='#onerror'>onerror</a>
+</td></tr></table>
+<p>true if statement which caused a problem should be retried after this handler completes.</p><p><span class='inTextTitle'>Possible values</span>: true, false - <span class='inTextTitle'>Default value</span>: false</p><a name='onerror_connection-id'></a>
+<br /><table class='attributeTitle' summary="connection-id"><tr><td class='leftAttributeTitle'>
+@connection-id</td><td class='rightAttributeTitle'>
+Attribute of <a href='#onerror'>onerror</a>
+</td></tr></table>
+<p>optional connection ID. If omitted, the error handling code will be executed in the context of the current connection.</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the IDREF rules.</i></p><a name='query'></a>
+<br /><table class='elementTitle' summary="query"><tr><td class='leftElementTitle'>
+&lt;query&gt;</td><td class='rightElementTitle'>
+Child of <a href='#etl'>etl</a>
+</td></tr></table>
+<p>The query element is used to specify a query producing a result set.
+This element may contain queries, scripts, plain text, includes and dialects.
+<p><u>Example:</u><br>
+Queries a table and writes the result into CSV file
+</p><pre>
+&lt;query connection-id="in"&gt;
+   SELECT * FROM Test WHERE id=&#063;id
+   &lt;script connection-id="csv"&gt;
+        $id,$value
+   &lt;/script&gt;
+&lt;/query&gt;
+</pre><p></p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;query&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;query&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#dialect'>dialect</a></td><td>Any number</td></tr>
+<tr><td><a href='#include'>include</a></td><td>Any number</td></tr>
+<tr><td><a href='#query'>query</a></td><td>Any number</td></tr>
+<tr><td><a href='#script'>script</a></td><td>Any number</td></tr>
+</tbody></table></td><td class='construct'><table  summary="&lt;query&gt;'s attributes"><tr>
+<th class='title' colspan='3'>&lt;query&gt;'s attributes</th>
+</tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr>
+<th class='subtitle'>Name</th><th class='subtitle'>Values</th><th class='subtitle'>Default</th></tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr><td><a href='#query_connection-id'>connection-id</a></td><td><i>Match the IDREF rules.</i></td><td></td></tr><tr><td><a href='#query_id'>id</a></td><td><i>Match the ID rules.</i></td><td></td></tr><tr><td><a href='#query_if'>if</a></td><td></td><td></td></tr></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a> | <a href='#dialect'>dialect</a> | <a href='#query'>query</a> | <a href='#script'>script</a>)*</p><a name='query_connection-id'></a>
+<br /><table class='attributeTitle' summary="connection-id"><tr><td class='leftAttributeTitle'>
+@connection-id</td><td class='rightAttributeTitle'>
+Attribute of <a href='#query'>query</a>
+</td></tr></table>
+<p>references connection by identifier. The value of this attribute is inherited for nested elements.
+For single connection ETL files the connection-id is optional.</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the IDREF rules.</i></p><a name='query_if'></a>
+<br /><table class='attributeTitle' summary="if"><tr><td class='leftAttributeTitle'>
+@if</td><td class='rightAttributeTitle'>
+Attribute of <a href='#query'>query</a>
+</td></tr></table>
+<p>expression to test. If result of evaluation is true - the element is evaluated, otherwise skipped.
+Use <a href="http://jakarta.apache.org/commons/jexl">JEXL</a> syntax for expressions.</p><a name='query_id'></a>
+<br /><table class='attributeTitle' summary="id"><tr><td class='leftAttributeTitle'>
+@id</td><td class='rightAttributeTitle'>
+Attribute of <a href='#query'>query</a>
+</td></tr></table>
+<p>script identifier(name).</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the ID rules.</i></p><a name='script'></a>
+<br /><table class='elementTitle' summary="script"><tr><td class='leftElementTitle'>
+&lt;script&gt;</td><td class='rightElementTitle'>
+Child of <a href='#query'>query</a>, <a href='#etl'>etl</a>
+</td></tr></table>
+<p>The script element is used to specify a script.
+This element may contain plain text,onerror handlers, includes and dialects.
+<p><u>Example:</u><br>
+Inserts a row into Test table if id>0
+</p><pre>
+&lt;script if="id&gt;0"&gt;
+    INSERT INTO Test VALUES(&#063;id, &#063;name)
+&lt;/script&gt;
+</pre><p></p><blockquote><table summary='element info'><tr>
+<td class='construct'><table summary="&lt;script&gt;'s children">
+<thead>
+<tr><th class='title' colspan='2'>&lt;script&gt;'s children</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+<tr><th class='subtitle'>Name</th><th class='subtitle'>Cardinality</th></tr>
+<tr><th colspan='2' height='1' class='ruler'></th></tr>
+</thead>
+<tbody><tr><td><a href='#dialect'>dialect</a></td><td>Any number</td></tr>
+<tr><td><a href='#include'>include</a></td><td>Any number</td></tr>
+<tr><td><a href='#onerror'>onerror</a></td><td>Any number</td></tr>
+</tbody></table></td><td class='construct'><table  summary="&lt;script&gt;'s attributes"><tr>
+<th class='title' colspan='3'>&lt;script&gt;'s attributes</th>
+</tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr>
+<th class='subtitle'>Name</th><th class='subtitle'>Values</th><th class='subtitle'>Default</th></tr>
+<tr><th colspan='3' height='1' class='ruler'></th></tr>
+<tr><td><a href='#script_connection-id'>connection-id</a></td><td><i>Match the IDREF rules.</i></td><td></td></tr><tr><td><a href='#script_id'>id</a></td><td><i>Match the ID rules.</i></td><td></td></tr><tr><td><a href='#script_if'>if</a></td><td></td><td></td></tr><tr><td><a href='#script_new-tx'>new-tx</a></td><td>true, false</td><td>false</td></tr></table></td></tr></table></blockquote>
+<span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a> | <a href='#dialect'>dialect</a> | <a href='#onerror'>onerror</a>)*</p><a name='script_connection-id'></a>
+<br /><table class='attributeTitle' summary="connection-id"><tr><td class='leftAttributeTitle'>
+@connection-id</td><td class='rightAttributeTitle'>
+Attribute of <a href='#script'>script</a>
+</td></tr></table>
+<p>references connection by identifier. The value of this attribute is inherited for nested elements.
+For single connection ETL files the connection-id is optional.</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the IDREF rules.</i></p><a name='script_new-tx'></a>
+<br /><table class='attributeTitle' summary="new-tx"><tr><td class='leftAttributeTitle'>
+@new-tx</td><td class='rightAttributeTitle'>
+Attribute of <a href='#script'>script</a>
+</td></tr></table>
+<p>true if a new transaction(and extra connection) is required for this element.</p><p><span class='inTextTitle'>Possible values</span>: true, false - <span class='inTextTitle'>Default value</span>: false</p><a name='script_if'></a>
+<br /><table class='attributeTitle' summary="if"><tr><td class='leftAttributeTitle'>
+@if</td><td class='rightAttributeTitle'>
+Attribute of <a href='#script'>script</a>
+</td></tr></table>
+<p>expression to test. If result of evaluation is true - the element is evaluated, otherwise skipped.
+Use <a href="http://jakarta.apache.org/commons/jexl">JEXL</a> syntax for expressions.</p><a name='script_id'></a>
+<br /><table class='attributeTitle' summary="id"><tr><td class='leftAttributeTitle'>
+@id</td><td class='rightAttributeTitle'>
+Attribute of <a href='#script'>script</a>
+</td></tr></table>
+<p>script identifier(name).</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the ID rules.</i></p></body></html>

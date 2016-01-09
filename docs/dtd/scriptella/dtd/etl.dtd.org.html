@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html> <head>
+<meta http-equiv='CONTENT-TYPE' content='text/html; charset=UTF-8' />
+<link rel='StyleSheet' href='../../DTDDocStyle.css' type='text/css' media='screen' />
+<title>Scriptella ETL File DTD</title>
+</head><body>
+<p class='DTDSource'><b><code>etl.dtd</code></b>: <a href='etl.dtd.html'>Elements</a> - Entities - <a href='etl.dtd.org.html'>Source</a> | <a href='../../intro.html'>Intro</a> - <a href='../../elementsIndex.html'>Index</a><br /><a href='../../index.html' target='_top'>FRAMES</a>&nbsp;/&nbsp;<a href='etl.dtd.org.html' target='_top'>NO FRAMES</a></p><pre id='dtd_source'><span class="dtd_processing_instruction">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment"> Copyright 2006-2012 The Scriptella Project Team.</span>
+
+<span class="dtd_comment"> Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="dtd_comment"> you may not use this file except in compliance with the License.</span>
+<span class="dtd_comment"> You may obtain a copy of the License at</span>
+
+<span class="dtd_comment">      http://www.apache.org/licenses/LICENSE-2.0</span>
+
+<span class="dtd_comment"> Unless required by applicable law or agreed to in writing, software</span>
+<span class="dtd_comment"> distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="dtd_comment"> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="dtd_comment"> See the License for the specific language governing permissions and</span>
+<span class="dtd_comment"> limitations under the License.</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_dtddoc_tag">@title</span><span class="dtd_comment"> Scriptella ETL File DTD</span>
+<span class="dtd_dtddoc_tag">@doctype</span><span class="dtd_comment"> etl SYSTEM &quot;http://scriptella.javaforge.com/dtd/etl.dtd&quot;</span>
+<span class="dtd_dtddoc_tag">@root</span><span class="dtd_comment"> etl</span>
+<span class="dtd_comment">--&gt;</span>
+
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">Root element of Scriptella XML file.</span>
+<span class="dtd_comment">&lt;p&gt;&lt;u&gt;Example:&lt;/u&gt;&lt;br&gt;</span>
+<span class="dtd_comment">A simple example of the script file with only one connection obtained via</span>
+<span class="dtd_comment">JNDI bound datasource.</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;etl&gt;</span>
+<span class="dtd_comment">    &lt;connection driver=&quot;jndi&quot; url=&quot;java:projectDS&quot;/&gt;</span>
+<span class="dtd_comment">    &lt;script&gt;</span>
+<span class="dtd_comment">        INSERT INTO Test VALUES (1, &quot;One&quot;)</span>
+<span class="dtd_comment">    &lt;/script&gt;</span>
+<span class="dtd_comment">&lt;/etl&gt;</span>
+
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">etl</span><span class="dtd_plain"> (</span><span class="dtd_attribute_name">description</span><span class="dtd_plain">?, </span><span class="dtd_attribute_name">properties</span><span class="dtd_plain">?, </span><span class="dtd_attribute_name">connection</span><span class="dtd_plain">*, (</span><span class="dtd_attribute_name">script</span><span class="dtd_plain">*, </span><span class="dtd_attribute_name">query</span><span class="dtd_plain">*)*)</span><span class="dtd_tag_symbols">&gt;</span>
+
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">Contains description of ETL file.</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">description</span><span class="dtd_plain"> (</span><span class="dtd_keyword">#PCDATA</span><span class="dtd_plain">)</span><span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">The properties element contains a set of properties available for script elements.</span>
+<span class="dtd_comment">The content of this element conforms to format supported by java.util.Properties.</span>
+<span class="dtd_comment">This element may contain plain text or includes.</span>
+<span class="dtd_comment">&lt;p&gt;&lt;u&gt;Example:&lt;/u&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;properties&gt;</span>
+<span class="dtd_comment">    #standard properties syntax</span>
+<span class="dtd_comment">    table.size=10</span>
+<span class="dtd_comment">    tmp=c\:\\temp\\</span>
+<span class="dtd_comment">    #including content from external properties file</span>
+<span class="dtd_comment">    &lt;include href=&quot;etl.properties&quot;/&gt;</span>
+<span class="dtd_comment">&lt;/properties&gt;</span>
+
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">properties</span><span class="dtd_plain"> (</span><span class="dtd_keyword">#PCDATA</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">include</span><span class="dtd_plain">)*</span><span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">The connection element specifies connection to a database or other system.</span>
+<span class="dtd_comment">This element may contain properties as plain text with includes.</span>
+<span class="dtd_comment">&lt;p&gt;&lt;u&gt;Example:&lt;/u&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;connection id=&quot;in&quot; driver=&quot;com.octetstring.jdbcLdap.sql.JdbcLdapDriver&quot;</span>
+<span class="dtd_comment">            url=&quot;jdbc:ldap://localhost:389/dc=scriptella&quot;</span>
+<span class="dtd_comment">            user=&quot;cn=root,dc=scriptella&quot; password=&quot;secret&quot;&gt;</span>
+<span class="dtd_comment">    SEARCH_SCOPE=subTreeScope</span>
+<span class="dtd_comment">    ignore_transactions=true</span>
+<span class="dtd_comment">&lt;/connection&gt;</span>
+
+<span class="dtd_comment">&lt;connection driver=&quot;hsqldb&quot;</span>
+<span class="dtd_comment">            url=&quot;jdbc:hsqldb:file:db&quot;</span>
+<span class="dtd_comment">            user=&quot;sa&quot; classpath=&quot;hsqldb.jar&quot;/&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">connection</span><span class="dtd_plain"> (</span><span class="dtd_keyword">#PCDATA</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">include</span><span class="dtd_plain">)*</span><span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr id</span><span class="dtd_comment"> connection identifier. Connection is referenced by id in scripts and queries.</span>
+<span class="dtd_comment">       For single connection ETL files this attribute is optional.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr driver</span><span class="dtd_comment"> driver class name or alias. The default value is &quot;auto&quot;,</span>
+<span class="dtd_comment">       in this case a target driver is guessed from an url attribute.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr url</span><span class="dtd_comment"> connection url.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr user</span><span class="dtd_comment"> database login</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr password</span><span class="dtd_comment"> database password</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr catalog</span><span class="dtd_comment"> catalog</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr schema</span><span class="dtd_comment"> schema</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr classpath</span><span class="dtd_comment"> the classpath to use when loading the driver.</span>
+<span class="dtd_comment">       Paths are colon/semicolon separated and resolved relative to a directory where ETL file resides.</span>
+<span class="dtd_comment">       Absolute URLs are also supported, e.g. ftp://server/lib.jar</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr lazy-init</span><span class="dtd_comment"> &lt;b&gt;true&lt;/b&gt; if connection initialization should be deferred until it is actually used.</span>
+<span class="dtd_comment">       The default value of &lt;b&gt;false&lt;/b&gt; means that connection is initialized on ETL startup.</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ATTLIST</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">connection</span>
+<span class="dtd_attribute_name">id</span><span class="dtd_plain"> </span><span class="dtd_keyword">ID</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">driver</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_attribute_value">&quot;auto&quot;</span>
+<span class="dtd_attribute_name">url</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">user</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">password</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">catalog</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">schema</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">classpath</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">lazy-init</span><span class="dtd_plain"> (</span><span class="dtd_attribute_name">true</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">false</span><span class="dtd_plain">) </span><span class="dtd_attribute_value">&quot;false&quot;</span>
+<span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">The fallback element contains alternate content to be used if the requested resource cannot be found.</span>
+<span class="dtd_comment">This element may contain plain text or includes.</span>
+<span class="dtd_comment">&lt;p&gt;&lt;u&gt;Example:&lt;/u&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;include href=&quot;http://no-such-url/file.txt&quot;&gt;</span>
+<span class="dtd_comment">    &lt;fallback&gt; //First fallback</span>
+<span class="dtd_comment">        &lt;include href=&quot;localFile.txt&gt;</span>
+<span class="dtd_comment">            &lt;fallback&gt; //If alternative location also failed</span>
+<span class="dtd_comment">                Failed to retrieve full text</span>
+<span class="dtd_comment">            &lt;/fallback&gt;</span>
+<span class="dtd_comment">        &lt;/include&gt;</span>
+<span class="dtd_comment">    &lt;/fallback&gt;</span>
+<span class="dtd_comment">&lt;/include&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">fallback</span><span class="dtd_plain"> (</span><span class="dtd_keyword">#PCDATA</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">include</span><span class="dtd_plain">)*</span><span class="dtd_tag_symbols">&gt;</span>
+
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">The include element specifies content to include. Concept similar to XInclude.</span>
+<span class="dtd_comment">&lt;p&gt;&lt;u&gt;Examples:&lt;/u&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;include href=&quot;http://host/file.sql&quot;&gt;&lt;fallback&gt;SHUTDOWN&lt;/fallback&gt;&lt;/include&gt;</span>
+<span class="dtd_comment">&lt;include href=&quot;db/schema.sql&quot;/&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">include</span><span class="dtd_plain"> (</span><span class="dtd_attribute_name">fallback</span><span class="dtd_plain">?)</span><span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_dtddoc_tag">@attr href</span><span class="dtd_comment"> contains an URI pointing to the file to include. URIs are resolved relative to ETL file.</span>
+<span class="dtd_dtddoc_tag">@attr encoding</span><span class="dtd_comment"> Included text encoding name.</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ATTLIST</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">include</span>
+<span class="dtd_attribute_name">href</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#REQUIRED</span>
+<span class="dtd_attribute_name">encoding</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">The dialect element defines a vendor specific script. Scripting elements may contain any number of nested dialects.</span>
+<span class="dtd_comment">This element may contain plain text or includes.</span>
+<span class="dtd_comment">&lt;u&gt;Example:&lt;/u&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;dialect name=&quot;oracle&quot; version=&quot;10\.&quot;&gt;</span>
+<span class="dtd_comment">    //Statements executed only for Oracle 10.x</span>
+<span class="dtd_comment">&lt;/dialect&gt;</span>
+<span class="dtd_comment">&lt;dialect name=&quot;oracle&quot; exclude=&quot;true&quot;&gt;</span>
+<span class="dtd_comment">    //Statements executed for any datasource except Oracle</span>
+<span class="dtd_comment">&lt;/dialect&gt;</span>
+
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">dialect</span><span class="dtd_plain"> (</span><span class="dtd_keyword">#PCDATA</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">include</span><span class="dtd_plain">)*</span><span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr name</span><span class="dtd_comment"> case insensitive regular expression to match vendor name, e.g. .*oracle.*</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr version</span><span class="dtd_comment"> case insensitive regular expression to match vendor version, e.g. 1\.0</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr exclude</span><span class="dtd_comment"> optional attribute to invert the name/version matching.</span>
+<span class="dtd_comment">       Use exclude=&quot;true&quot; to skip content for dialects with specified name and version.</span>
+
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ATTLIST</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">dialect</span>
+<span class="dtd_attribute_name">name</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">version</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">exclude</span><span class="dtd_plain"> (</span><span class="dtd_attribute_name">true</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">false</span><span class="dtd_plain">) </span><span class="dtd_attribute_value">&quot;false&quot;</span>
+<span class="dtd_tag_symbols">&gt;</span>
+
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">The onerror element defines fallback script to execute if error occurs.</span>
+<span class="dtd_comment">This element may contain plain text or includes.</span>
+<span class="dtd_comment">&lt;p&gt;&lt;u&gt;Example:&lt;/u&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;onerror type=&quot;SQLException&quot;&gt;</span>
+<span class="dtd_comment">    DROP TABLE MYTABLE</span>
+<span class="dtd_comment">&lt;/onerror&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">Note: Attributes are applied using AND condition, so if you specified</span>
+<span class="dtd_comment">%&lt;onerror type=&quot;ProviderException&quot; codes=&quot;100,200&quot;&gt;%</span>
+<span class="dtd_comment">so only exceptions with class name *.ProviderException having 100 and/or 200 error code are handled.</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">onerror</span><span class="dtd_plain"> (</span><span class="dtd_keyword">#PCDATA</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">include</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">dialect</span><span class="dtd_plain">)*</span><span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr type</span><span class="dtd_comment"> Regular expression pattern to match exception type. Partial matching is allowed.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr codes</span><span class="dtd_comment"> Comma-separated list of vendor codes/sql states. Triggered if any of these codes matches one of the codes reported by driver.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr message</span><span class="dtd_comment"> Regular expression pattern to match exception message. Partial matching is allowed.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr retry</span><span class="dtd_comment"> true if statement which caused a problem should be retried after this handler completes.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr connection-id</span><span class="dtd_comment"> optional connection ID. If omitted, the error handling code will be executed in the context of the current connection.</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ATTLIST</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">onerror</span>
+<span class="dtd_attribute_name">type</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">codes</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">message</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">retry</span><span class="dtd_plain"> (</span><span class="dtd_attribute_name">true</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">false</span><span class="dtd_plain">) </span><span class="dtd_attribute_value">&quot;false&quot;</span>
+<span class="dtd_attribute_name">connection-id</span><span class="dtd_plain"> </span><span class="dtd_keyword">IDREF</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_tag_symbols">&gt;</span>
+
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">The query element is used to specify a query producing a result set.</span>
+<span class="dtd_comment">This element may contain queries, scripts, plain text, includes and dialects.</span>
+<span class="dtd_comment">&lt;p&gt;&lt;u&gt;Example:&lt;/u&gt;&lt;br&gt;</span>
+<span class="dtd_comment">Queries a table and writes the result into CSV file</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;query connection-id=&quot;in&quot;&gt;</span>
+<span class="dtd_comment">   SELECT * FROM Test WHERE id=&amp;#063;id</span>
+<span class="dtd_comment">   &lt;script connection-id=&quot;csv&quot;&gt;</span>
+<span class="dtd_comment">        $id,$value</span>
+<span class="dtd_comment">   &lt;/script&gt;</span>
+<span class="dtd_comment">&lt;/query&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">query</span><span class="dtd_plain"> (</span><span class="dtd_keyword">#PCDATA</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">include</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">dialect</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">query</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">script</span><span class="dtd_plain">)*</span><span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr connection-id</span><span class="dtd_comment"> references connection by identifier. The value of this attribute is inherited for nested elements.</span>
+<span class="dtd_comment">       For single connection ETL files the connection-id is optional.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr if</span><span class="dtd_comment"> expression to test. If result of evaluation is true - the element is evaluated, otherwise skipped.</span>
+<span class="dtd_comment">        Use &lt;a href=&quot;http://jakarta.apache.org/commons/jexl&quot;&gt;JEXL&lt;/a&gt; syntax for expressions.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr id</span><span class="dtd_comment"> script identifier(name).</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ATTLIST</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">query</span>
+<span class="dtd_attribute_name">connection-id</span><span class="dtd_plain"> </span><span class="dtd_keyword">IDREF</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">if</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">id</span><span class="dtd_plain"> </span><span class="dtd_keyword">ID</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_tag_symbols">&gt;</span>
+
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment">The script element is used to specify a script.</span>
+<span class="dtd_comment">This element may contain plain text,onerror handlers, includes and dialects.</span>
+<span class="dtd_comment">&lt;p&gt;&lt;u&gt;Example:&lt;/u&gt;&lt;br&gt;</span>
+<span class="dtd_comment">Inserts a row into Test table if id&gt;0</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">&lt;script if=&quot;id&gt;0&quot;&gt;</span>
+<span class="dtd_comment">    INSERT INTO Test VALUES(&amp;#063;id, &amp;#063;name)</span>
+<span class="dtd_comment">&lt;/script&gt;</span>
+<span class="dtd_comment">%</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ELEMENT</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">script</span><span class="dtd_plain"> (</span><span class="dtd_keyword">#PCDATA</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">include</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">dialect</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">onerror</span><span class="dtd_plain">)*</span><span class="dtd_tag_symbols">&gt;</span>
+<span class="dtd_comment">&lt;!--</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr connection-id</span><span class="dtd_comment"> references connection by identifier. The value of this attribute is inherited for nested elements.</span>
+<span class="dtd_comment">       For single connection ETL files the connection-id is optional.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr new-tx</span><span class="dtd_comment"> true if a new transaction(and extra connection) is required for this element.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr if</span><span class="dtd_comment"> expression to test. If result of evaluation is true - the element is evaluated, otherwise skipped.</span>
+<span class="dtd_comment">        Use &lt;a href=&quot;http://jakarta.apache.org/commons/jexl&quot;&gt;JEXL&lt;/a&gt; syntax for expressions.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr id</span><span class="dtd_comment"> script identifier(name).</span>
+<span class="dtd_comment">--&gt;</span>
+<span class="dtd_tag_symbols">&lt;!</span><span class="dtd_tag_name">ATTLIST</span><span class="dtd_plain"> </span><span class="dtd_attribute_name">script</span>
+<span class="dtd_attribute_name">connection-id</span><span class="dtd_plain"> </span><span class="dtd_keyword">IDREF</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">new-tx</span><span class="dtd_plain"> (</span><span class="dtd_attribute_name">true</span><span class="dtd_plain"> | </span><span class="dtd_attribute_name">false</span><span class="dtd_plain">) </span><span class="dtd_attribute_value">&quot;false&quot;</span>
+<span class="dtd_attribute_name">if</span><span class="dtd_plain"> </span><span class="dtd_keyword">CDATA</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_attribute_name">id</span><span class="dtd_plain"> </span><span class="dtd_keyword">ID</span><span class="dtd_plain"> </span><span class="dtd_keyword">#IMPLIED</span>
+<span class="dtd_tag_symbols">&gt;</span>
+</pre>
+</body></html>

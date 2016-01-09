@@ -1,0 +1,1059 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+<rss version="0.91"><channel><title>MyProject (1.1) Changes</title><link>http://example.org/myproj//changes.html</link><description>MyProject
+              (
+              1.1
+              ) Changes
+            </description><language>en-us</language>
+    
+        
+        
+
+    
+    
+        
+        
+        
+        
+        
+    
+
+    
+    
+    
+
+    
+        
+        
+        
+            <item><title>MyProject code add
+          (bug 12161)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 12161)
+        
+        :
+        
+                JEXL 2.0 Support
+            </description></item>
+            <item><title>MyProject code add
+          (bug 52167)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 52167)
+        
+        :
+        
+                Flexible parsing/formatting rules for text/csv drivers
+            </description></item>
+            <item><title>MyProject code update
+          (bug 14268)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 14268)
+        
+        :
+        
+                JDBC: Add support for queries in batch-mode
+            </description></item>
+            <item><title>MyProject code update
+          (bug 12257)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 12257)
+        
+        :
+        
+                Detect missing query.next call
+            </description></item>
+            <item><title>MyProject code update
+          (bug 7157)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 7157)
+        
+        :
+        
+                Add support for batch execution.
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 52891)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 52891)
+        
+        :
+        
+                StringIndexOutOfBoundsException when parsing SQL statements with ternary expressions
+            </description></item>
+            <item><title>MyProject code update
+          (bug 12257)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 12257)
+        
+        :
+        
+                Detect missing query.next call in queries.
+            </description></item>
+        
+        
+            <item><title>MyProject code add
+          (bug 11778)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 11778)
+        
+        :
+        
+                CUBRID Database driver
+            </description></item>
+            <item><title>MyProject code update
+          (bug 9990)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 9990)
+        
+        :
+        
+                Fix FindBugs issues
+            </description></item>
+            <item><title>MyProject code update
+          (bug 7074)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 7074)
+        
+        :
+        
+                Upgrade dependencies: hsqldb 1.8.0.10, velocity 1.6.2, janino 2.5.15, h2 1.1.116
+            </description></item>
+            <item><title>MyProject code add
+          (bug 8700)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 8700)
+        
+        :
+        
+                nostat command line option to suppress statistics collecting.
+            </description></item>
+            <item><title>MyProject code fix</title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+        :
+        
+                Fixed ArrayIndexOutOfBounds thrown when lazy-initialization fails for connection
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 7338)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        volk
+          (fixes bug 7338)
+        
+        :
+        
+                Wrong alias for PostgreSQL for auto driver
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 10987)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 10987)
+        
+        :
+        
+                db2 driver is not automatically resolved
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 10660)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 10660)
+        
+        :
+        
+                Cannot load class when scriptella is packaged in an EAR file in JBoss
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 7390)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 7390)
+        
+        :
+        
+                Cannot Write to HTTP URL
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 8756)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 8756)
+        
+        :
+        
+                Use null_string to expand $variable when it has null value. CSV, text driver
+            </description></item>
+        
+        
+            <item><title>MyProject code add
+          (bug 7252)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 7252)
+        
+        :
+        
+                odbc alias for JDBC-ODBC bridge driver
+            </description></item>
+            <item><title>MyProject code add
+          (bug 7234)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        volk
+          (fixes bug 7234)
+        
+        :
+        
+                Support for SQLSheet JDBC driver to work with Excel files.
+            </description></item>
+            <item><title>MyProject code add
+          (bug 7227)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        volk
+          (fixes bug 7227)
+        
+        :
+        
+                IBM AS/400 Driver
+            </description></item>
+            <item><title>MyProject code update
+          (bug 7160)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 7160)
+        
+        :
+        
+                Make driver attribute optional with default value of "auto"
+            </description></item>
+            <item><title>MyProject code update
+          (bug 7098)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 7098)
+        
+        :
+        
+                Replace opencsv with a built-in implementation
+            </description></item>
+            <item><title>MyProject code add
+          (bug 7048)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 7048)
+        
+        :
+        
+                etl.text utility methods to format strings
+            </description></item>
+            <item><title>MyProject code add
+          (bug 7003)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 7003)
+        
+        :
+        
+                Execute multiple ETL files in Spring
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 6132)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 6132)
+        
+        :
+        
+                Error working whith blobs
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 5658)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 5658)
+        
+        :
+        
+                scriptella.execution.EtlExecutorException: Java heap space -java.lang.OutOfMemoryError:
+            </description></item>
+            <item><title>MyProject code update
+          (bug 5627)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 5627)
+        
+        :
+        
+                Simplified onerror regex matching for message and type attributes
+            </description></item>
+            <item><title>MyProject code update
+          (bug 6713)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 6713)
+        
+        :
+        
+                Use column label in addition to column name for JDBC metadata
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 6773)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 6773)
+        
+        :
+        
+                NullpointerException in JEXL expressions if running in multiple threads
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 6913)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 6913)
+        
+        :
+        
+                Inserting NULL values into a DB2 database
+            </description></item>
+            <item><title>MyProject code add
+          (bug 6924)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 6924)
+        
+        :
+        
+                Add "exclude=true/false" attribute for dialect tag.
+            </description></item>
+        
+
+        
+            <item><title>MyProject code add
+          (bug 6086)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 6086)
+        
+        :
+        
+                Driver for running external Scriptella ETL files
+            </description></item>
+            <item><title>MyProject code add
+          (bug 6256)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 6256)
+        
+        :
+        
+                Add "autocommit.size" JDBC connection parameter.
+            </description></item>
+            <item><title>MyProject code add
+          (bug 5845)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 5845)
+        
+        :
+        
+                "autocommit" connection parameter
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 5760)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 5760)
+        
+        :
+        
+                Impossible to import NULL with CSV driver
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 5698)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        volk
+          (fixes bug 5698)
+        
+        :
+        
+                JdbcException throwing during driver loading
+            </description></item>
+            <item><title>MyProject code update
+          (bug 6294)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 6294)
+        
+        :
+        
+                Upgrade to Velocity 1.5
+            </description></item>
+            <item><title>MyProject code update
+          (bug 6293)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 6293)
+        
+        :
+        
+                [Compatibility] Upgrade to Janino 2.5.11
+            </description></item>
+            <item><title>MyProject code update</title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+        :
+        
+                Several minor bugs were fixed, cosmetic fixes for code, site and documentation.
+            </description></item>
+
+        
+        
+            <item><title>MyProject code add
+          (bug 3672)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 3672)
+        
+        :
+        
+                Auto-discovery for JDBC drivers
+            </description></item>
+            <item><title>MyProject code add
+          (bug 5007)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 5007)
+        
+        :
+        
+                Support for JSR 223 (Scripting for the Java Platform)
+            </description></item>
+            <item><title>MyProject code add
+          (bug 5037)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 5037)
+        
+        :
+        
+                Add ?{textfile 'filename/url' } to upload CLOBs from text files.
+            </description></item>
+            <item><title>MyProject code update
+          (bug 5252)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 5252)
+        
+        :
+        
+                Simplified dialect names matching
+            </description></item>
+            <item><title>MyProject code add
+          (bug 5253)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 5253)
+        
+        :
+        
+                Database migration template
+            </description></item>
+            <item><title>MyProject code update
+          (bug 5473)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 5473)
+        
+        :
+        
+                Support for bind variables/expressions in a href attribute of include element
+            </description></item>
+            <item><title>MyProject code update
+          (bug 5600)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 5600)
+        
+        :
+        
+                skip_lines connection parameter for CSV and Text driver
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 5260)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 5260)
+        
+        :
+        
+                SpringDriverTest failed in coverage mode
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 5390)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 5390)
+        
+        :
+        
+                Fix for LDAP when using search.scope and search.basedn parameters
+            </description></item>
+            <item><title>MyProject build update</title><link>http://example.org/myproj//changes.html</link><description>build update
+        by
+        ejboy
+        :
+        
+                Since this release JDK 6 is required to build Scriptella
+            </description></item>
+        
+        
+            <item><title>MyProject build update
+          (bug 5036)
+        </title><link>http://example.org/myproj//changes.html</link><description>build update
+        by
+        ejboy
+          (fixes bug 5036)
+        
+        :
+        
+                Remove unused commons-logging classes from scriptella.jar
+            </description></item>
+            <item><title>MyProject admin update
+          (bug 5033)
+        </title><link>http://example.org/myproj//changes.html</link><description>admin update
+        by
+        ejboy
+          (fixes bug 5033)
+        
+        :
+        
+                Upgrade to Janino 2.5.6
+            </description></item>
+            <item><title>MyProject code update
+          (bug 5031)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 5031)
+        
+        :
+        
+                Send output to the console if no output file URL was specified for Velocity and Text driver
+            </description></item>
+            <item><title>MyProject code update
+          (bug 5029)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 5029)
+        
+        :
+        
+                Automatically convert windows DRIVE:/ paths to file:/DRIVE:/ URL
+            </description></item>
+            <item><title>MyProject code add
+          (bug 5024)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 5024)
+        
+        :
+        
+                Add a feature to work with dates in ${ ... } JEXL expressions
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 5016)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 5016)
+        
+        :
+        
+                NULL not handled for CLOBs and BLOBs
+            </description></item>
+            <item><title>MyProject code add
+          (bug 5009)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 5009)
+        
+        :
+        
+                Runnable and Callable façade for EtlExecutor
+            </description></item>
+            <item><title>MyProject code add
+          (bug 5007)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 5007)
+        
+        :
+        
+                Mail provider
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 4648)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 4648)
+        
+        :
+        
+                Fix Spring context propagation
+            </description></item>
+        
+        
+            <item><title>MyProject code add
+          (bug 3792)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 3792)
+        
+        :
+        
+                JEXL driver
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 4291)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 4291)
+        
+        :
+        
+                Compile error on JDK 6
+            </description></item>
+            <item><title>MyProject code add
+          (bug 4308)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 4308)
+        
+        :
+        
+                XML XPath provider
+            </description></item>
+            <item><title>MyProject code add
+          (bug 4338)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 4338)
+        
+        :
+        
+                XML example
+            </description></item>
+            <item><title>MyProject build add
+          (bug 4386)
+        </title><link>http://example.org/myproj//changes.html</link><description>build add
+        by
+        ejboy
+          (fixes bug 4386)
+        
+        :
+        
+                Include scriptella-src-ide.zip in a binary distribution
+            </description></item>
+            <item><title>MyProject code update
+          (bug 4397)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 4397)
+        
+        :
+        
+                Make "throughput" parameter in JMX mbean more accurate
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 4668)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy,volk
+          (fixes bug 4668)
+        
+        :
+        
+                Do not produce bug report if no driver on classpath
+            </description></item>
+            <item><title>MyProject code update</title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+        :
+        
+                Various performance optimizations.
+            </description></item>
+            <item><title>MyProject code fix</title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+        :
+        
+                Improved examples, ODBC example was not working.
+            </description></item>
+
+        
+        
+            <item><title>MyProject code add
+          (bug 3903)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 3903)
+        
+        :
+        
+                Text Provider
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3976)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        volk
+          (fixes bug 3976)
+        
+        :
+        
+                PostgreSQL Driver
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3981)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        volk
+          (fixes bug 3981)
+        
+        :
+        
+                DB2 Driver
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3987)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        volk
+          (fixes bug 3987)
+        
+        :
+        
+                Lucene search engine driver
+            </description></item>
+            <item><title>MyProject code add
+          (bug 4061)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 4061)
+        
+        :
+        
+                Rollback ETL on Ctrl-C
+            </description></item>
+            <item><title>MyProject code add
+          (bug 4062)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 4062)
+        
+        :
+        
+                transaction.isolation property for JDBC connection
+            </description></item>
+            <item><title>MyProject code add
+          (bug 4034)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 4034)
+        
+        :
+        
+                Add JMX mbean for monitoring
+            </description></item>
+            <item><title>MyProject code update</title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+        :
+        
+                Improved test code coverage
+            </description></item>
+        
+        
+            <item><title>MyProject code add
+          (bug 3621)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 3621)
+        
+        :
+        
+                Log SQLWarnings
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3622)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 3622)
+        
+        :
+        
+                Configurable sql delimiters for JDBC Bridge
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 3653)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 3653)
+        
+        :
+        
+                scriptella.bat not woking if no JAVA_HOME
+            </description></item>
+            <item><title>MyProject code fix
+          (bug 3653)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 3653)
+        
+        :
+        
+                Illegal handling of -- comments
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3655)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 3655)
+        
+        :
+        
+                add lazy-init connection attribute
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3657)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        volk
+          (fixes bug 3657)
+        
+        :
+        
+                Oracle driver
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3690)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        volk
+          (fixes bug 3690)
+        
+        :
+        
+                Sybase driver
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3740)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 3740)
+        
+        :
+        
+                Resultset Data types conversion (including BLOB/CLOB)
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3742)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 3742)
+        
+        :
+        
+                Support for Oracle Hints
+            </description></item>
+            <item><title>MyProject code add
+          (bug 3793)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        volk
+          (fixes bug 3793)
+        
+        :
+        
+                MySQL driver
+            </description></item>
+            <item><title>MyProject code update</title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+        :
+        
+                Performance improvements
+            </description></item>
+            <item><title>MyProject admin update</title><link>http://example.org/myproj//changes.html</link><description>admin update
+        by
+        ejboy
+        :
+        
+                Supported libraries upgraded to Janino 2.5.1, H2 1.0, HSQLDB 1.8.0.7, opencsv 1.7
+            </description></item>
+            <item><title>MyProject code update</title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+        :
+        
+                Improved code coverage
+            </description></item>
+        
+
+    
+
+    
+    
+    
+
+    
+
+<item><title>MyProject code add
+          (bug 12161)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 12161)
+        
+        :
+        
+                JEXL 2.0 Support
+            </description></item><item><title>MyProject code add
+          (bug 52167)
+        </title><link>http://example.org/myproj//changes.html</link><description>code add
+        by
+        ejboy
+          (fixes bug 52167)
+        
+        :
+        
+                Flexible parsing/formatting rules for text/csv drivers
+            </description></item><item><title>MyProject code update
+          (bug 14268)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 14268)
+        
+        :
+        
+                JDBC: Add support for queries in batch-mode
+            </description></item><item><title>MyProject code update
+          (bug 12257)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 12257)
+        
+        :
+        
+                Detect missing query.next call
+            </description></item><item><title>MyProject code update
+          (bug 7157)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 7157)
+        
+        :
+        
+                Add support for batch execution.
+            </description></item><item><title>MyProject code fix
+          (bug 52891)
+        </title><link>http://example.org/myproj//changes.html</link><description>code fix
+        by
+        ejboy
+          (fixes bug 52891)
+        
+        :
+        
+                StringIndexOutOfBoundsException when parsing SQL statements with ternary expressions
+            </description></item><item><title>MyProject code update
+          (bug 12257)
+        </title><link>http://example.org/myproj//changes.html</link><description>code update
+        by
+        ejboy
+          (fixes bug 12257)
+        
+        :
+        
+                Detect missing query.next call in queries.
+            </description></item></channel></rss>

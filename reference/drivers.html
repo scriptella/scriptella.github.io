@@ -1,0 +1,662 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.9">
+<meta name="Forrest-skin-name" content="pelt">
+<title>Scriptella ETL Drivers Matrix</title>
+<link type="text/css" href="../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../skin/profile.css" rel="stylesheet">
+<script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../favicon.ico">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://scriptella.org"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogo">
+<a href="http://scriptella.org/"><img class="logoImage" alt="Scriptella" src="../images/site-logo.png" title="Open Source ETL and Script Execution Tool."></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Search
+    +-->
+<div class="searchbox">
+<form action="http://www.google.com/search" method="get" class="roundtopsmall">
+<input value="scriptella.org" name="sitesearch" type="hidden"><input onFocus="getBlank (this, 'Search the site with google');" size="25" name="q" id="query" type="text" value="Search the site with google">&nbsp; 
+                    <input name="Search" value="Search" type="submit">
+</form>
+</div>
+<!--+
+    |end search
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li>
+<a class="unselected" href="../index.html">Home</a>
+</li>
+<li class="current">
+<a class="selected" href="../reference/index.html">Reference</a>
+</li>
+<li>
+<a class="unselected" href="../howto/migrate-from-ant.html">How-Tos</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+<script src="../skin/breadcrumbs.js" language="JavaScript" type="text/javascript"></script>
+</div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_selected_1.1', '../skin/')" id="menu_selected_1.1Title" class="menutitle" style="background-image: url('../skin/images/chapter_open.gif');">Documentation</div>
+<div id="menu_selected_1.1" class="selectedmenuitemgroup" style="display: block;">
+<div class="menuitem">
+<a href="../reference/index.html" title="Scriptella Reference Documentation">Reference Documentation</a>
+</div>
+<div class="menupage">
+<div class="menupagetitle">Drivers Matrix</div>
+</div>
+<div class="menuitem">
+<a href="../docs/api/index.html">API Docs</a>
+</div>
+<div class="menuitem">
+<a href="../docs/dtd/index.html">DTD Reference</a>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="drivers.pdf"><img alt="PDF -icon" src="../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<div class="trail">Font size: 
+	          &nbsp;<input value="Reset" class="resetfont" title="Reset text" onclick="ndeSetTextSize('reset'); return false;" type="button">      
+	          &nbsp;<input value="-a" class="smallerfont" title="Shrink text" onclick="ndeSetTextSize('decr'); return false;" type="button">
+	          &nbsp;<input value="+a" class="biggerfont" title="Enlarge text" onclick="ndeSetTextSize('incr'); return false;" type="button">
+</div>
+<h1>Scriptella ETL Drivers Matrix</h1>
+<div id="front-matter">
+<div class="abstract">
+            
+            
+            This document describes Scriptella Drivers supported by Scriptella.
+            
+            See also the
+            Javadoc
+            for the built-in drivers.
+        </div>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#jdbcbridge">JDBC Bridge Drivers</a>
+</li>
+<li>
+<a href="#nonjdbc">Non-JDBC Drivers</a>
+</li>
+</ul>
+</div>
+</div>
+        
+<a name="jdbcbridge"></a>
+<h2 class="boxed">JDBC Bridge Drivers</h2>
+<div class="section">
+<p>Scriptella providers a set of built-in drivers for popular databases, see also
+                <a href="../docs/api/scriptella/jdbc/package-summary.html#package_description">JDBC Bridge Javadoc</a>
+                for common properties and behaviour.
+            </p>
+<div class="note">
+<div class="label">Note</div>
+<div class="content">Although usage of JDBC adapters is recommended you are free to use any JDBC compliant driver.</div>
+</div>
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+                
+<tr>
+                    
+<th colspan="1" rowspan="1">Adapter Name</th>
+                    <th colspan="1" rowspan="1">Scriptella Driver Name</th>
+                    <th colspan="1" rowspan="1">Native Driver</th>
+                    <th colspan="1" rowspan="1">Notes</th>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="as400" id="as400"></a>
+                        <a href="../docs/api/scriptella/driver/as400/package-summary.html#package_description">IBM
+                            AS/400 Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>as400</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">com.ibm.as400.access.AS400JDBCDriver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="cubrid" id="cubrid"></a>
+                        <a href="../docs/api/scriptella/driver/cubrid/package-summary.html#package_description">CUBRID
+                            Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>cubrid</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">cubrid.jdbc.driver.CUBRIDDriver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="db2" id="db2"></a>
+                        <a href="../docs/api/scriptella/driver/db2/package-summary.html#package_description">DB2
+                            Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>db2</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">com.ibm.db2.jcc.DB2Driver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="derby" id="derby"></a>
+                        <a href="../docs/api/scriptella/driver/derby/package-summary.html#package_description">Derby
+                            Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>derby</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">org.apache.derby.jdbc.ClientDriver; org.apache.derby.jdbc.EmbeddedDriver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="h2" id="h2"></a>
+                        <a href="../docs/api/scriptella/driver/h2/package-summary.html#package_description">H2 Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>h2</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">org.h2.Driver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="hsqldb" id="hsqldb"></a>
+                        <a href="../docs/api/scriptella/driver/hsqldb/package-summary.html#package_description">HSQLDB
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>hsqldb</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">org.hsqldb.jdbcDriver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="jndi" id="jndi"></a>
+                        <a href="../docs/api/scriptella/driver/jndi/package-summary.html#package_description">JNDI</a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>jndi</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Any JDBC driver</td>
+                    <td colspan="1" rowspan="1">This driver allows to work with JNDI-bound datasource connections, useful in J2EE
+                        environment
+                    </td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="mssql" id="mssql"></a>
+                        <a href="../docs/api/scriptella/driver/mssql/package-summary.html#package_description">Microsoft
+                            SQL Server Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>mssql</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">com.microsoft.sqlserver.jdbc.SQLServerDriver</td>
+                    <td colspan="1" rowspan="1">This driver works with Microsoft SQL Server 2005, Microsoft SQL Server 2000 JDBC drivers and
+                        also allows to use jTDS JDBC driver for Microsoft SQL Server
+                    </td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="mysql" id="mysql"></a>
+                        <a href="../docs/api/scriptella/driver/mysql/package-summary.html#package_description">MySQL
+                            Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>mysql</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">com.mysql.jdbc.Driver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="odbc" id="odbc"></a>
+                        <a href="../docs/api/scriptella/driver/odbc/package-summary.html#package_description">JDBC-ODBC
+                            Bridge
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>odbc</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">sun.jdbc.odbc.JdbcOdbcDriver</td>
+                    <td colspan="1" rowspan="1">JDBC-ODBC Bridge driver. The bridge implements JDBC for any database with ODBC driver.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="oracle" id="oracle"></a>
+                        <a href="../docs/api/scriptella/driver/oracle/package-summary.html#package_description">Oracle
+                            Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>oracle</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">oracle.jdbc.driver.OracleDriver</td>
+                    <td colspan="1" rowspan="1">Built-in Scriptella driver for Oracle. The following extra features supported:
+                        <ul>
+                            
+<li>Simplified handling of PL/SQL blocks.</li>
+                        
+</ul>
+                    
+</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="postgresql" id="postgresql"></a>
+                        <a href="../docs/api/scriptella/driver/postgresql/package-summary.html#package_description">
+                            PostgreSQL Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>postgresql</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">org.postgresql.Driver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="spring" id="spring"></a>
+                        <a href="../docs/api/scriptella/driver/spring/package-summary.html#package_description">Spring
+                            Framework
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>spring</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Any JDBC driver</td>
+                    <td colspan="1" rowspan="1">This driver allows to work with
+                        <a href="http://www.springframework.org">Spring</a>
+                        managed datasource connections, useful in Spring Framework
+                        projects.
+                        <br>
+                        The driver requires
+                        <span class="codefrag">scriptella.driver.spring.EtlExecutorBean</span>
+                        to be used in Spring configuration.
+                    </td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="sybase" id="sybase"></a>
+                        <a href="../docs/api/scriptella/driver/sybase/package-summary.html#package_description">Sybase
+                            Database
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>sybase</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">com.sybase.jdbc3.jdbc.SybDriver</td>
+                    <td colspan="1" rowspan="1"></td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="xls" id="xls"></a>
+                        <a href="../docs/api/scriptella/driver/xls/package-summary.html#package_description">JDBC Driver
+                            for Excel Spreadsheets
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>xls</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">net.pcal.sqlsheet.XlsDriver</td>
+                    <td colspan="1" rowspan="1">This driver allows you to interact with Microsoft Excel spreadsheets using SQL statements.</td>
+                
+</tr>
+            
+</table>
+</div>
+        
+<a name="nonjdbc"></a>
+<h2 class="boxed">Non-JDBC Drivers</h2>
+<div class="section">
+<table class="ForrestTable" cellspacing="1" cellpadding="4">
+                
+<tr>
+                    
+<th colspan="1" rowspan="1">Adapter Name</th>
+                    <th colspan="1" rowspan="1">Scriptella Driver Name</th>
+                    <th colspan="1" rowspan="1">Notes</th>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="auto" id="auto"></a>
+                        <a href="../docs/api/scriptella/driver/auto/package-summary.html#package_description">
+                            Autodiscovery
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>auto</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Automatically discovers a necessary driver based on the specified url.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="csv" id="csv"></a>
+                        <a href="../docs/api/scriptella/driver/csv/package-summary.html#package_description">CSV</a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>csv</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">The driver to write and query CSV files.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="janino" id="janino"></a>
+                        <a href="../docs/api/scriptella/driver/janino/package-summary.html#package_description">Janino
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>janino</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">This driver allows embedding of Java code into &lt;query&gt; and &lt;script&gt; elements.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="jexl" id="jexl"></a>
+                        <a href="../docs/api/scriptella/driver/jexl/package-summary.html#package_description">JEXL</a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>jexl</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Allows usage of JEXL scripts in &lt;query&gt; and &lt;script&gt; elements.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="ldap" id="ldap"></a>
+                        <a href="../docs/api/scriptella/driver/ldap/package-summary.html#package_description">LDAP</a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>ldap</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">This driver allows executing LDIF scripts and search filter queries.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="lucene" id="lucene"></a>
+                        <a href="../docs/api/scriptella/driver/lucene/package-summary.html#package_description">Lucene
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>lucene</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">This driver allows search queries through lucene indexed data.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="mongodb" id="mongodb"></a>
+                        <a href="https://github.com/scriptella/scriptella-mongodb">MongoDB</a>
+                    </td>
+                    <td colspan="1" rowspan="1">org.scriptella.mongodb.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Provides integration of <a href="http://mongodb.org/">MongoDB</a> with Scriptella.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="mail" id="mail"></a>
+                        <a href="../docs/api/scriptella/driver/mail/package-summary.html#package_description">Mail</a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>mail</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Allows sending E-Mails via SMTP.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="script" id="script"></a>
+                        <a href="../docs/api/scriptella/driver/script/package-summary.html#package_description">
+                            javax.script bridge
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>script</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Provides support for
+                        <a href="http://jcp.org/en/jsr/detail?id=223">JSR 223</a>
+                        compatible scripting languages like JavaScript, JRuby, Grovy etc. See
+                        <a href="http://scripting.dev.java.net">JSR-223 script engines</a>
+                        project for the list of supported languages.
+                    </td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="scriptella" id="scriptella"></a>
+                        <a href="../docs/api/scriptella/driver/scriptella/package-summary.html#package_description">
+                            Scriptella driver
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>scriptella</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Driver for running Scriptella ETL files. Similar to Ant's &lt;ant&gt; task, i.e. it is suitable
+                        for
+                        splitting large ETL files into sub-projects.
+                    </td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="text" id="text"></a>
+                        <a href="../docs/api/scriptella/driver/text/package-summary.html#package_description">Text</a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>text</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">The driver for working with text data. It supports regular expressions syntax for quering
+                        and ant style property expansion in outputted text files.
+                    </td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="velocity" id="velocity"></a>
+                        <a href="../docs/api/scriptella/driver/velocity/package-summary.html#package_description">
+                            Velocity
+                        </a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>velocity</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">This driver allows to integrate velocity templates into script files.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="vtd-xml" id="vtd-xml"></a>
+                        <a href="https://github.com/floriankammermann/scriptella-vtdxml">vtd-xml</a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>vtdxml</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">Implementation of <a href="http://vtd-xml.sourceforge.net/">vtd-xml</a> as xpath driver for Scriptella.</td>
+                
+</tr>
+                
+<tr>
+                    
+<td colspan="1" rowspan="1">
+                        <a name="xpath" id="xpath"></a>
+                        <a href="../docs/api/scriptella/driver/xpath/package-summary.html#package_description">XPath</a>
+                    </td>
+                    <td colspan="1" rowspan="1">scriptella.driver.<strong>xpath</strong>.Driver
+                    </td>
+                    <td colspan="1" rowspan="1">This driver allows querying XML files with XPath expressions.</td>
+                
+</tr>
+            
+</table>
+</div>
+    
+<p align="right">
+<font size="-2">by&nbsp;Fyodor Kupolov</font>
+</p>
+<span class="version">1.0</span>
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2006-2012 <a href="http://scriptella.org/license.html">The Scriptella Project Team.</a>
+</div>
+<div id="feedback">
+    Send feedback about the website to:
+  <a id="feedbackto" href="mailto:scriptella@gmail.com?subject=Feedback%C2%A0reference/drivers.html">Fyodor Kupolov</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>
