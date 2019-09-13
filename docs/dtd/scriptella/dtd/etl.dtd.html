@@ -5,7 +5,7 @@
 <title>Scriptella ETL File DTD</title>
 </head><body>
 <p class='DTDSource'><b><code>etl.dtd</code></b>: <a href='etl.dtd.html'>Elements</a> - Entities - <a href='etl.dtd.org.html'>Source</a> | <a href='../../intro.html'>Intro</a> - <a href='../../elementsIndex.html'>Index</a><br /><a href='../../index.html' target='_top'>FRAMES</a>&nbsp;/&nbsp;<a href='etl.dtd.html' target='_top'>NO FRAMES</a></p><h1>Scriptella ETL File DTD</h1>
-<p><span class='inTextTitle'>Usage</span>: <code>&lt;!DOCTYPE etl SYSTEM "http://scriptella.javaforge.com/dtd/etl.dtd"&gt;</code></p>
+<p><span class='inTextTitle'>Usage</span>: <code>&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;</code></p>
 <p></p><pre>
  Copyright 2006-2012 The Scriptella Project Team.
 
@@ -200,7 +200,7 @@ This element may contain plain text or includes.
 <span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a>)*</p><a name='include'></a>
 <br /><table class='elementTitle' summary="include"><tr><td class='leftElementTitle'>
 &lt;include&gt;</td><td class='rightElementTitle'>
-Child of <a href='#query'>query</a>, <a href='#dialect'>dialect</a>, <a href='#properties'>properties</a>, <a href='#connection'>connection</a>, <a href='#script'>script</a>, <a href='#onerror'>onerror</a>, <a href='#fallback'>fallback</a>
+Child of <a href='#dialect'>dialect</a>, <a href='#connection'>connection</a>, <a href='#script'>script</a>, <a href='#fallback'>fallback</a>, <a href='#properties'>properties</a>, <a href='#query'>query</a>, <a href='#onerror'>onerror</a>
 </td></tr></table>
 <p>The include element specifies content to include. Concept similar to XInclude.
 <p><u>Examples:</u>
@@ -237,7 +237,7 @@ Attribute of <a href='#include'>include</a>
 <p>Included text encoding name.</p><a name='dialect'></a>
 <br /><table class='elementTitle' summary="dialect"><tr><td class='leftElementTitle'>
 &lt;dialect&gt;</td><td class='rightElementTitle'>
-Child of <a href='#query'>query</a>, <a href='#script'>script</a>, <a href='#onerror'>onerror</a>
+Child of <a href='#script'>script</a>, <a href='#query'>query</a>, <a href='#onerror'>onerror</a>
 </td></tr></table>
 <p>The dialect element defines a vendor specific script. Scripting elements may contain any number of nested dialects.
 This element may contain plain text or includes.
@@ -397,7 +397,7 @@ Attribute of <a href='#query'>query</a>
 <p>script identifier(name).</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the ID rules.</i></p><a name='script'></a>
 <br /><table class='elementTitle' summary="script"><tr><td class='leftElementTitle'>
 &lt;script&gt;</td><td class='rightElementTitle'>
-Child of <a href='#query'>query</a>, <a href='#etl'>etl</a>
+Child of <a href='#etl'>etl</a>, <a href='#query'>query</a>
 </td></tr></table>
 <p>The script element is used to specify a script.
 This element may contain plain text,onerror handlers, includes and dialects.
