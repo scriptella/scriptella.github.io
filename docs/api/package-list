@@ -15,7 +15,6 @@ scriptella.driver.jexl
 scriptella.driver.jndi
 scriptella.driver.ldap
 scriptella.driver.ldap.ldif
-scriptella.driver.lucene
 scriptella.driver.mail
 scriptella.driver.mssql
 scriptella.driver.mysql

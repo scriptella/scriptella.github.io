@@ -194,7 +194,7 @@ document.write("Last Published: " + document.lastModified);
 <a href="#News">News</a>
 <ul class="minitoc">
 <li>
-<a href="#Scriptella+1.1+Released+%28December+28%2C+2012%29">Scriptella 1.1 Released (December 28, 2012)</a>
+<a href="#Scriptella+1.2+Released+%28October+3%2C+2019%29">Scriptella 1.2 Released (October 3, 2019)</a>
 </li>
 </ul>
 </li>
@@ -350,29 +350,23 @@ INSERT INTO TARGET_TABLE(ID, FULL_NAME) VALUES (?ID, ?{NAME+' '+SURNAME});
 <a name="News"></a>
 <h2 class="boxed">News</h2>
 <div class="section">
-<a name="Scriptella+1.1+Released+%28December+28%2C+2012%29"></a>
-<h3 class="boxed">Scriptella 1.1 Released (December 28, 2012)</h3>
-<p>Scriptella 1.1 has been released and available for <a href="download.html">download</a>.
+<a name="Scriptella+1.2+Released+%28October+3%2C+2019%29"></a>
+<h3 class="boxed">Scriptella 1.2 Released (October 3, 2019)</h3>
+<p>Scriptella 1.2 has been released and available for <a href="download.html">download</a>.
                     The following features and bug-fixes were added:
                 </p>
 <ul>
                     
-<li>JEXL 2.0 Support</li>
-                    
-<li>
-<a href="reference/index.html#Declarative+formatting+and+parsing+rules+for+variables">Flexible parsing/formatting rules for text/csv drivers</a> 
+<li>Switched Maven groupId to <strong>org.scriptella</strong>. <a href="reference/index.html#maven">See Maven integration.</a>
 </li>
                     
-<li>StringIndexOutOfBoundsException when parsing SQL statements with ternary expressions </li>
+<li>Upgraded Janino driver to 3.1.0</li>
                     
-<li>Add support for batch execution</li>
-                    
-<li>Detection of  missing query.next calls in JavaScript/JEXL query elements</li>
+<li>Various bugfixes and performance improvements.
+                        <a href="https://github.com/scriptella/scriptella-etl/compare/scriptella-parent-1.1...scriptella-parent-1.2">Commit log</a>
+</li>
                 
 </ul>
-<p>
-<a href="reference/index.html#maven">Maven artifacts have been published.</a>
-</p>
 <p>See
                     <a href="changes.html">change log</a> for additional details.
                     <br>
