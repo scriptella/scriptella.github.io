@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reference documentation — Scriptella</title>
-  <meta name="description" content="Scriptella reference documentation: concepts, installation, and ETL script syntax.">
+  <meta name="description" content="Scriptella reference documentation: concepts, installation, ETL syntax, expressions, and application integrations.">
   <link rel="icon" href="../favicon.ico">
   <script src="../theme.js"></script>
   <link rel="stylesheet" href="../style.css">
@@ -46,9 +46,9 @@
 
     <article class="page-content">
       <h1>Scriptella reference</h1>
-      <p class="lede">Core concepts, installation, and the XML elements used to connect data sources and coordinate scripts and queries.</p>
+      <p class="lede">Core concepts, installation, ETL syntax, expressions, and command-line, Ant, Maven, and Java integrations.</p>
 
-      <aside class="note" aria-label="Migration status"><strong>Migration status:</strong> The introduction, installation, and script syntax sections have been migrated in full. Expressions, integrations, and advanced-provider sections will follow in the remaining reference migration.</aside>
+      <aside class="note" aria-label="Migration status"><strong>Migration status:</strong> The reference is complete through in-process Java integration. JMX, JDBC adapters, advanced providers, examples, and best practices will follow in Part 3.</aside>
 
       <nav class="documentation-directory" aria-labelledby="documentation-directory-title">
         <h2 id="documentation-directory-title">Documentation and help</h2>
@@ -96,6 +96,10 @@
           <li><a href="#Installation">Installation</a></li>
           <li><a href="#Scripts+Syntax">Script syntax</a></li>
           <li><a href="#Expressions+and+Variables+Substitution">Expressions and variables</a></li>
+          <li><a href="#Command+Line+Execution">Command line</a></li>
+          <li><a href="#Ant+Integration">Ant</a></li>
+          <li><a href="#maven">Maven</a></li>
+          <li><a href="#inprocess">Java integration</a></li>
         </ul>
       </nav>
 
@@ -308,10 +312,267 @@
       <section id="Expressions+and+Variables+Substitution">
         <span id="BIND_VARIABLES" class="anchor-target" aria-hidden="true"></span>
         <h2>Expressions and variable substitution</h2>
-        <p>Scriptella exposes properties and query-row values to nested elements. Use <code>$name</code> or <code>${name}</code> in XML attributes and script text. JDBC scripts also support bind variables such as <code>?name</code> and expressions such as <code>?{firstName + ' ' + lastName}</code>.</p>
+        <p>Variable syntax depends on the driver. JDBC drivers support direct substitution, JEXL expressions, and prepared-statement parameters:</p>
+        <dl>
+          <dt><code>$name</code></dt>
+          <dd>Inserts a property or variable value. Dollar-prefixed variables are substituted everywhere except comments.</dd>
+          <dt><code>${expression}</code></dt>
+          <dd>Inserts the result of a JEXL expression. <code>$name</code> and <code>${name}</code> return the same value, but the simple form avoids invoking the expression engine.</dd>
+          <dt><code>?name</code> and <code>?{expression}</code></dt>
+          <dd>Set prepared-statement parameters in SQL queries and scripts. Question-mark expressions are not substituted inside quotes or comments, or outside query and script content.</dd>
+        </dl>
+        <p>Substitution is available in connection attributes, the <code>if</code> attribute of queries and scripts, and SQL handled by JDBC-based drivers.</p>
         <pre><code>INSERT INTO person(id, full_name)
 VALUES (?id, ?{firstName + ' ' + lastName})</code></pre>
-        <p>Bind variables are preferable to string substitution for SQL values because the JDBC driver handles their types and escaping.</p>
+        <p>Scriptella adds utility namespaces to JEXL through <a href="../docs/api/scriptella/core/EtlVariable.html"><code>EtlVariable</code></a>:</p>
+        <ul>
+          <li><code>date:</code> parses and formats dates. For example, <code>${date:today('yyyyMMdd')}</code> formats the current date. See <a href="../docs/api/scriptella/core/EtlVariable.DateUtils.html">DateUtils</a>.</li>
+          <li><code>text:</code> provides text helpers. For example, <code>${text:ifNull(a)}</code> returns an empty string when <code>a</code> is null. A JEXL ternary such as <code>${a == null ? '' : a}</code> can be used instead. See <a href="../docs/api/scriptella/core/EtlVariable.TextUtils.html">TextUtils</a>.</li>
+          <li><code>class:</code> looks up Java classes. For example, <code>${class:forName('java.lang.System').getProperty('propName')}</code> reads a system property. See <a href="../docs/api/scriptella/core/EtlVariable.ClassUtils.html">ClassUtils</a>.</li>
+        </ul>
+        <p>Other drivers may use different rules or provide no expression substitution. For example, Janino uses <code>get(name)</code> to retrieve a variable. Consult the relevant <a href="../docs/api/index.html">driver Javadoc</a>. Drivers that use Scriptella's basic substitution support are based on <a href="../docs/api/scriptella/expression/PropertiesSubstitutor.html"><code>PropertiesSubstitutor</code></a> and its <code>${}</code> syntax.</p>
+        <aside class="note" aria-label="SQL parameter guidance">Prefer <code>?</code> parameters to <code>$</code> substitution for SQL values. Prepared statements preserve value types and escaping and may be cached in frequently executed sections. Use direct substitution only when a value cannot be passed as a prepared-statement parameter.</aside>
+
+        <section id="Implicit+Variables">
+          <h3>Implicit variables</h3>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th>Variable</th><th>Description</th><th>Scope</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>rownum</code></td>
+                  <td>The current query-row number, starting at 1.</td>
+                  <td>Elements nested inside a query</td>
+                </tr>
+                <tr>
+                  <td><code>etl</code></td>
+                  <td>The current <a href="../docs/api/scriptella/core/EtlVariable.html">execution context</a>, including utility methods, connection accessors, and global variables.</td>
+                  <td>All query and script elements</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>SQL queries also expose selected columns as variables to nested elements. Columns can be referenced by name or result-set position, such as <code>?1</code> and <code>?2</code>. Non-SQL queries typically expose an equivalent virtual row set; consult the driver Javadoc for its variables.</p>
+        </section>
+
+        <section id="Adding+references+to+files+from+SQL+scripts">
+          <h3>Referencing files from SQL</h3>
+          <p>The JDBC bridge accepts <code>?{file expression}</code> for binary files and <code>?{textfile expression}</code> for text files. The expression can be a quoted file name or any valid JEXL expression:</p>
+          <pre><code>INSERT INTO document(id, binary_data, text_data)
+VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
+          <p>File references are passed as stream-valued prepared-statement parameters, allowing BLOBs and CLOBs up to the size supported by the JDBC driver. Uploading a large text file may create a temporary file on disk.</p>
+        </section>
+
+        <section id="Declarative+formatting+and+parsing+rules+for+variables">
+          <h3>Declarative formatting and parsing</h3>
+          <p>The <a href="../docs/api/scriptella/driver/text/package-summary.html">text</a>, <a href="../docs/api/scriptella/driver/csv/package-summary.html">CSV</a>, and <a href="../docs/api/scriptella/driver/velocity/package-summary.html">Velocity</a> drivers accept formatting rules as connection properties. The same rule parses incoming text or formats an outgoing value, depending on context.</p>
+          <pre><code>&lt;connection id="csv_in" driver="csv" url="eurusd_in.csv"&gt;
+  format.RateBid.type=number
+  format.RateBid.pattern=#.#
+&lt;/connection&gt;</code></pre>
+          <p>This treats <code>RateBid</code> as a decimal number when CSV or text input is read:</p>
+          <pre><code>&lt;query connection-id="csv_in"&gt;
+  &lt;script connection-id="db"&gt;
+    INSERT INTO Rates(TIME, CurrencyPair, Bid, Ask)
+    VALUES (?RateDateTime, ?CurrencyPair, ?RateBid, ?RateAsk);
+  &lt;/script&gt;
+&lt;/query&gt;</code></pre>
+          <p>For output, the rule formats values written by the driver:</p>
+          <pre><code>&lt;connection id="csv_out" driver="csv" url="eurusd_out.csv"&gt;
+  format.Bid.type=number
+  format.Bid.pattern=##.0000
+&lt;/connection&gt;
+&lt;script connection-id="csv_out"&gt;
+  $CurrencyPair,$TIME,$Bid,$Ask
+&lt;/script&gt;</code></pre>
+          <p>See the text driver's <a href="../docs/api/scriptella/driver/text/package-summary.html#formatting">formatting reference</a> for the available types and patterns.</p>
+        </section>
+
+        <section id="Examples">
+          <h3>Expression example</h3>
+          <p>This query selects rows from the table named by <code>TABLE</code> and inserts the first row into the table named by <code>TABLE2</code>:</p>
+          <pre><code>&lt;connection driver="hsqldb"/&gt;
+&lt;query&gt;
+  SELECT V1, V2, V3 FROM $TABLE;
+  &lt;script if="rownum == 1"&gt;
+    INSERT INTO $TABLE2 VALUES (?V1, ?{V2 + V3});
+  &lt;/script&gt;
+&lt;/query&gt;</code></pre>
+        </section>
+      </section>
+
+      <section id="Command+Line+Execution">
+        <h2>Command-line execution</h2>
+        <p>After following the <a href="#INSTALLATION">installation instructions</a>, run <code>scriptella</code> with no file arguments to execute <code>etl.xml</code> in the current directory. The launcher adds every JAR in <code>SCRIPTELLA_DIR/lib</code> to the ETL classpath.</p>
+        <p>You can also use the Java launcher when <code>scriptella.jar</code> is in the current directory:</p>
+        <pre><code>java -jar scriptella.jar [options] [file1] [file2] ... [fileN]</code></pre>
+        <aside class="warning" aria-label="Java launcher classpath warning"><strong>Important:</strong> <code>java -jar</code> does not automatically load JARs from <code>SCRIPTELLA_DIR/lib</code>. Declare additional driver libraries with each connection's <code>classpath</code> attribute when using this form.</aside>
+
+        <section id="Command+Line+Options">
+          <h3>Command-line options</h3>
+          <pre><code>scriptella [options] [file1] [file2] ... [fileN]</code></pre>
+          <p>Options come first; ETL file names or paths follow, separated by spaces.</p>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Option</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>-help</code>, <code>-h</code></td><td>Display help.</td></tr>
+                <tr><td><code>-debug</code>, <code>-d</code></td><td>Print debugging information.</td></tr>
+                <tr><td><code>-quiet</code>, <code>-q</code></td><td>Suppress nonessential output.</td></tr>
+                <tr><td><code>-version</code>, <code>-v</code></td><td>Print the Scriptella version.</td></tr>
+                <tr><td><code>-nostat</code></td><td>Disable statistics collection to reduce overhead.</td></tr>
+                <tr><td><code>-nojmx</code></td><td>Disable JMX MBean registration.</td></tr>
+                <tr><td><code>-template</code>, <code>-t</code></td><td>Create an <code>etl.xml</code> template in the current directory.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="Ant+Integration">
+        <h2>Ant integration</h2>
+        <section id="System+requirements">
+          <h3>System requirements</h3>
+          <p>Apache Ant 1.10.17 is the tested Release 1.3 environment. Other modern Ant versions may work but are not part of the documented release configuration.</p>
+        </section>
+
+        <section id="Installation-N103C5">
+          <h3>Installation</h3>
+          <p>Use <code>scriptella.jar</code> from the binary distribution. It contains the classes and resources required by the Ant tasks.</p>
+          <pre><code>&lt;taskdef resource="antscriptella.properties"
+         classpath="/path/to/scriptella.jar"/&gt;</code></pre>
+          <p>Add database drivers to the task definition's classpath when you want them available to every connection:</p>
+          <pre><code>&lt;taskdef resource="antscriptella.properties"&gt;
+  &lt;classpath&gt;
+    &lt;pathelement location="/path/to/scriptella.jar"/&gt;
+    &lt;pathelement location="lib/hsqldb.jar"/&gt;
+    &lt;pathelement location="lib/jconn2.jar"/&gt;
+  &lt;/classpath&gt;
+&lt;/taskdef&gt;</code></pre>
+          <p>Drivers loaded this way are on Scriptella's boot classpath, so individual <code>&lt;connection&gt;</code> elements do not need a <code>classpath</code> attribute.</p>
+        </section>
+
+        <section id="%22etl%22+Task">
+          <h3><code>&lt;etl&gt;</code> task</h3>
+          <section id="Parameters">
+            <h4>Parameters</h4>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Attribute</th><th>Description</th><th>Required</th></tr></thead>
+                <tbody>
+                  <tr><td><code>file</code></td><td>ETL file to execute. The extension may be omitted.</td><td>No; defaults to <code>etl.xml</code> unless a nested fileset is used.</td></tr>
+                  <tr><td><code>inheritAll</code></td><td>Pass Ant project properties to Scriptella.</td><td>No; defaults to <code>true</code>.</td></tr>
+                  <tr><td><code>debug</code></td><td>Print debugging information.</td><td>No; defaults to <code>false</code>.</td></tr>
+                  <tr><td><code>nostat</code></td><td>Disable statistics collection.</td><td>No; defaults to <code>false</code>.</td></tr>
+                  <tr><td><code>nojmx</code></td><td>Disable JMX MBean registration.</td><td>No; defaults to <code>false</code>.</td></tr>
+                  <tr><td><code>quiet</code></td><td>Suppress nonessential output.</td><td>No; defaults to <code>false</code>.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section id="Nested+Elements">
+            <h4>Nested elements</h4>
+            <p>The task accepts an Ant <a href="https://ant.apache.org/manual/Types/fileset.html"><code>&lt;fileset&gt;</code></a> to execute multiple ETL files.</p>
+          </section>
+          <section id="Examples-N1047F">
+            <h4>Examples</h4>
+            <p>Execute <code>etl.xml</code> in the current directory:</p>
+            <pre><code>&lt;etl/&gt;</code></pre>
+            <p>Execute <code>name.etl.xml</code>:</p>
+            <pre><code>&lt;etl file="name"/&gt;
+&lt;!-- Or specify the full name. --&gt;
+&lt;etl file="name.etl.xml"/&gt;</code></pre>
+            <p>Execute every <code>.etl.xml</code> file in <code>db</code>:</p>
+            <pre><code>&lt;etl&gt;
+  &lt;fileset dir="db" includes="*.etl.xml"/&gt;
+&lt;/etl&gt;</code></pre>
+          </section>
+        </section>
+
+        <section id="%3Cetl-template%3E+Task">
+          <h3><code>&lt;etl-template&gt;</code> task</h3>
+          <section id="Parameters-N104AB">
+            <h4>Parameters</h4>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Attribute</th><th>Description</th><th>Required</th></tr></thead>
+                <tbody>
+                  <tr><td><code>name</code></td><td>Template name. Omitting it generates the default quick-start ETL.</td><td>No.</td></tr>
+                  <tr><td><code>inheritAll</code></td><td>Pass Ant project properties to Scriptella.</td><td>No; defaults to <code>true</code>.</td></tr>
+                  <tr><td><code>debug</code></td><td>Print debugging information.</td><td>No; defaults to <code>false</code>.</td></tr>
+                  <tr><td><code>quiet</code></td><td>Suppress nonessential output.</td><td>No; defaults to <code>false</code>.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section id="Nested+Elements-N10512">
+            <h4>Nested elements</h4>
+            <p>This task has no nested elements.</p>
+          </section>
+          <span id="supported_templates" class="anchor-target" aria-hidden="true"></span>
+          <section id="Supported+Templates">
+            <h4>Supported templates</h4>
+            <ul>
+              <li><strong>Default</strong> — creates a simple ETL template for a quick start.</li>
+              <li><a href="../docs/api/scriptella/tools/template/DataMigrator.html"><strong>DataMigrator</strong></a> — creates a template for transferring data between tables in different databases.</li>
+            </ul>
+          </section>
+          <section id="Examples-N10532">
+            <h4>Examples</h4>
+            <p>Create the default <code>etl.xml</code>:</p>
+            <pre><code>&lt;etl-template/&gt;</code></pre>
+            <p>Create a data-migration template using values from <code>etl.properties</code>:</p>
+            <pre><code>&lt;property file="etl.properties"/&gt;
+&lt;!-- Set driver, class, user, and password before this task. --&gt;
+&lt;etl-template name="DataMigrator"/&gt;</code></pre>
+          </section>
+        </section>
+      </section>
+
+      <section id="maven">
+        <h2>Maven integration</h2>
+        <p>Use the modules needed by your application. Release 1.3 uses the following Maven coordinates:</p>
+        <pre><code>&lt;properties&gt;
+  &lt;scriptella.version&gt;1.3&lt;/scriptella.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.scriptella&lt;/groupId&gt;
+    &lt;artifactId&gt;scriptella-core&lt;/artifactId&gt;
+    &lt;version&gt;${scriptella.version}&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.scriptella&lt;/groupId&gt;
+    &lt;artifactId&gt;scriptella-drivers&lt;/artifactId&gt;
+    &lt;version&gt;${scriptella.version}&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.scriptella&lt;/groupId&gt;
+    &lt;artifactId&gt;scriptella-tools&lt;/artifactId&gt;
+    &lt;version&gt;${scriptella.version}&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+        <p><code>scriptella-core</code> provides execution and JDBC support, <code>scriptella-drivers</code> provides the bundled non-core drivers, and <code>scriptella-tools</code> provides the command-line and Ant integrations. Driver-specific third-party libraries may still need separate dependencies.</p>
+        <p>Release artifacts are resolved from Maven Central. When testing an unpublished source checkout, build and install it locally with Maven rather than adding Scriptella's deployment repositories to a consuming POM.</p>
+      </section>
+
+      <section id="inprocess">
+        <h2>In-process Java integration</h2>
+        <p>Applications can invoke Scriptella directly instead of using the command-line or Ant launchers. Common uses include preparing and cleaning up test databases, creating or upgrading an application schema at startup, and importing user-supplied data through a managed ETL.</p>
+        <p>Put the required Scriptella modules and driver libraries on the application classpath, then create and execute an <a href="../docs/api/scriptella/execution/EtlExecutor.html"><code>EtlExecutor</code></a>:</p>
+        <pre><code>import java.io.File;
+import scriptella.execution.EtlExecutor;
+
+EtlExecutor executor = EtlExecutor.newExecutor(new File("etl.xml"));
+executor.execute();</code></pre>
+        <p>The URL overload accepts a map of external properties when the ETL needs values supplied by the application:</p>
+        <pre><code>EtlExecutor executor =
+    EtlExecutor.newExecutor(etlUrl, externalProperties);
+executor.execute();</code></pre>
+        <aside class="note" aria-label="Application integration drivers">Applications commonly use the <a href="drivers.html#spring">Spring driver</a> or <a href="drivers.html#jndi">JNDI driver</a> to reuse connections and resources managed by their deployment environment.</aside>
       </section>
 
       <p class="button-group"><a class="button button--secondary" href="drivers.html">Browse drivers</a><a class="button button--secondary" href="../tutorial.html">Try the tutorial</a></p>
