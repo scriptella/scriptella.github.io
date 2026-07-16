@@ -334,8 +334,11 @@ a:hover {
 
 .hero__example pre {
   margin: 0;
+  overflow-x: hidden;
   border: 0;
   border-radius: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .code-label {
