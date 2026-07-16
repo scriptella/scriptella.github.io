@@ -83,7 +83,7 @@
           <h3>1. Create the database initialization ETL</h3>
           <img src="../images/howto/imagedb-schema.png" alt="ImageDB schema containing an image table">
           <p>The ImageDB model contains only one table, but its vendor-specific large-object types and binary content make a portable setup script useful. The following ETL creates a metadata table, chooses a vendor-specific schema, loads data, and leaves a place for later upgrades:</p>
-          <pre><code>&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
+          <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
 &lt;etl&gt;
   &lt;properties&gt;
     &lt;include href="webinit.etl.properties"/&gt;
@@ -120,7 +120,7 @@
           <span id="oracle" class="anchor-target" aria-hidden="true"></span>
           <span id="mysql" class="anchor-target" aria-hidden="true"></span>
           <p>The <code>*-schema.sql</code> files contain database-specific DDL. The shared <code>data.sql</code> file can reference BLOB content in external files:</p>
-          <pre><code>INSERT INTO imagedb(image_name, content, description) VALUES (
+          <pre><code class="language-sql">INSERT INTO imagedb(image_name, content, description) VALUES (
   'scriptella-logo.png',
   ?{file 'blobs/scriptella-logo.png'},
   'Scriptella ETL logo'
@@ -144,7 +144,7 @@
         <section id="Automatic+initialization+in+a+ServletContextListener">
           <h3>3. Run it from a servlet context listener</h3>
           <p>Create a <code>ServletContextListener</code> that executes the ETL when the application starts:</p>
-          <pre><code>public class WebDbInitializer implements ServletContextListener {
+          <pre><code class="language-java">public class WebDbInitializer implements ServletContextListener {
   static void initDatabase(URL etlUrl) throws EtlExecutorException {
     EtlExecutor.newExecutor(etlUrl).execute();
   }
@@ -160,7 +160,7 @@
   }
 }</code></pre>
           <p>Register the listener in <code>web.xml</code>:</p>
-          <pre><code>&lt;web-app&gt;
+          <pre><code class="language-xml">&lt;web-app&gt;
   &lt;listener&gt;
     &lt;listener-class&gt;scriptella.imagedb.WebDbInitializer&lt;/listener-class&gt;
   &lt;/listener&gt;
@@ -175,7 +175,7 @@ password=</code></pre>
         <section id="Integration+with+Spring+Framework">
           <h3>Alternative: integrate with Spring</h3>
           <p>The Scriptella Spring adapter can start the ETL from an application context:</p>
-          <pre><code>&lt;bean class="scriptella.driver.spring.EtlExecutorBean"&gt;
+          <pre><code class="language-xml">&lt;bean class="scriptella.driver.spring.EtlExecutorBean"&gt;
   &lt;property name="configLocation" value="/WEB-INF/db/webinit.etl.xml"/&gt;
   &lt;property name="autostart" value="true"/&gt;
 &lt;/bean&gt;</code></pre>

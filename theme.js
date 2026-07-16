@@ -74,7 +74,6 @@
 
   var sqlKeywords = "ADD|ALTER|AND|AS|ASC|BEGIN|BETWEEN|BY|CASE|COMMIT|CREATE|DELETE|DESC|DISTINCT|DROP|ELSE|END|EXISTS|FROM|FULL|GROUP|HAVING|IN|INNER|INSERT|INTO|IS|JOIN|LEFT|LIKE|LIMIT|MERGE|NOT|NULL|OFFSET|ON|OR|ORDER|OUTER|PRIMARY|RIGHT|ROLLBACK|SELECT|SET|TABLE|THEN|UNION|UNIQUE|UPDATE|VALUES|WHEN|WHERE";
   var sqlPattern = new RegExp("(--[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/)|('(?:''|[^'])*')|\\b(" + sqlKeywords + ")\\b|(\\?[A-Za-z_][\\w.]*|:[A-Za-z_][\\w.]*|\\$\\{[^}\\n]+\\})|\\b(\\d+(?:\\.\\d+)?)\\b", "gi");
-  var sqlDetector = /(?:^|[\s;(])(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|DROP|MERGE)\b/i;
 
   function highlightSql(text, target) {
     var lastIndex = 0;
@@ -82,6 +81,21 @@
     text.replace(sqlPattern, function (match, comment, string, keyword, variable, number, offset) {
       appendToken(target, text.slice(lastIndex, offset));
       appendToken(target, match, comment ? "syntax-comment" : string ? "syntax-string" : keyword ? "syntax-keyword" : variable ? "syntax-variable" : "syntax-number");
+      lastIndex = offset + match.length;
+      return match;
+    });
+    appendToken(target, text.slice(lastIndex));
+  }
+
+  var javaKeywords = "abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while|false|null|true";
+  var javaPattern = new RegExp("(//[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/)|(\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*')|\\b(" + javaKeywords + ")\\b|\\b([A-Z][\\w$]*)\\b|\\b([A-Za-z_$][\\w$]*)(?=\\s*\\()|\\b(\\d+(?:\\.\\d+)?[dDfFlL]?)\\b", "g");
+
+  function highlightJava(text, target) {
+    var lastIndex = 0;
+    javaPattern.lastIndex = 0;
+    text.replace(javaPattern, function (match, comment, string, keyword, type, method, number, offset) {
+      appendToken(target, text.slice(lastIndex, offset));
+      appendToken(target, match, comment ? "syntax-comment" : string ? "syntax-string" : keyword ? "syntax-keyword" : type ? "syntax-tag" : method ? "syntax-attribute" : "syntax-number");
       lastIndex = offset + match.length;
       return match;
     });
@@ -139,19 +153,20 @@
       }
 
       var source = code.textContent;
-      var isXml = /<\/?[A-Za-z_:!]/.test(source);
-      var isSql = sqlDetector.test(source);
-      if (!isXml && !isSql) {
+      var isJava = code.classList.contains("language-java");
+      var isXml = code.classList.contains("language-xml");
+      var isSql = code.classList.contains("language-sql");
+      if (!isJava && !isXml && !isSql) {
         return;
       }
 
       var highlighted = document.createDocumentFragment();
-      if (isXml) {
+      if (isJava) {
+        highlightJava(source, highlighted);
+      } else if (isXml) {
         highlightXml(source, highlighted);
-        code.classList.add("language-xml");
       } else {
         highlightSql(source, highlighted);
-        code.classList.add("language-sql");
       }
       code.replaceChildren(highlighted);
       code.classList.add("syntax-highlighted");

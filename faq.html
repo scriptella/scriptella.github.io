@@ -71,7 +71,7 @@
 
       <h3 id="ODBC">1.2. Does Scriptella support Microsoft Access?</h3>
       <p>Microsoft Access and other databases with ODBC interface are supported via ODBC-JDBC bridge driver which comes with Sun's JRE. Download <a href="download.html">ODBC example</a> for more details. Connection declaration example:</p>
-      <pre><code>&lt;connection url="jdbc:odbc:DRIVER={Microsoft Access Driver (*.mdb)};DBQ=Northwind.mdb"/&gt;</code></pre>
+      <pre><code class="language-xml">&lt;connection url="jdbc:odbc:DRIVER={Microsoft Access Driver (*.mdb)};DBQ=Northwind.mdb"/&gt;</code></pre>
 
       <h3 id="BIND_VARIABLES">1.3. What is the difference between $variable / ${expression} and ?variable / ?{expression} syntax.</h3>
       <p>Binding variables syntax varies between drivers. JDBC drivers use the following rules for properties substitution:</p>
@@ -90,7 +90,7 @@
         <li>Another approach is similar to the technique utilized in anonymous inner classes to modify a single-element array declared as a final variable.</li>
       </ol>
       <p>The following example demonstrates both approaches:</p>
-      <pre><code>&lt;etl&gt;
+      <pre><code class="language-xml">&lt;etl&gt;
     &lt;connection driver="script" id="js"/&gt;
     &lt;connection url="jdbc:...." id="db"/&gt;
 
@@ -129,7 +129,7 @@
       <h3 id="COLUMN_SPACES">1.6. How to escape spaces in field names?</h3>
       <p>You can use <a href="docs/api/scriptella/core/EtlVariable.html"><code>etl context variable</code></a> <code>${etl.getParameter('var name')}</code> to reference any column names. Additionally several drivers including CSV and JDBC allow referencing columns by an index, i.e. <code>$1</code>, <code>$2</code> ... <code>$n</code>.</p>
       <p>Example:</p>
-      <pre><code>&lt;query connection-id="csv"&gt; &lt;!-- Read CSV file content --&gt;
+      <pre><code class="language-xml">&lt;query connection-id="csv"&gt; &lt;!-- Read CSV file content --&gt;
     &lt;script connection-id="text"&gt;
         &lt;!-- Print columns, column 2,3 are referenced by name, 1,4 - by index --&gt;
         $1,$secondColumn,${etl.getParameter('My Column')},$4
@@ -140,7 +140,7 @@
 
       <h3 id="PLSQL">2.1. How to create an Oracle trigger (run a PL/SQL block)?</h3>
       <p>To recognize Oracle PL/SQL statement blocks you'd have to specify <code>plsql=true</code> connection property (supported only by <a href="reference/drivers.html#oracle">Scriptella Adapter for Oracle</a>). In this case a slash (/) on a single line is used as a statement separator:</p>
-      <pre><code>&lt;connection driver="oracle" ...&gt;
+      <pre><code class="language-xml">&lt;connection driver="oracle" ...&gt;
     plsql=true
 &lt;/connection&gt;
 &lt;script&gt;
@@ -165,7 +165,7 @@
     -- Other statements separated with a slash on a single line
 &lt;/script&gt;</code></pre>
       <p>If you are using Oracle JDBC driver directly then set the following configuration properties:</p>
-      <pre><code>&lt;connection driver="oracle.jdbc.driver.OracleDriver" ...&gt;
+      <pre><code class="language-xml">&lt;connection driver="oracle.jdbc.driver.OracleDriver" ...&gt;
     statement.separator=/
     statement.separator.singleline=true
 &lt;/connection&gt;</code></pre>
@@ -180,7 +180,7 @@
       </ul>
       <aside class="note"><strong>Note:</strong> In general avoid using <code>autocommit.size</code>, because in this case an ETL process cannot be rolled back correctly. Use this parameter only for performance critical operations (bulk inserts etc.). If the <code>autocommit</code> is true, then setting <code>autocommit.size</code> has no effect.</aside>
       <p><strong>Example:</strong></p>
-      <pre><code>&lt;connection driver="auto" url="jdbc:hsqldb:mem:test"&gt;
+      <pre><code class="language-xml">&lt;connection driver="auto" url="jdbc:hsqldb:mem:test"&gt;
     autocommit.size=4 &lt;!-- Automatically commit after every 4th statement --&gt;
     transaction.isolation=SERIALIZABLE &lt;!-- Sets TX level to Serializable --&gt;
 &lt;/connection&gt;</code></pre>
@@ -193,7 +193,7 @@
         <li><a href="http://stackoverflow.com/questions/108403/solutions-for-insert-or-update-on-sql-server">MS SQL Server</a></li>
       </ul>
       <p>An alternative approach, which is universal but is typically slower, is to use count(*) statement and do insert or update accordingly:</p>
-      <pre><code>&lt;query connection-id="in"&gt;
+      <pre><code class="language-xml">&lt;query connection-id="in"&gt;
     SELECT * FROM Persons_In
     &lt;query connection-id="out"&gt;
        SELECT COUNT(*) as cnt FROM Person_Out WHERE Person_ID=?Person_ID
@@ -217,7 +217,7 @@
       <p>The output for this script:</p>
       <pre><code>valueA,<strong>$b</strong>,valueC</code></pre>
       <p>By default NULL variables are not substituted, because Scriptella substitution engine cannot distinguish null value from undeclared variable. This behaviour is not always desired. As a workaround you can specify a null_string connection property as follows:</p>
-      <pre><code>&lt;connection driver="text"&gt;
+      <pre><code class="language-xml">&lt;connection driver="text"&gt;
     null_string=&lt;!-- Expand nulls to empty string --&gt;
 &lt;/connection&gt;</code></pre>
       <p>And the output is:</p>

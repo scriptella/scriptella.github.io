@@ -65,12 +65,12 @@
 
       <h2 id="Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</h2>
       <p>In order to use Scriptella as Ant task you will need the following taskdef declaration:</p>
-      <pre><code>&lt;taskdef resource="antscriptella.properties" classpath="/path/to/scriptella.jar[;additional_drivers.jar]"/&gt;</code></pre>
+      <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties" classpath="/path/to/scriptella.jar[;additional_drivers.jar]"/&gt;</code></pre>
       <aside class="note"><strong>Note:</strong> Additional drivers classpath entries are optional. You may directly specify classpath attribute in a connection XML element declaration. Example: <code>&lt;connection driver="sybase" classpath="jconn3.jar"/&gt;</code></aside>
       <p>Running Scriptella files from Ant is simple:</p>
-      <pre><code>&lt;etl/&gt; &lt;!-- Execute etl.xml file in the current directory --&gt;</code></pre>
+      <pre><code class="language-xml">&lt;etl/&gt; &lt;!-- Execute etl.xml file in the current directory --&gt;</code></pre>
       <p>or</p>
-      <pre><code>&lt;etl file="path/to/your/file"/&gt; &lt;!-- Execute ETL file from specified location --&gt;</code></pre>
+      <pre><code class="language-xml">&lt;etl file="path/to/your/file"/&gt; &lt;!-- Execute ETL file from specified location --&gt;</code></pre>
 
       <h2 id="Command-Line+Execution">Command-Line Execution</h2>
       <p>Just type <code>scriptella</code> to run the file named <code>etl.xml</code> in the current directory. Alternatively you can use java launcher:</p>
@@ -78,7 +78,7 @@
 
       <h2 id="Executing+ETL+Files+from+Java">Executing ETL Files from Java</h2>
       <p>It is extremely easy to run Scriptella ETL files from java code. Just make sure scriptella.jar is on classpath and use any of the following methods to execute an ETL file:</p>
-      <pre><code>EtlExecutor.newExecutor(new File("etl.xml")).execute();
+      <pre><code class="language-java">EtlExecutor.newExecutor(new File("etl.xml")).execute();
 EtlExecutor.newExecutor(getClass().getResource("etl.xml")).execute();
 EtlExecutor.newExecutor(
     servletContext.getResource("/WEB-INF/db/init.etl.xml")).execute();</code></pre>
@@ -91,7 +91,7 @@ EtlExecutor.newExecutor(
       <p><img src="images/table_copy.png" alt="Migration of table records"></p>
       <p>Assume Database #1 contains Table Product with id, category and name columns. The following script copies software products from this table to Database #2. Additionally Name column is changed to Product_Name.</p>
       <p><strong>etl.xml:</strong></p>
-      <pre><code>&lt;etl&gt;
+      <pre><code class="language-xml">&lt;etl&gt;
     &lt;connection id="db1" url="jdbc:database1:sample" user="sa" password="" classpath="external.jar"/&gt;
     &lt;connection id="db2" url="jdbc:database2:sample" user="sa" password=""/&gt;
     &lt;query connection-id="db1"&gt;
@@ -106,7 +106,7 @@ EtlExecutor.newExecutor(
       <p><img src="images/blob_insert.png" alt="Inserting BLOB content from URL"></p>
       <p>The following sample initializes table of music tracks. Each track has a DATA field containing a file loaded from an external location. File song1.mp3 is stored in the same directory as etl.xml and song2.mp3 is loaded through the web.</p>
       <p><strong>etl.xml:</strong></p>
-      <pre><code>&lt;etl&gt;
+      <pre><code class="language-xml">&lt;etl&gt;
     &lt;connection url="jdbc:hsqldb:file:tracks" user="sa" password=""/&gt;
     &lt;script&gt;
         CREATE TABLE Track (
@@ -124,7 +124,7 @@ EtlExecutor.newExecutor(
 
       <h3 id="Supporting+several+SQL+dialects">Supporting several SQL dialects</h3>
       <p><code>&lt;dialect&gt;</code> element allows including vendor specific content. The following example creates database schema for Oracle/HSQLDB or MySql depending on a selected driver:</p>
-      <pre><code>&lt;etl&gt;
+      <pre><code class="language-xml">&lt;etl&gt;
     &lt;properties&gt;
         &lt;include href="etl.properties"/&gt;
     &lt;/properties&gt;

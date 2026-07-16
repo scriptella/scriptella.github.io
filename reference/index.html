@@ -186,7 +186,7 @@
         <h2>Script syntax</h2>
         <aside class="note" aria-label="DTD reference">For the complete list of XML elements and attributes, see the <a href="../docs/dtd/index.html">Scriptella DTD documentation</a>.</aside>
         <p>This example shows the main ETL elements:</p>
-        <pre><code>&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
+        <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
 &lt;etl&gt;
   &lt;description&gt;Copy bugs between databases&lt;/description&gt;
   &lt;properties&gt;
@@ -237,7 +237,7 @@
           </dl>
           <p>Lazy initialization is useful when every element using a connection is conditional, or when another connection must first create a database user or produce a required file.</p>
           <p>Element text sets driver-specific connection properties. Some drivers also accept properties in their URL.</p>
-          <pre><code>&lt;!-- Connect to Oracle as the sys user. --&gt;
+          <pre><code class="language-xml">&lt;!-- Connect to Oracle as the sys user. --&gt;
 &lt;connection driver="oracle"
             url="jdbc:oracle:thin:@localhost:1521:DB"
             user="sys as sysdba"
@@ -257,7 +257,7 @@
             <dt><code>if</code></dt>
             <dd>Controls conditional execution. For example, <code>if="rownum gt 1 and name != null and name.length() gt 0"</code> executes only when the row number is greater than one and <code>name</code> is not empty.</dd>
           </dl>
-          <pre><code>&lt;!-- Use a separate transaction when drop_tables is true. --&gt;
+          <pre><code class="language-xml">&lt;!-- Use a separate transaction when drop_tables is true. --&gt;
 &lt;script connection-id="in" new-tx="true" if="drop_tables"&gt;
   DROP TABLE Table1;
   DROP TABLE Table2;
@@ -273,7 +273,7 @@
             <dt><code>if</code></dt>
             <dd>Controls conditional execution. Values such as <code>true</code>, <code>1</code>, <code>on</code>, and <code>yes</code> are treated as true.</dd>
           </dl>
-          <pre><code>&lt;!-- Select users and write an LDIF entry for every row. --&gt;
+          <pre><code class="language-xml">&lt;!-- Select users and write an LDIF entry for every row. --&gt;
 &lt;query connection-id="in" if="migrate_users"&gt;
   SELECT * FROM Users;
   &lt;script connection-id="out"&gt;
@@ -301,14 +301,14 @@
             <dd>Runs the handler through another connection, which is useful for logging or recovery with a Java, text, or other driver.</dd>
           </dl>
           <p>This handler emulates <code>CREATE TABLE IF NOT EXISTS</code> by dropping an existing table and retrying the original statement:</p>
-          <pre><code>&lt;script connection-id="in"&gt;
+          <pre><code class="language-xml">&lt;script connection-id="in"&gt;
   CREATE TABLE Table1;
   &lt;onerror message=".*Table already exists.*" retry="true"&gt;
     DROP TABLE Table1;
   &lt;/onerror&gt;
 &lt;/script&gt;</code></pre>
           <p>A handler can also pass the error to application code through another connection:</p>
-          <pre><code>&lt;script connection-id="in"&gt;
+          <pre><code class="language-xml">&lt;script connection-id="in"&gt;
   INSERT INTO TableName VALUES (1, 'Value1');
   &lt;onerror connection-id="java"&gt;
     Throwable error = (Throwable) get("error");
@@ -331,7 +331,7 @@
           <dd>Set prepared-statement parameters in SQL queries and scripts. Question-mark expressions are not substituted inside quotes or comments, or outside query and script content.</dd>
         </dl>
         <p>Substitution is available in connection attributes, the <code>if</code> attribute of queries and scripts, and SQL handled by JDBC-based drivers.</p>
-        <pre><code>INSERT INTO person(id, full_name)
+        <pre><code class="language-sql">INSERT INTO person(id, full_name)
 VALUES (?id, ?{firstName + ' ' + lastName})</code></pre>
         <p>Scriptella adds utility namespaces to JEXL through <a href="../docs/api/scriptella/core/EtlVariable.html"><code>EtlVariable</code></a>:</p>
         <ul>
@@ -369,7 +369,7 @@ VALUES (?id, ?{firstName + ' ' + lastName})</code></pre>
         <section id="Adding+references+to+files+from+SQL+scripts">
           <h3>Referencing files from SQL</h3>
           <p>The JDBC bridge accepts <code>?{file expression}</code> for binary files and <code>?{textfile expression}</code> for text files. The expression can be a quoted file name or any valid JEXL expression:</p>
-          <pre><code>INSERT INTO document(id, binary_data, text_data)
+          <pre><code class="language-sql">INSERT INTO document(id, binary_data, text_data)
 VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
           <p>File references are passed as stream-valued prepared-statement parameters, allowing BLOBs and CLOBs up to the size supported by the JDBC driver. Uploading a large text file may create a temporary file on disk.</p>
         </section>
@@ -377,19 +377,19 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
         <section id="Declarative+formatting+and+parsing+rules+for+variables">
           <h3>Declarative formatting and parsing</h3>
           <p>The <a href="../docs/api/scriptella/driver/text/package-summary.html">text</a>, <a href="../docs/api/scriptella/driver/csv/package-summary.html">CSV</a>, and <a href="../docs/api/scriptella/driver/velocity/package-summary.html">Velocity</a> drivers accept formatting rules as connection properties. The same rule parses incoming text or formats an outgoing value, depending on context.</p>
-          <pre><code>&lt;connection id="csv_in" driver="csv" url="eurusd_in.csv"&gt;
+          <pre><code class="language-xml">&lt;connection id="csv_in" driver="csv" url="eurusd_in.csv"&gt;
   format.RateBid.type=number
   format.RateBid.pattern=#.#
 &lt;/connection&gt;</code></pre>
           <p>This treats <code>RateBid</code> as a decimal number when CSV or text input is read:</p>
-          <pre><code>&lt;query connection-id="csv_in"&gt;
+          <pre><code class="language-xml">&lt;query connection-id="csv_in"&gt;
   &lt;script connection-id="db"&gt;
     INSERT INTO Rates(TIME, CurrencyPair, Bid, Ask)
     VALUES (?RateDateTime, ?CurrencyPair, ?RateBid, ?RateAsk);
   &lt;/script&gt;
 &lt;/query&gt;</code></pre>
           <p>For output, the rule formats values written by the driver:</p>
-          <pre><code>&lt;connection id="csv_out" driver="csv" url="eurusd_out.csv"&gt;
+          <pre><code class="language-xml">&lt;connection id="csv_out" driver="csv" url="eurusd_out.csv"&gt;
   format.Bid.type=number
   format.Bid.pattern=##.0000
 &lt;/connection&gt;
@@ -402,7 +402,7 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
         <section id="Examples">
           <h3>Expression example</h3>
           <p>This query selects rows from the table named by <code>TABLE</code> and inserts the first row into the table named by <code>TABLE2</code>:</p>
-          <pre><code>&lt;connection driver="hsqldb"/&gt;
+          <pre><code class="language-xml">&lt;connection driver="hsqldb"/&gt;
 &lt;query&gt;
   SELECT V1, V2, V3 FROM $TABLE;
   &lt;script if="rownum == 1"&gt;
@@ -450,10 +450,10 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
         <section id="Installation-N103C5">
           <h3>Installation</h3>
           <p>Use <code>scriptella.jar</code> from the binary distribution. It contains the classes and resources required by the Ant tasks.</p>
-          <pre><code>&lt;taskdef resource="antscriptella.properties"
+          <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties"
          classpath="/path/to/scriptella.jar"/&gt;</code></pre>
           <p>Add database drivers to the task definition's classpath when you want them available to every connection:</p>
-          <pre><code>&lt;taskdef resource="antscriptella.properties"&gt;
+          <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties"&gt;
   &lt;classpath&gt;
     &lt;pathelement location="/path/to/scriptella.jar"/&gt;
     &lt;pathelement location="lib/hsqldb.jar"/&gt;
@@ -488,13 +488,13 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
           <section id="Examples-N1047F">
             <h4>Examples</h4>
             <p>Execute <code>etl.xml</code> in the current directory:</p>
-            <pre><code>&lt;etl/&gt;</code></pre>
+            <pre><code class="language-xml">&lt;etl/&gt;</code></pre>
             <p>Execute <code>name.etl.xml</code>:</p>
-            <pre><code>&lt;etl file="name"/&gt;
+            <pre><code class="language-xml">&lt;etl file="name"/&gt;
 &lt;!-- Or specify the full name. --&gt;
 &lt;etl file="name.etl.xml"/&gt;</code></pre>
             <p>Execute every <code>.etl.xml</code> file in <code>db</code>:</p>
-            <pre><code>&lt;etl&gt;
+            <pre><code class="language-xml">&lt;etl&gt;
   &lt;fileset dir="db" includes="*.etl.xml"/&gt;
 &lt;/etl&gt;</code></pre>
           </section>
@@ -531,9 +531,9 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
           <section id="Examples-N10532">
             <h4>Examples</h4>
             <p>Create the default <code>etl.xml</code>:</p>
-            <pre><code>&lt;etl-template/&gt;</code></pre>
+            <pre><code class="language-xml">&lt;etl-template/&gt;</code></pre>
             <p>Create a data-migration template using values from <code>etl.properties</code>:</p>
-            <pre><code>&lt;property file="etl.properties"/&gt;
+            <pre><code class="language-xml">&lt;property file="etl.properties"/&gt;
 &lt;!-- Set driver, class, user, and password before this task. --&gt;
 &lt;etl-template name="DataMigrator"/&gt;</code></pre>
           </section>
@@ -543,7 +543,7 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
       <section id="maven">
         <h2>Maven integration</h2>
         <p>Use the modules needed by your application. The future final Release 1.3 will use the following Maven coordinates:</p>
-        <pre><code>&lt;properties&gt;
+        <pre><code class="language-xml">&lt;properties&gt;
   &lt;scriptella.version&gt;1.3&lt;/scriptella.version&gt;
 &lt;/properties&gt;
 
@@ -572,13 +572,13 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
         <h2>In-process Java integration</h2>
         <p>Applications can invoke Scriptella directly instead of using the command-line or Ant launchers. Common uses include preparing and cleaning up test databases, creating or upgrading an application schema at startup, and importing user-supplied data through a managed ETL.</p>
         <p>Put the required Scriptella modules and driver libraries on the application classpath, then create and execute an <a href="../docs/api/scriptella/execution/EtlExecutor.html"><code>EtlExecutor</code></a>:</p>
-        <pre><code>import java.io.File;
+        <pre><code class="language-java">import java.io.File;
 import scriptella.execution.EtlExecutor;
 
 EtlExecutor executor = EtlExecutor.newExecutor(new File("etl.xml"));
 executor.execute();</code></pre>
         <p>The URL overload accepts a map of external properties when the ETL needs values supplied by the application:</p>
-        <pre><code>EtlExecutor executor =
+        <pre><code class="language-java">EtlExecutor executor =
     EtlExecutor.newExecutor(etlUrl, externalProperties);
 executor.execute();</code></pre>
         <aside class="note" aria-label="Application integration drivers">Applications commonly use the <a href="drivers.html#spring">Spring driver</a> or <a href="drivers.html#jndi">JNDI driver</a> to reuse connections and resources managed by their deployment environment.</aside>
@@ -590,7 +590,7 @@ executor.execute();</code></pre>
         <pre><code>scriptella:type=etl,url=&lt;ETL_XML_FILE_URL&gt;[,n=&lt;COLLISION_ID&gt;]</code></pre>
         <aside class="note" aria-label="JMX collision identifiers">The collision identifier is appended only when ETL files with identical URLs run simultaneously.</aside>
         <p>ETL MBeans are registered automatically when Scriptella runs from the command line or Ant. When invoking <code>EtlExecutor</code> directly, enable JMX before execution:</p>
-        <pre><code>executor.setJmxEnabled(true);
+        <pre><code class="language-java">executor.setJmxEnabled(true);
 executor.execute();</code></pre>
         <p>By default, MBeans are registered with the platform MBean server. The JDK's <code>jconsole</code> tool can monitor and manage local or appropriately configured remote JVMs.</p>
         <figure>
@@ -631,7 +631,7 @@ executor.execute();</code></pre>
         <section id="Autodiscovery+of+JDBC+drivers">
           <h3>Autodiscovery of JDBC drivers</h3>
           <p>When no driver name is specified, Scriptella can select a supported JDBC adapter from the connection URL. Internally, the <code>auto</code> driver performs this selection:</p>
-          <pre><code>&lt;connection url="jdbc:sybase:Tds:host:2048/database"/&gt;</code></pre>
+          <pre><code class="language-xml">&lt;connection url="jdbc:sybase:Tds:host:2048/database"/&gt;</code></pre>
           <p>In this example, the URL causes the <code>auto</code> driver to select the Sybase adapter.</p>
           <aside class="note" aria-label="Autodiscovery limits">Autodiscovery covers only JDBC URL schemes recognized by Scriptella. Specify the driver explicitly for other schemes. Implementation details are in the <a href="../docs/api/scriptella/driver/auto/package-summary.html">autodiscovery driver API documentation</a>.</aside>
         </section>
@@ -640,7 +640,7 @@ executor.execute();</code></pre>
           <h3>Performance and batching</h3>
           <p>JDBC batching sends multiple commands to the database in one call. Set <code>statement.batchSize</code> to the number of statements Scriptella should combine before submitting a batch.</p>
           <p><code>statement.fetchSize</code> gives the JDBC driver a hint about how many rows to fetch when more result-set rows are needed:</p>
-          <pre><code>&lt;connection url="jdbc:oracle:thin:@localhost:1521:orcl"&gt;
+          <pre><code class="language-xml">&lt;connection url="jdbc:oracle:thin:@localhost:1521:orcl"&gt;
   statement.fetchSize = 1000
 &lt;/connection&gt;</code></pre>
           <p>Combining a suitable fetch size for queries with batching for bulk loads can significantly improve performance, especially when databases are on different machines. See the <a href="../docs/api/scriptella/jdbc/package-summary.html#batching">JDBC package batching documentation</a> for details and examples.</p>
@@ -698,7 +698,7 @@ executor.execute();</code></pre>
         <section id="URL+schemes+supported+by+Scriptella">
           <h3>URL schemes supported by Scriptella</h3>
           <p>Connections can refer to external resources with URL protocols supported by the Java runtime, including HTTP, FTP, file, and JAR URLs:</p>
-          <pre><code>&lt;connection driver="xpath" url="https://example.org/data.xml"/&gt;
+          <pre><code class="language-xml">&lt;connection driver="xpath" url="https://example.org/data.xml"/&gt;
 &lt;connection driver="csv" url="https://example.org/data.csv"/&gt;
 &lt;connection driver="text" url="ftp://example.org/report.txt"/&gt;</code></pre>
         </section>
@@ -733,7 +733,7 @@ executor.execute();</code></pre>
           <li>Keep connection properties and other settings—such as driver names, URLs, and mode flags—in a property file such as <code>etl.properties</code> instead of hardcoding them.</li>
           <li>Use Scriptella's JDBC adapters when possible.</li>
           <li>Use <code>&lt;dialect&gt;</code> for database-specific SQL. Properties can make data types configurable across database vendors:
-            <pre><code>CREATE TABLE User (
+            <pre><code class="language-sql">CREATE TABLE User (
   ID $INTEGER,
   LOGIN $SMALL_STRING
 );
