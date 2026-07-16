@@ -7,6 +7,7 @@
   <title>Page title — Scriptella</title>
   <meta name="description" content="Page description">
   <link rel="icon" href="../favicon.ico">
+  <script src="../theme.js"></script>
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -15,7 +16,8 @@
     <nav class="primary-nav" aria-label="Primary navigation">
       <div class="site-header__inner">
         <a class="site-logo" href="../index.html" aria-label="Scriptella home">
-          <img src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__dark" src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="../images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
         </a>
         <ul>
           <li><a href="../reference/index.html">Documentation</a></li>
@@ -24,6 +26,9 @@
           <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
           <li><a href="../download.html">Download</a></li>
         </ul>
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme — switch to Light">
+          <span class="visually-hidden">Change color theme</span>
+        </button>
       </div>
     </nav>
   </header>
@@ -44,6 +49,9 @@
       <nav aria-label="Footer navigation">
         <ul>
           <li><a href="../reference/index.html">Documentation</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../docs/api/index.html">API Docs</a></li>
+          <li><a href="../docs/dtd/index.html">DTD Reference</a></li>
           <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
           <li><a href="../changes.html">Change History</a></li>
           <li><a href="../license.html">License</a></li>

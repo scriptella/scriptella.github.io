@@ -3,6 +3,8 @@
 Use `page.html` for standard pages such as downloads, support, and short guides.
 Use `docs-page.html` for reference pages that need the documentation navigation.
 Both templates use the shared `../style.css` stylesheet.
+They also load `../theme.js`, which applies and persists the Light, Dark, or
+System theme selected in the header.
 
 The templates live one directory below the site root, so local paths begin with
 `../`. After copying a template, adjust the stylesheet, favicon, logo, and
