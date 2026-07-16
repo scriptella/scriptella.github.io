@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://scriptella.org/</loc></url>
+  <url><loc>https://scriptella.org/download.html</loc></url>
+  <url><loc>https://scriptella.org/faq.html</loc></url>
+  <url><loc>https://scriptella.org/support.html</loc></url>
+  <url><loc>https://scriptella.org/license.html</loc></url>
+  <url><loc>https://scriptella.org/tutorial.html</loc></url>
+  <url><loc>https://scriptella.org/changes.html</loc></url>
+  <url><loc>https://scriptella.org/links.html</loc></url>
+  <url><loc>https://scriptella.org/reference/</loc></url>
+  <url><loc>https://scriptella.org/reference/drivers.html</loc></url>
+  <url><loc>https://scriptella.org/howto/initialize-database.html</loc></url>
+  <url><loc>https://scriptella.org/howto/migrate-from-ant.html</loc></url>
+</urlset>

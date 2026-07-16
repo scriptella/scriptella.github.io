@@ -877,6 +877,24 @@ th {
   margin: 0;
 }
 
+.site-footer__credit {
+  white-space: nowrap;
+}
+
+.site-footer .pvrlabs-wordmark {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pvrlabs-wordmark__accent {
+  color: var(--accent);
+}
+
+.pvrlabs-wordmark__light {
+  margin-inline-start: 0.1em;
+  color: var(--text-primary);
+}
+
 .site-footer ul {
   display: flex;
   flex-wrap: wrap;
