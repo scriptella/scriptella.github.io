@@ -759,6 +759,12 @@ pre code {
   border-radius: var(--radius);
 }
 
+/* Driver matrices fit the docs column; no framed scroll cage. */
+.table-scroll:has(.drivers-matrix) {
+  border: 0;
+  border-radius: 0;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -769,6 +775,25 @@ table {
 
 .table-scroll table {
   margin: 0;
+}
+
+/* Share width across columns; break long class names only at package dots. */
+.drivers-matrix {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.drivers-matrix .col-driver-name {
+  width: 28%;
+}
+
+.drivers-matrix .col-native-driver {
+  width: 26%;
+}
+
+.drivers-matrix td code {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 caption {
