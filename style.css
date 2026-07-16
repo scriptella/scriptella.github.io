@@ -51,9 +51,9 @@
   --syntax-attribute: #0550ae;
   --syntax-string: #0a3069;
   --syntax-keyword: #8250df;
-  --syntax-comment: #6e7781;
+  --syntax-comment: #606872;
   --syntax-number: #953800;
-  --syntax-variable: #9a6700;
+  --syntax-variable: #8a5d00;
   --syntax-punctuation: #57606a;
 }
 
@@ -79,9 +79,9 @@
     --syntax-attribute: #0550ae;
     --syntax-string: #0a3069;
     --syntax-keyword: #8250df;
-    --syntax-comment: #6e7781;
+    --syntax-comment: #606872;
     --syntax-number: #953800;
-    --syntax-variable: #9a6700;
+    --syntax-variable: #8a5d00;
     --syntax-punctuation: #57606a;
   }
 }
