@@ -48,7 +48,7 @@
       <h1>Scriptella reference</h1>
       <p class="lede">Core concepts, installation, and the XML elements used to connect data sources and coordinate scripts and queries.</p>
 
-      <aside class="note" aria-label="Migration status"><strong>Migration status:</strong> This first substantial part of the reference covers the original introduction through script syntax. Integration and advanced-provider sections will follow in the full reference migration.</aside>
+      <aside class="note" aria-label="Migration status"><strong>Migration status:</strong> The introduction, installation, and script syntax sections have been migrated in full. Expressions, integrations, and advanced-provider sections will follow in the remaining reference migration.</aside>
 
       <nav class="documentation-directory" aria-labelledby="documentation-directory-title">
         <h2 id="documentation-directory-title">Documentation and help</h2>
@@ -124,7 +124,7 @@
           <h3>When to use Scriptella</h3>
           <p>Scriptella is a good fit when you need to:</p>
           <ul>
-            <li>Store and execute database SQL without depending on vendor command-line tools.</li>
+            <li>Store and execute database SQL without depending on vendor command-line tools, while retaining JDBC features such as references to BLOB content.</li>
             <li>Work with several data sources—for example, reading statistics from one database and storing them in another.</li>
             <li>Keep queries visible as SQL instead of expressing them through a visual query designer.</li>
             <li>Generate test data during execution instead of storing large generated files.</li>
@@ -166,6 +166,7 @@
           <li><code>scriptella-tools.jar</code> — command-line, Ant, and supporting tools.</li>
           <li><code>scriptella.jar</code> — the all-in-one Scriptella JAR. Driver-specific dependencies still need to be supplied separately.</li>
         </ul>
+        <p>Java sources are included in <code>scriptella-src-ide.zip</code>, which can be attached to <code>scriptella.jar</code> in an IDE.</p>
       </section>
 
       <section id="Scripts+Syntax">
@@ -202,13 +203,13 @@
 
         <section id="%3Cproperties%3E">
           <h3><code>&lt;properties&gt;</code></h3>
-          <p>Defines properties that can be substituted in other ETL elements. If a property is declared more than once, the first value takes precedence. Use <code>&lt;include&gt;</code> to read properties from an external file.</p>
+          <p>Defines properties that can be substituted in other ETL elements, much like Ant properties. If a property is declared more than once, the first value takes precedence. Use <code>&lt;include&gt;</code> to insert properties from an external file.</p>
           <aside class="note" aria-label="Property precedence">Properties in this element can be overridden by system or external properties supplied by the execution environment, such as an Ant task.</aside>
         </section>
 
         <section id="%3Cconnection%3E">
           <h3><code>&lt;connection&gt;</code></h3>
-          <p>Defines a connection to a data source. Required attributes depend on the driver. JDBC connections commonly use <code>url</code>, <code>user</code>, and <code>password</code>.</p>
+          <p>Defines a connection to a data source. Required attributes depend on the driver. JDBC connections commonly use <code>url</code>, <code>user</code>, and <code>password</code>; they may also specify a catalog or schema.</p>
           <dl>
             <dt><code>id</code></dt>
             <dd>Required when an ETL declares more than one connection. Scripts and queries refer to this value with <code>connection-id</code>.</dd>
@@ -217,35 +218,90 @@
             <dt><code>driver</code></dt>
             <dd>A driver class name or alias. The default, <code>auto</code>, attempts to infer the driver from the URL. See the <a href="drivers.html">driver matrix</a>.</dd>
             <dt><code>classpath</code></dt>
-            <dd>Optional driver libraries, resolved relative to the ETL file. Separate multiple paths with the platform path separator.</dd>
+            <dd>Optional driver libraries. Paths are resolved relative to the ETL file and separated with the platform path separator. Absolute URLs are also supported. Libraries in Scriptella's boot classpath take precedence.</dd>
             <dt><code>lazy-init</code></dt>
-            <dd>When <code>true</code>, delays opening the connection until an element uses it.</dd>
+            <dd>When <code>true</code>, delays opening the connection until an element uses it. The default is <code>false</code>.</dd>
           </dl>
-          <p>Element text sets driver-specific connection properties. Libraries in Scriptella's boot classpath take precedence over libraries named in <code>classpath</code>.</p>
+          <p>Lazy initialization is useful when every element using a connection is conditional, or when another connection must first create a database user or produce a required file.</p>
+          <p>Element text sets driver-specific connection properties. Some drivers also accept properties in their URL.</p>
+          <pre><code>&lt;!-- Connect to Oracle as the sys user. --&gt;
+&lt;connection driver="oracle"
+            url="jdbc:oracle:thin:@localhost:1521:DB"
+            user="sys as sysdba"
+            password="password"&gt;
+  plsql=true
+&lt;/connection&gt;</code></pre>
         </section>
 
         <section id="%3Cscript%3E">
           <h3><code>&lt;script&gt;</code></h3>
-          <p>Executes its text through the selected connection. A script may include external files, use variables from a parent query, and run conditionally with <code>if</code> or <code>unless</code>.</p>
-          <pre><code>&lt;script connection-id="out"&gt;
-  INSERT INTO target(id, name) VALUES (?id, ?name)
+          <p>Contains executable content in the language understood by its connection. A script may include external files and use variables supplied by a parent query.</p>
+          <dl>
+            <dt><code>connection-id</code></dt>
+            <dd>Selects the connection used to execute the script.</dd>
+            <dt><code>new-tx</code></dt>
+            <dd>When <code>true</code>, executes the script using a dedicated connection instead of the shared transaction.</dd>
+            <dt><code>if</code></dt>
+            <dd>Controls conditional execution. For example, <code>if="rownum gt 1 and name != null and name.length() gt 0"</code> executes only when the row number is greater than one and <code>name</code> is not empty.</dd>
+          </dl>
+          <pre><code>&lt;!-- Use a separate transaction when drop_tables is true. --&gt;
+&lt;script connection-id="in" new-tx="true" if="drop_tables"&gt;
+  DROP TABLE Table1;
+  DROP TABLE Table2;
 &lt;/script&gt;</code></pre>
         </section>
 
         <section id="%3Cquery%3E">
           <h3><code>&lt;query&gt;</code></h3>
-          <p>Reads rows from its connection and executes nested elements once per row. Each column or attribute becomes a variable visible to nested queries and scripts.</p>
-          <pre><code>&lt;query connection-id="in"&gt;
-  SELECT id, name FROM source
+          <p>Contains a query expression in the language understood by its connection. It executes nested elements once per returned row, exposing each column or attribute as a variable.</p>
+          <dl>
+            <dt><code>connection-id</code></dt>
+            <dd>Selects the connection used for the query. Nested elements inherit the connection ID unless they override it.</dd>
+            <dt><code>if</code></dt>
+            <dd>Controls conditional execution. Values such as <code>true</code>, <code>1</code>, <code>on</code>, and <code>yes</code> are treated as true.</dd>
+          </dl>
+          <pre><code>&lt;!-- Select users and write an LDIF entry for every row. --&gt;
+&lt;query connection-id="in" if="migrate_users"&gt;
+  SELECT * FROM Users;
   &lt;script connection-id="out"&gt;
-    INSERT INTO target VALUES (?id, ?name)
+    dn: uid=$user_name,ou=people,dc=scriptella
+    objectClass: inetOrgPerson
+    uid: $user_name
+    cn: $user_name
   &lt;/script&gt;
 &lt;/query&gt;</code></pre>
         </section>
 
         <section id="%3Conerror%3E">
           <h3><code>&lt;onerror&gt;</code></h3>
-          <p>Handles a matching script or query error. Handlers can match error codes or message text and may retry execution. Keep matches narrow so unexpected failures still stop the ETL.</p>
+          <p>Defines fallback content to execute when its parent script fails. If the fallback itself fails, another matching <code>&lt;onerror&gt;</code> element on the original script may handle that error. The thrown <code>java.lang.Throwable</code> is available to the handler as the <code>error</code> variable.</p>
+          <dl>
+            <dt><code>type</code></dt>
+            <dd>A regular expression matched against the exception type. Partial matching is allowed.</dd>
+            <dt><code>codes</code></dt>
+            <dd>A comma-separated list of vendor error codes or SQL states. The handler runs when any value matches a code reported by the driver.</dd>
+            <dt><code>message</code></dt>
+            <dd>A regular expression matched against the exception message. Partial matching is allowed.</dd>
+            <dt><code>retry</code></dt>
+            <dd>When <code>true</code>, retries the failed statement after the handler completes. The same handler will not run again for the retry, preventing an infinite loop.</dd>
+            <dt><code>connection-id</code></dt>
+            <dd>Runs the handler through another connection, which is useful for logging or recovery with a Java, text, or other driver.</dd>
+          </dl>
+          <p>This handler emulates <code>CREATE TABLE IF NOT EXISTS</code> by dropping an existing table and retrying the original statement:</p>
+          <pre><code>&lt;script connection-id="in"&gt;
+  CREATE TABLE Table1;
+  &lt;onerror message=".*Table already exists.*" retry="true"&gt;
+    DROP TABLE Table1;
+  &lt;/onerror&gt;
+&lt;/script&gt;</code></pre>
+          <p>A handler can also pass the error to application code through another connection:</p>
+          <pre><code>&lt;script connection-id="in"&gt;
+  INSERT INTO TableName VALUES (1, 'Value1');
+  &lt;onerror connection-id="java"&gt;
+    Throwable error = (Throwable) get("error");
+    com.app.ApplicationLogger.logEtlError(error);
+  &lt;/onerror&gt;
+&lt;/script&gt;</code></pre>
         </section>
       </section>
 
