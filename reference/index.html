@@ -542,7 +542,7 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
 
       <section id="maven">
         <h2>Maven integration</h2>
-        <p>Use the modules needed by your application. Release 1.3 uses the following Maven coordinates:</p>
+        <p>Use the modules needed by your application. The future final Release 1.3 will use the following Maven coordinates:</p>
         <pre><code>&lt;properties&gt;
   &lt;scriptella.version&gt;1.3&lt;/scriptella.version&gt;
 &lt;/properties&gt;
@@ -565,7 +565,7 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
   &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
         <p><code>scriptella-core</code> provides execution and JDBC support, <code>scriptella-drivers</code> provides the bundled non-core drivers, and <code>scriptella-tools</code> provides the command-line and Ant integrations. Driver-specific third-party libraries may still need separate dependencies.</p>
-        <p>Release artifacts are resolved from Maven Central. When testing an unpublished source checkout, build and install it locally with Maven rather than adding Scriptella's deployment repositories to a consuming POM.</p>
+        <p>Final release artifacts will be resolved from Maven Central. Until then, build and install the RC locally with <code>mvn clean install</code> rather than adding Scriptella's deployment repositories to a consuming POM.</p>
       </section>
 
       <section id="inprocess">
