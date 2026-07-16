@@ -23,6 +23,7 @@ scriptella.driver.oracle
 scriptella.driver.postgresql
 scriptella.driver.script
 scriptella.driver.scriptella
+scriptella.driver.shell
 scriptella.driver.spring
 scriptella.driver.sybase
 scriptella.driver.text

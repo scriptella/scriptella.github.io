@@ -159,19 +159,25 @@
         <pre><code>set PATH=%PATH%;SCRIPTELLA_DIR\bin</code></pre>
         <p>For Unix-like systems:</p>
         <pre><code>export PATH=${PATH}:SCRIPTELLA_DIR/bin</code></pre>
-        <p>The binary distribution has this layout:</p>
-        <pre><code>scriptella/
-├── bin/          launch scripts
+        <p>The binary distribution (for example <code>scriptella-1.3.zip</code>) has this layout:</p>
+        <pre><code>scriptella-1.3/
+├── bin/                   launch scripts (scriptella / scriptella.bat)
 ├── docs/
-│   ├── api/      API documentation
-│   └── dtd/      ETL DTD and element documentation
-└── lib/          libraries loaded by the launch scripts</code></pre>
+│   ├── api/               API documentation
+│   └── dtd/               ETL DTD and element documentation
+├── lib/                   module JARs and bundled libraries
+├── scriptella.jar         all-in-one JAR used by the launch scripts
+├── scriptella-src-ide.zip sources for IDE attachment
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
+└── NOTICE</code></pre>
         <p>The main libraries are:</p>
         <ul>
-          <li><code>scriptella-core.jar</code> — core execution classes.</li>
-          <li><code>scriptella-drivers.jar</code> — built-in data-source drivers and adapters.</li>
-          <li><code>scriptella-tools.jar</code> — command-line, Ant, and supporting tools.</li>
-          <li><code>scriptella.jar</code> — the all-in-one Scriptella JAR. Driver-specific dependencies still need to be supplied separately.</li>
+          <li><code>lib/scriptella-core.jar</code> — core execution classes.</li>
+          <li><code>lib/scriptella-drivers.jar</code> — built-in data-source drivers and adapters.</li>
+          <li><code>lib/scriptella-tools.jar</code> — command-line, Ant, and supporting tools.</li>
+          <li><code>scriptella.jar</code> — the all-in-one Scriptella JAR (about 580&nbsp;KB in 1.3). Driver-specific dependencies still need to be supplied separately.</li>
         </ul>
         <p>Java sources are included in <code>scriptella-src-ide.zip</code>, which can be attached to <code>scriptella.jar</code> in an IDE.</p>
       </section>

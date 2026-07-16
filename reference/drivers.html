@@ -197,11 +197,6 @@
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>ldap</strong>.<wbr>Driver</code></td>
                 <td>Execute LDIF scripts and search-filter queries.</td>
               </tr>
-              <tr id="lucene">
-                <td><a href="../docs/api/scriptella/driver/lucene/package-summary.html#package.description">Lucene</a></td>
-                <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>lucene</strong>.<wbr>Driver</code></td>
-                <td>Run search queries against Lucene-indexed data.</td>
-              </tr>
               <tr id="mongodb">
                 <td><a href="https://github.com/scriptella/scriptella-mongodb">MongoDB</a></td>
                 <td class="col-driver-name"><code>org.<wbr>scriptella.<wbr>mongodb.<wbr>Driver</code></td>
@@ -215,12 +210,17 @@
               <tr id="script">
                 <td><a href="../docs/api/scriptella/driver/script/package-summary.html#package.description">javax.script bridge</a></td>
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>script</strong>.<wbr>Driver</code></td>
-                <td>Supports <a href="https://jcp.org/en/jsr/detail?id=223">JSR 223</a>-compatible scripting languages such as JavaScript, JRuby, and Groovy. Available engines depend on the runtime and libraries on the classpath.</td>
+                <td>Supports <a href="https://jcp.org/en/jsr/detail?id=223">JSR 223</a>-compatible scripting languages such as JavaScript, JRuby, and Groovy. Release 1.3 bundles Rhino for JavaScript; prefer <code>language=rhino</code>. Other engines depend on the runtime and libraries on the classpath.</td>
               </tr>
               <tr id="scriptella">
                 <td><a href="../docs/api/scriptella/driver/scriptella/package-summary.html#package.description">Scriptella driver</a></td>
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>scriptella</strong>.<wbr>Driver</code></td>
                 <td>Run nested Scriptella ETL files. Similar to Ant's <code>&lt;ant&gt;</code> task, useful for splitting large ETL files into sub-projects.</td>
+              </tr>
+              <tr id="shell">
+                <td><a href="../docs/api/scriptella/driver/shell/package-summary.html#package.description">Shell</a></td>
+                <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>shell</strong>.<wbr>Driver</code></td>
+                <td>Execute operating-system shell commands as scripts or queries. Queries export each output line as a row. Runs with the permissions of the Scriptella process.</td>
               </tr>
               <tr id="text">
                 <td><a href="../docs/api/scriptella/driver/text/package-summary.html#package.description">Text</a></td>
