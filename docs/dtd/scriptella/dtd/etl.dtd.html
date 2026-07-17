@@ -200,7 +200,7 @@ This element may contain plain text or includes.
 <span class='inTextTitle'>Element's model:</span><p class='model'>(#PCDATA | <a href='#include'>include</a>)*</p><a name='include'></a>
 <br /><table class='elementTitle' summary="include"><tr><td class='leftElementTitle'>
 &lt;include&gt;</td><td class='rightElementTitle'>
-Child of <a href='#script'>script</a>, <a href='#fallback'>fallback</a>, <a href='#query'>query</a>, <a href='#connection'>connection</a>, <a href='#properties'>properties</a>, <a href='#dialect'>dialect</a>, <a href='#onerror'>onerror</a>
+Child of <a href='#onerror'>onerror</a>, <a href='#fallback'>fallback</a>, <a href='#script'>script</a>, <a href='#properties'>properties</a>, <a href='#dialect'>dialect</a>, <a href='#query'>query</a>, <a href='#connection'>connection</a>
 </td></tr></table>
 <p>The include element specifies content to include. Concept similar to XInclude.
 <p><u>Examples:</u>
@@ -237,7 +237,7 @@ Attribute of <a href='#include'>include</a>
 <p>Included text encoding name.</p><a name='dialect'></a>
 <br /><table class='elementTitle' summary="dialect"><tr><td class='leftElementTitle'>
 &lt;dialect&gt;</td><td class='rightElementTitle'>
-Child of <a href='#script'>script</a>, <a href='#query'>query</a>, <a href='#onerror'>onerror</a>
+Child of <a href='#onerror'>onerror</a>, <a href='#script'>script</a>, <a href='#query'>query</a>
 </td></tr></table>
 <p>The dialect element defines a vendor specific script. Scripting elements may contain any number of nested dialects.
 This element may contain plain text or includes.
@@ -397,7 +397,7 @@ Attribute of <a href='#query'>query</a>
 <p>script identifier(name).</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the ID rules.</i></p><a name='script'></a>
 <br /><table class='elementTitle' summary="script"><tr><td class='leftElementTitle'>
 &lt;script&gt;</td><td class='rightElementTitle'>
-Child of <a href='#query'>query</a>, <a href='#etl'>etl</a>
+Child of <a href='#etl'>etl</a>, <a href='#query'>query</a>
 </td></tr></table>
 <p>The script element is used to specify a script.
 This element may contain plain text,onerror handlers, includes and dialects.
@@ -448,4 +448,13 @@ Use <a href="http://jakarta.apache.org/commons/jexl">JEXL</a> syntax for express
 @id</td><td class='rightAttributeTitle'>
 Attribute of <a href='#script'>script</a>
 </td></tr></table>
-<p>script identifier(name).</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the ID rules.</i></p></body></html>
+<p>script identifier(name).</p><p><span class='inTextTitle'>Possible values</span>: <i>Match the ID rules.</i></p>  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+
+</body></html>
