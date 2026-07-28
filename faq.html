@@ -29,7 +29,7 @@
           <img class="site-logo__light" src="images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
         </a>
         <ul>
-          <li><a href="reference/index.html">Documentation</a></li>
+          <li><a href="reference/index.html" aria-current="page">Documentation</a></li>
           <li><a href="tutorial.html">Tutorial</a></li>
           <li><a href="reference/drivers.html">Drivers</a></li>
           <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
@@ -43,7 +43,19 @@
     </nav>
   </header>
 
-  <main id="main-content" class="page-shell page-shell--reading">
+  <main id="main-content" class="page-shell docs-layout">
+    <nav class="docs-nav" aria-label="Documentation navigation">
+      <h2>Documentation</h2>
+      <ul>
+        <li><a href="reference/index.html">Reference</a></li>
+        <li><a href="reference/drivers.html">Drivers</a></li>
+        <li><a href="howto/migrate-from-ant.html">How-tos</a></li>
+        <li><a href="faq.html" aria-current="page">FAQ</a></li>
+        <li><a href="docs/api/index.html">API documentation</a></li>
+        <li><a href="docs/dtd/index.html">DTD documentation</a></li>
+      </ul>
+    </nav>
+
     <article class="page-content">
       <h1>Scriptella ETL Frequently Asked Questions</h1>
 
@@ -233,6 +245,11 @@
 &lt;/connection&gt;</code></pre>
       <p>And the output is:</p>
       <pre><code>valueA,,valueC</code></pre>
+      <aside class="github-prompt" aria-label="Support Scriptella">
+        <strong>Scriptella useful?</strong>
+        <p>Star it on GitHub to help other Java teams discover it.</p>
+        <a class="button button--github" href="https://github.com/scriptella/scriptella-etl">★ Star Scriptella on GitHub</a>
+      </aside>
     </article>
   </main>
 

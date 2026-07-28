@@ -241,23 +241,6 @@ a:hover {
   color: var(--accent);
 }
 
-.primary-nav .github-star-link {
-  padding: 0.35rem 0.65rem;
-  color: var(--accent);
-  font-weight: 700;
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-}
-
-.primary-nav .github-star-link::after {
-  display: none;
-}
-
-.primary-nav .github-star-link:hover {
-  color: var(--accent-contrast);
-  background: var(--accent);
-}
-
 .theme-toggle {
   display: inline-grid;
   flex: 0 0 auto;
