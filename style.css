@@ -241,6 +241,23 @@ a:hover {
   color: var(--accent);
 }
 
+.primary-nav .github-star-link {
+  padding: 0.35rem 0.65rem;
+  color: var(--accent);
+  font-weight: 700;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+}
+
+.primary-nav .github-star-link::after {
+  display: none;
+}
+
+.primary-nav .github-star-link:hover {
+  color: var(--accent-contrast);
+  background: var(--accent);
+}
+
 .theme-toggle {
   display: inline-grid;
   flex: 0 0 auto;
@@ -854,6 +871,31 @@ th {
   color: var(--accent-hover);
   background: var(--bg-raised);
   border-color: var(--accent);
+}
+
+.button--github {
+  color: var(--accent);
+  background: transparent;
+  border-color: var(--accent);
+}
+
+.button--github:hover {
+  color: var(--accent-contrast);
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.github-prompt {
+  margin-block: 2rem;
+  padding: 1.25rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--radius);
+}
+
+.github-prompt p {
+  margin-block: 0.35rem 1rem;
 }
 
 .site-footer {
