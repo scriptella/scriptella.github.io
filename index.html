@@ -47,13 +47,11 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__inner">
         <div class="hero__copy">
-          <p class="eyebrow">Open source ETL for Java</p>
-          <h1 id="hero-title">Move data with the languages you already use</h1>
-          <p class="hero__lede">Scriptella runs SQL and other scripts against multiple data sources from one small, readable ETL file. There is no visual designer, application server, or proprietary runtime to learn.</p>
+          <h1 id="hero-title">Lightweight ETL for Java</h1>
+          <p class="hero__lede">Scriptella runs SQL and other scripts against multiple data sources from one XML file. No visual designer, application server, or proprietary runtime.</p>
           <div class="button-group">
-            <a class="button" href="tutorial.html">Start the two-minute tutorial</a>
-            <a class="button button--github" href="https://github.com/scriptella/scriptella-etl">★ Star Scriptella on GitHub</a>
-            <a class="button button--secondary" href="download.html">Download Scriptella</a>
+            <a class="button" href="tutorial.html">Two-minute tutorial</a>
+            <a class="button button--secondary" href="download.html">Download 1.4</a>
           </div>
         </div>
 
@@ -78,31 +76,30 @@
 
     <div class="page-shell home-content">
       <section id="overview" aria-labelledby="overview-title">
-        <h2 id="overview-title">ETL without the machinery</h2>
-        <p class="lede">Scriptella is a lightweight, open source ETL (extract-transform-load) and script execution tool written in Java. Its focus is simplicity: use SQL or the scripting language suited to your data source, with XML providing only the orchestration.</p>
+        <h2 id="overview-title">SQL for the work. XML for the wiring.</h2>
+        <p class="lede">Scriptella is an open source ETL and script execution tool written in Java. Use SQL or the language that fits the data source. XML only orchestrates.</p>
 
         <div class="feature-grid">
           <article class="feature-card">
-            <h3>Connect anything</h3>
-            <p>Work with several data sources in one file. Built-in providers cover JDBC, CSV, text, XML, LDAP, shell, JEXL, Velocity, Janino, and more.</p>
+            <h3>Several sources, one file</h3>
+            <p>JDBC, CSV, text, XML, LDAP, shell, JEXL, Velocity, Janino, and more.</p>
           </article>
           <article class="feature-card">
-            <h3>Keep scripts readable</h3>
-            <p>Run existing SQL directly, include external files, bind query results as variables, and add expressions only where a transformation needs them.</p>
+            <h3>Existing SQL</h3>
+            <p>Run it directly, include files, bind query results as variables, and add expressions only where a transform needs them.</p>
           </article>
           <article class="feature-card">
-            <h3>Run it your way</h3>
-            <p>Use the command line, Ant, Maven, or the Java API. Transactions, batching, conditional execution, and structured error handling are built in.</p>
+            <h3>CLI, Ant, Maven, API</h3>
+            <p>Transactions, batching, conditionals, and structured error handling are built in.</p>
           </article>
         </div>
       </section>
 
       <section id="usage" class="split-section" aria-labelledby="usage-title">
         <div>
-          <p class="eyebrow">Typical uses</p>
-          <h2 id="usage-title">A small tool for practical data work</h2>
+          <h2 id="usage-title">Typical uses</h2>
         </div>
-        <ul class="check-list">
+        <ul>
           <li>Cross-database migration and table copying</li>
           <li>CSV, text, and XML import or export</li>
           <li>Repeatable database schema initialization and upgrades</li>
@@ -112,42 +109,33 @@
       </section>
 
       <section id="features" class="getting-started" aria-labelledby="getting-started-title">
-        <p class="eyebrow">Getting started</p>
-        <h2 id="getting-started-title">From download to first run</h2>
+        <h2 id="getting-started-title">Getting started</h2>
         <div class="route-grid">
           <a class="route-card" href="download.html">
-            <strong>Get Scriptella</strong>
-            <small>Download the binary distribution.</small>
+            <strong>Download</strong>
+            <small>Binary, source, examples, or Maven.</small>
           </a>
           <a class="route-card" href="tutorial.html">
-            <strong>Run an ETL file</strong>
-            <small>Follow the short hands-on tutorial.</small>
+            <strong>Tutorial</strong>
+            <small>Install, run, copy a table.</small>
           </a>
           <a class="route-card" href="reference/index.html">
-            <strong>Go deeper</strong>
-            <small>Explore syntax, integrations, and best practices.</small>
+            <strong>Reference</strong>
+            <small>Syntax, drivers, and examples.</small>
           </a>
         </div>
-        <aside class="github-prompt" aria-label="Support Scriptella">
-          <strong>Scriptella useful?</strong>
-          <p>Star it on GitHub to help other Java teams discover it.</p>
-          <a class="button button--github" href="https://github.com/scriptella/scriptella-etl">★ Star Scriptella on GitHub</a>
-        </aside>
       </section>
 
       <section id="News" class="release-note" aria-labelledby="news-title">
         <div>
-          <p class="eyebrow">Current baseline</p>
           <h2 id="news-title">Scriptella 1.4</h2>
         </div>
         <div id="Scriptella+1.4+%28August+14%2C+2026%29">
-          <p>Released August 14, 2026, Scriptella 1.4 is a maintainability and modernization release. It requires Java 17, removes the obsolete HSQLDB and ODBC adapters, and keeps Scriptella's lightweight ETL model.</p>
-          <p>Download the binary, source, and examples distributions from <a href="download.html#version-1-4">the download page</a>, or use the <code>org.scriptella</code> modules from Maven Central. Users who need Java 8 should remain on <a href="download.html#version-1-3">Scriptella 1.3</a>.</p>
-          <p><a href="changes.html#version_1.4">Read the change history</a> · <a href="download.html#version-1-4">Download 1.4</a> · <a href="support.html">Support</a></p>
-        </div>
-        <div id="Scriptella+1.3+RC1+%28July+16%2C+2026%29">
-          <p class="eyebrow" style="margin-top:2rem">Previous release</p>
-          <p>Scriptella 1.3, released July 17, 2026, remains the Java 8 line. <a href="download.html#version-1-3">Download 1.3</a>.</p>
+          <p>Released August 14, 2026. Java 17 required. Obsolete HSQLDB and ODBC adapters removed.</p>
+          <p>Get the binary, source, and examples from <a href="download.html#version-1-4">the download page</a>, or use the <code>org.scriptella</code> modules on Maven Central. Java 8 users should stay on <a href="download.html#version-1-3">Scriptella 1.3</a>.</p>
+          <p><a href="changes.html#version_1.4">Change history</a> · <a href="download.html#version-1-4">Download 1.4</a></p>
+          <span id="Scriptella+1.3+RC1+%28July+16%2C+2026%29" class="anchor-target" aria-hidden="true"></span>
+          <p id="Scriptella+1.3+%28July+17%2C+2026%29">Previous: Scriptella 1.3 (July 17, 2026) is the Java 8 line. <a href="download.html#version-1-3">Download 1.3</a>.</p>
         </div>
       </section>
     </div>
