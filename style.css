@@ -430,12 +430,6 @@ a:hover {
   border-color: var(--accent-dark);
 }
 
-.route-card span {
-  margin-bottom: 2rem;
-  color: var(--accent);
-  font: 0.8rem var(--font-mono);
-}
-
 .route-card small {
   margin-top: 0.35rem;
   color: var(--text-muted);
