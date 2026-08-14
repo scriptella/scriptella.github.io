@@ -213,7 +213,7 @@
               <tr id="script">
                 <td><a href="../docs/api/scriptella/driver/script/package-summary.html#package.description">javax.script bridge</a></td>
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>script</strong>.<wbr>Driver</code></td>
-                <td>Supports <a href="https://jcp.org/en/jsr/detail?id=223">JSR 223</a>-compatible scripting languages such as JavaScript, JRuby, and Groovy. Release 1.4 bundles official Rhino 1.9.1 in the binary and examples distributions. Maven and embedded consumers must add <code>org.mozilla:rhino-engine:1.9.1</code> themselves. Other engines depend on the runtime and libraries on the application classpath.</td>
+                <td>Optional <a href="https://jcp.org/en/jsr/detail?id=223">JSR 223</a> bridge for scripting languages such as JavaScript, JRuby, and Groovy. Not required for ordinary ETL work. If you use JavaScript, add a JSR-223 engine to the application classpath; the binary distribution includes official Rhino 1.9.1 under <code>lib/</code> for that case. Maven and embedded consumers add <code>org.mozilla:rhino-engine:1.9.1</code> themselves.</td>
               </tr>
               <tr id="scriptella">
                 <td><a href="../docs/api/scriptella/driver/scriptella/package-summary.html#package.description">Scriptella driver</a></td>

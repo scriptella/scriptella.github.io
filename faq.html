@@ -143,7 +143,7 @@
         &lt;/script&gt;
     &lt;/query&gt;
 &lt;/etl&gt;</code></pre>
-      <aside class="note"><strong>Note:</strong> This JavaScript example needs a JSR-223 engine. Scriptella 1.4 binary and examples distributions bundle Rhino 1.9.1 under <code>lib/</code>. Maven and embedded consumers must add <code>org.mozilla:rhino-engine:1.9.1</code> to the same application classpath as Scriptella. A connection <code>classpath</code> attribute is not enough. JDBC, CSV, and other drivers that iterate rows themselves do not need <code>query.next()</code>.</aside>
+      <aside class="note"><strong>Note:</strong> This example uses the optional script driver and needs a JSR-223 engine if you run it. JDBC, CSV, and other drivers that iterate rows themselves do not need <code>query.next()</code>.</aside>
 
       <h3 id="EXECUTE_STATIC_METHOD">1.5. How to call a static method in JEXL expression?</h3>
       <p>Load a class by name by using <code>class:forName</code> Scriptella function.</p>
