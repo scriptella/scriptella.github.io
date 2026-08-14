@@ -48,13 +48,40 @@
       <p class="lede">Choose the binary package to start using Scriptella, or download the source and examples separately. All published releases are also available on GitHub. Maven consumers can resolve <code>org.scriptella</code> modules from Maven Central.</p>
 
       <aside class="note" aria-label="Release status">
-        <strong>Version 1.3, released July 17, 2026.</strong> Binary, source, and example distributions are available below. Maven consumers can resolve the <code>org.scriptella</code> modules from Maven Central.
+        <strong>Version 1.4, released August 14, 2026.</strong> Binary, source, and example distributions are available below. Maven consumers can resolve the <code>org.scriptella</code> modules from Maven Central. Scriptella 1.4 requires Java 17. Scriptella 1.3 remains available for Java 8.
       </aside>
+
+      <section aria-labelledby="version-1-4">
+        <span id="Version%3A+1.4+%28August+14%2C+2026%29" class="anchor-target" aria-hidden="true"></span>
+        <h2 id="version-1-4">Version 1.4 (August 14, 2026)</h2>
+        <p>Scriptella 1.4 is a Java 17 modernization release. The binary and examples distributions bundle Rhino 1.9.1 under <code>lib/</code> so JavaScript works from an intact archive. Maven and embedded consumers must add <code>org.mozilla:rhino-engine:1.9.1</code> explicitly.</p>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Scriptella 1.4 downloads">
+          <table>
+            <thead>
+              <tr><th scope="col">Package</th><th scope="col">Download</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Binary distribution</td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.4/scriptella-1.4.zip">scriptella-1.4.zip</a></td></tr>
+              <tr><td>Source distribution</td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.4/scriptella-1.4-src.zip">scriptella-1.4-src.zip</a></td></tr>
+              <tr><td>Examples</td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.4/scriptella-examples-1.4.zip">scriptella-examples-1.4.zip</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Maven coordinates:</p>
+        <pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.scriptella&lt;/groupId&gt;
+  &lt;artifactId&gt;scriptella-core&lt;/artifactId&gt;
+  &lt;version&gt;1.4&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+        <p>From the unpacked binary directory, a first ETL can be run with:</p>
+        <pre><code>java -jar scriptella.jar path/to/file.etl.xml</code></pre>
+        <p>Keep the distribution layout intact when using JavaScript so <code>lib/rhino-engine.jar</code> and <code>lib/rhino.jar</code> remain next to <code>scriptella.jar</code>. See the <a href="tutorial.html">tutorial</a> for a complete first-run example.</p>
+      </section>
 
       <section aria-labelledby="version-1-3">
         <span id="Version%3A+1.3+%28July+16%2C+2026%29" class="anchor-target" aria-hidden="true"></span>
-        <h2 id="version-1-3">Version 1.3 (July 17, 2026)</h2>
-        <p>Scriptella 1.3 modernizes the build, website, and documentation while preserving Java 8 compatibility and established behavior.</p>
+        <h2 id="version-1-3">Previous version: 1.3 (July 17, 2026)</h2>
+        <p>Scriptella 1.3 remains the Java 8 line. Use it when you need Java 8, the historical HSQLDB adapter, or the JDBC-ODBC bridge adapter.</p>
         <div class="table-scroll" tabindex="0" role="region" aria-label="Scriptella 1.3 downloads">
           <table>
             <thead>

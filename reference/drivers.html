@@ -63,6 +63,9 @@
       <section id="jdbcbridge">
         <h2>JDBC bridge drivers</h2>
         <p>Scriptella provides built-in adapters for popular databases. See the <a href="../docs/api/scriptella/jdbc/package-summary.html#package.description">JDBC bridge Javadoc</a> for common properties and behaviour.</p>
+        <aside class="note" aria-label="Removed 1.3 adapters">
+          <strong>Note:</strong> Scriptella 1.4 removes the HSQLDB and JDBC-ODBC adapters. Remain on <a href="../download.html#version-1-3">Scriptella 1.3</a> if you still need those drivers.
+        </aside>
         <aside class="note" aria-label="Note">
           <strong>Note:</strong> JDBC adapters are recommended, but any JDBC-compliant driver can be used directly.
         </aside>
@@ -105,13 +108,7 @@
                 <td><a href="../docs/api/scriptella/driver/h2/package-summary.html#package.description">H2 Database</a></td>
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>h2</strong>.<wbr>Driver</code></td>
                 <td class="col-native-driver"><code>org.<wbr>h2.<wbr>Driver</code></td>
-                <td></td>
-              </tr>
-              <tr id="hsqldb">
-                <td><a href="../docs/api/scriptella/driver/hsqldb/package-summary.html#package.description">HSQLDB</a></td>
-                <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>hsqldb</strong>.<wbr>Driver</code></td>
-                <td class="col-native-driver"><code>org.<wbr>hsqldb.<wbr>jdbcDriver</code></td>
-                <td></td>
+                <td>The bundled test and example database in Scriptella 1.4.</td>
               </tr>
               <tr id="jndi">
                 <td><a href="../docs/api/scriptella/driver/jndi/package-summary.html#package.description">JNDI</a></td>
@@ -130,12 +127,6 @@
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>mysql</strong>.<wbr>Driver</code></td>
                 <td class="col-native-driver"><code>com.<wbr>mysql.<wbr>jdbc.<wbr>Driver</code></td>
                 <td></td>
-              </tr>
-              <tr id="odbc">
-                <td><a href="../docs/api/scriptella/driver/odbc/package-summary.html#package.description">JDBC-ODBC Bridge</a></td>
-                <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>odbc</strong>.<wbr>Driver</code></td>
-                <td class="col-native-driver"><code>sun.<wbr>jdbc.<wbr>odbc.<wbr>JdbcOdbcDriver</code></td>
-                <td>JDBC-ODBC bridge driver. The bridge implements JDBC for any database with an ODBC driver.</td>
               </tr>
               <tr id="oracle">
                 <td><a href="../docs/api/scriptella/driver/oracle/package-summary.html#package.description">Oracle Database</a></td>
@@ -222,7 +213,7 @@
               <tr id="script">
                 <td><a href="../docs/api/scriptella/driver/script/package-summary.html#package.description">javax.script bridge</a></td>
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>script</strong>.<wbr>Driver</code></td>
-                <td>Supports <a href="https://jcp.org/en/jsr/detail?id=223">JSR 223</a>-compatible scripting languages such as JavaScript, JRuby, and Groovy. Release 1.3 bundles Rhino for JavaScript; prefer <code>language=rhino</code>. Other engines depend on the runtime and libraries on the classpath.</td>
+                <td>Supports <a href="https://jcp.org/en/jsr/detail?id=223">JSR 223</a>-compatible scripting languages such as JavaScript, JRuby, and Groovy. Release 1.4 bundles official Rhino 1.9.1 in the binary and examples distributions. Maven and embedded consumers must add <code>org.mozilla:rhino-engine:1.9.1</code> themselves. Other engines depend on the runtime and libraries on the application classpath.</td>
               </tr>
               <tr id="scriptella">
                 <td><a href="../docs/api/scriptella/driver/scriptella/package-summary.html#package.description">Scriptella driver</a></td>

@@ -106,8 +106,8 @@
     CREATE TABLE Metainf (buildnum INTEGER);
     INSERT INTO Metainf VALUES (1);
 
-    &lt;dialect name="hsql"&gt;
-      &lt;include href="hsqldb-schema.sql"/&gt;
+    &lt;dialect name="h2"&gt;
+      &lt;include href="h2-schema.sql"/&gt;
     &lt;/dialect&gt;
     &lt;dialect name="oracle"&gt;
       &lt;include href="oracle-schema.sql"/&gt;
@@ -128,7 +128,7 @@
     &lt;/script&gt;
   &lt;/query&gt;
 &lt;/etl&gt;</code></pre>
-          <span id="hsql" class="anchor-target" aria-hidden="true"></span>
+          <span id="h2" class="anchor-target" aria-hidden="true"></span>
           <span id="oracle" class="anchor-target" aria-hidden="true"></span>
           <span id="mysql" class="anchor-target" aria-hidden="true"></span>
           <p>The <code>*-schema.sql</code> files contain database-specific DDL. The shared <code>data.sql</code> file can reference BLOB content in external files:</p>
@@ -150,7 +150,7 @@
             <li><code>data.sql</code> — the initial dataset.</li>
             <li><code>blobs/</code> — binary files referenced by <code>data.sql</code>.</li>
           </ul>
-          <p>Also place the required JDBC driver, such as <code>hsqldb.jar</code>, in <code>WEB-INF/lib</code>.</p>
+          <p>Also place the required JDBC driver, such as <code>h2.jar</code>, in <code>WEB-INF/lib</code>.</p>
         </section>
 
         <section id="Automatic+initialization+in+a+ServletContextListener">
@@ -177,9 +177,9 @@
     &lt;listener-class&gt;scriptella.imagedb.WebDbInitializer&lt;/listener-class&gt;
   &lt;/listener&gt;
 &lt;/web-app&gt;</code></pre>
-          <p>For an HSQLDB deployment on Tomcat, <code>webinit.etl.properties</code> can contain:</p>
-          <pre><code>driver=hsqldb
-url=jdbc:hsqldb:file:${catalina.home}/db/imagedb
+          <p>For an H2 deployment on Tomcat, <code>webinit.etl.properties</code> can contain:</p>
+          <pre><code>driver=h2
+url=jdbc:h2:file:${catalina.home}/db/imagedb
 user=sa
 password=</code></pre>
         </section>

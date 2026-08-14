@@ -93,11 +93,11 @@
       <p>An up to date drivers documentation is available in the <a href="docs/api/">Scriptella Javadoc</a>. <a href="reference/index.html">Reference Documentation</a> also covers drivers usage and scripts syntax.</p>
 
       <h3 id="ODBC">1.2. Does Scriptella support Microsoft Access?</h3>
-      <p>Microsoft Access and other databases with ODBC interface are supported via ODBC-JDBC bridge driver which comes with Sun's JRE. Download <a href="download.html">ODBC example</a> for more details. Connection declaration example:</p>
-      <pre><code class="language-xml">&lt;connection url="jdbc:odbc:DRIVER={Microsoft Access Driver (*.mdb)};DBQ=Northwind.mdb"/&gt;</code></pre>
+      <p>Scriptella 1.4 does not include an ODBC / JDBC-ODBC adapter. The JDK's <code>sun.jdbc.odbc.JdbcOdbcDriver</code> was removed in Java 8 and cannot work on the Java 17 baseline.</p>
+      <p>Use a maintained third-party JDBC driver for Access or another database and declare it as a normal JDBC connection. If you still depend on the historical <code>driver="odbc"</code> adapter, remain on <a href="download.html#version-1-3">Scriptella 1.3</a>.</p>
 
       <h3 id="BIND_VARIABLES">1.3. What is the difference between $variable / ${expression} and ?variable / ?{expression} syntax.</h3>
-      <p>Binding variables syntax varies between drivers. JDBC drivers use the following rules for properties substitution:</p>
+      <p>These two families do different work. <code>$name</code> and <code>${expression}</code> expand text. <code>?name</code> and <code>?{expression}</code> bind JDBC prepared-statement parameters. Binding-variable syntax varies between drivers. JDBC drivers use the following rules:</p>
       <ul>
         <li><code>$variable</code> - inserts a value of the variable as text content.</li>
         <li><code>${expression}</code> - braces are used for JEXL expressions. For example <code>${column1+column2}</code> inserts a sum of 2 columns.</li>
@@ -123,7 +123,7 @@
         select count(id) as c from Errors
         &lt;script connection-id="js"&gt;
             etl.globals.put('errorsCount', c);
-        &lt;script&gt;
+        &lt;/script&gt;
     &lt;/query&gt;
 
     &lt;!-- Then reuse this variable in other parts of ETL file --&gt;
@@ -134,7 +134,7 @@
     &lt;!-- Alternatively an outer query can be used to share an array based variable between scripts --&gt;
     &lt;query connection-id="js"&gt;
         var pseudoGlobalVar = []; //Declare pseudo-global variable available to nested element
-        query.next(); //Executes child scripts
+        query.next(); //Required for script-based queries that produce rows
         &lt;script&gt; //Updates the variable
            pseudoGlobalVar[0] = 1;
         &lt;/script&gt;
@@ -143,6 +143,7 @@
         &lt;/script&gt;
     &lt;/query&gt;
 &lt;/etl&gt;</code></pre>
+      <aside class="note"><strong>Note:</strong> This JavaScript example needs a JSR-223 engine. Scriptella 1.4 binary and examples distributions bundle Rhino 1.9.1 under <code>lib/</code>. Maven and embedded consumers must add <code>org.mozilla:rhino-engine:1.9.1</code> to the same application classpath as Scriptella. A connection <code>classpath</code> attribute is not enough. JDBC, CSV, and other drivers that iterate rows themselves do not need <code>query.next()</code>.</aside>
 
       <h3 id="EXECUTE_STATIC_METHOD">1.5. How to call a static method in JEXL expression?</h3>
       <p>Load a class by name by using <code>class:forName</code> Scriptella function.</p>
@@ -203,7 +204,7 @@
       </ul>
       <aside class="note"><strong>Note:</strong> In general avoid using <code>autocommit.size</code>, because in this case an ETL process cannot be rolled back correctly. Use this parameter only for performance critical operations (bulk inserts etc.). If the <code>autocommit</code> is true, then setting <code>autocommit.size</code> has no effect.</aside>
       <p><strong>Example:</strong></p>
-      <pre><code class="language-xml">&lt;connection driver="auto" url="jdbc:hsqldb:mem:test"&gt;
+      <pre><code class="language-xml">&lt;connection driver="auto" url="jdbc:h2:mem:test"&gt;
     autocommit.size=4 &lt;!-- Automatically commit after every 4th statement --&gt;
     transaction.isolation=SERIALIZABLE &lt;!-- Sets TX level to Serializable --&gt;
 &lt;/connection&gt;</code></pre>
