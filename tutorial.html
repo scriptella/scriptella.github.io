@@ -70,8 +70,8 @@
         <li>Unpack it and add <code>&lt;SCRIPTELLA_DIR&gt;/bin</code> to a system <code>PATH</code> variable.
           <p>Use <code>set PATH=%PATH%;SCRIPTELLA_DIR\bin</code> for Windows and <code>export PATH=${PATH}:SCRIPTELLA_DIR/bin</code> for Unix.</p>
         </li>
-        <li>Confirm a Java 8 JRE is available by running <code>java -version</code>. Scriptella 1.3 targets Java 8 bytecode.</li>
-        <li><em>Optional step:</em> Put JDBC drivers required by your scripts in the <code>&lt;SCRIPTELLA_DIR&gt;/lib</code> directory, or set the <code>classpath</code> attribute on connection elements.</li>
+        <li>Confirm a Java 17 JRE is available by running <code>java -version</code>. Scriptella 1.4 targets Java 17 bytecode. Remain on Scriptella 1.3 if you need Java 8.</li>
+        <li><em>Optional step:</em> Put JDBC drivers required by your scripts in the <code>&lt;SCRIPTELLA_DIR&gt;/lib</code> directory, or set the <code>classpath</code> attribute on connection elements. The 1.4 binary distribution already includes Rhino under <code>lib/</code> for JavaScript.</li>
       </ul>
 
       <h2 id="Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</h2>
@@ -84,8 +84,26 @@
       <pre><code class="language-xml">&lt;etl file="path/to/your/file"/&gt; &lt;!-- Execute ETL file from specified location --&gt;</code></pre>
 
       <h2 id="Command-Line+Execution">Command-Line Execution</h2>
-      <p>Just type <code>scriptella</code> to run the file named <code>etl.xml</code> in the current directory. Alternatively you can use java launcher:</p>
+      <p>Just type <code>scriptella</code> to run the file named <code>etl.xml</code> in the current directory. Alternatively you can use the Java launcher from the unpacked binary directory:</p>
       <pre><code>java -jar scriptella.jar [arguments]</code></pre>
+      <p>A first runnable example needs no database. Create <code>people.csv</code> next to <code>scriptella.jar</code>:</p>
+      <pre><code>id,name
+1,Ada
+2,Grace</code></pre>
+      <p>Then create <code>csv-to-sql.etl.xml</code> in the same directory:</p>
+      <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
+&lt;etl&gt;
+    &lt;connection id="input" driver="csv" url="people.csv"/&gt;
+    &lt;connection id="output" driver="text" url="load.sql"/&gt;
+
+    &lt;query connection-id="input"&gt;
+        &lt;script connection-id="output"&gt;
+            INSERT INTO people (id, name) VALUES ($id, '$name');
+        &lt;/script&gt;
+    &lt;/query&gt;
+&lt;/etl&gt;</code></pre>
+      <p>The CSV query produces one row per data line. The nested script runs once per row, and <code>connection-id</code> selects the destination. <code>$id</code> and <code>$name</code> expand as text. When the destination is JDBC, use <code>?id</code> and <code>?name</code> parameters instead.</p>
+      <pre><code>java -jar scriptella.jar csv-to-sql.etl.xml</code></pre>
 
       <h2 id="Executing+ETL+Files+from+Java">Executing ETL Files from Java</h2>
       <p>It is extremely easy to run Scriptella ETL files from java code. Just make sure scriptella.jar is on classpath and use any of the following methods to execute an ETL file:</p>
@@ -118,7 +136,7 @@ EtlExecutor.newExecutor(
       <p>The following sample initializes table of music tracks. Each track has a DATA field containing a file loaded from an external location. File song1.mp3 is stored in the same directory as etl.xml and song2.mp3 is loaded through the web.</p>
       <p><strong>etl.xml:</strong></p>
       <pre><code class="language-xml">&lt;etl&gt;
-    &lt;connection url="jdbc:hsqldb:file:tracks" user="sa" password=""/&gt;
+    &lt;connection driver="h2" url="jdbc:h2:./tracks" user="sa" password="" classpath="h2.jar"/&gt;
     &lt;script&gt;
         CREATE TABLE Track (
           ID INT,
@@ -134,7 +152,7 @@ EtlExecutor.newExecutor(
 &lt;/etl&gt;</code></pre>
 
       <h3 id="Supporting+several+SQL+dialects">Supporting several SQL dialects</h3>
-      <p><code>&lt;dialect&gt;</code> element allows including vendor specific content. The following example creates database schema for Oracle/HSQLDB or MySql depending on a selected driver:</p>
+      <p><code>&lt;dialect&gt;</code> element allows including vendor specific content. The following example creates a database schema for H2, Oracle, or MySQL depending on the selected driver:</p>
       <pre><code class="language-xml">&lt;etl&gt;
     &lt;properties&gt;
         &lt;include href="etl.properties"/&gt;
@@ -142,8 +160,8 @@ EtlExecutor.newExecutor(
     &lt;connection url="$url" user="$user"
         password="$password" classpath="$classpath"/&gt;
     &lt;script&gt;
-        &lt;dialect name="hsql"&gt;
-            &lt;include href="hsqldb-schema.sql"/&gt;
+        &lt;dialect name="h2"&gt;
+            &lt;include href="h2-schema.sql"/&gt;
         &lt;/dialect&gt;
         &lt;dialect name="oracle"&gt;
             &lt;include href="oracle-schema.sql"/&gt;
