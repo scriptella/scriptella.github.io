@@ -76,7 +76,7 @@
       <h3 id="code_1.4">Changes to the Code Base</h3>
       <ul>
         <li>Java 17 is the build and runtime baseline; Maven and Ant compile with <code>release=17</code> (class-file major version 61). Scriptella 1.3 remains for Java 8.</li>
-        <li>JavaScript uses the official Rhino 1.9.1 JSR-223 provider. The binary and examples distributions bundle <code>rhino-engine</code> and <code>rhino</code> under <code>lib/</code>; supported JavaScript aliases fall back to Rhino when the requested primary engine is absent.</li>
+        <li>The optional JSR-223 script driver now uses official Mozilla Rhino 1.9.1 when a JavaScript engine is needed. JavaScript is not required for ordinary ETL work.</li>
         <li>Janino 3.1.12, JavaMail <code>com.sun.mail:javax.mail:1.6.2</code>, Activation 1.1.1, Ant 1.10.17, and Commons Logging 1.2. Commons JEXL stays on 2.0.1 for 1.4.</li>
         <li>Velocity 1.7 with explicit Commons Collections 3.2.2 and Commons Lang 2.6 dependencies; the bundled <code>velocity-dep.jar</code> fat JAR was removed.</li>
         <li>H2 2.4.240 is the bundled database used by tests and examples.</li>
@@ -87,7 +87,6 @@
       <h3 id="upgrade_1.4">Upgrade notes</h3>
       <ul>
         <li>JDK 17 is the minimum runtime and build JDK; artifacts use Java 17 bytecode. Runtime and Maven builds were tested on Temurin 17 and 21. Release packaging uses JDK 17, Ant 1.10.17, and DTDDoc 1.1.0.</li>
-        <li>Keep the binary distribution layout intact when using JavaScript. Maven and embedded consumers must add <code>org.mozilla:rhino-engine:1.9.1</code> to the application classpath. A script connection's <code>classpath</code> attribute alone is not a JSR-223 provider installation mechanism.</li>
         <li>There is no Scriptella <code>odbc</code> driver in 1.4. Remain on Scriptella 1.3 if you still depend on that adapter, or use a maintained third-party JDBC driver.</li>
         <li>Bundled examples that previously created HSQLDB file databases now create H2 databases. Existing HSQLDB database files are not converted automatically.</li>
       </ul>

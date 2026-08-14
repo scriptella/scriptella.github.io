@@ -189,7 +189,7 @@
           <li><code>lib/scriptella-core.jar</code> — core execution classes.</li>
           <li><code>lib/scriptella-drivers.jar</code> — built-in data-source drivers and adapters.</li>
           <li><code>lib/scriptella-tools.jar</code> — command-line, Ant, and supporting tools.</li>
-          <li><code>scriptella.jar</code> — the all-in-one Scriptella JAR (about 620&nbsp;KB in 1.4). Driver-specific dependencies still need to be supplied separately, except the bundled Rhino JavaScript provider under <code>lib/</code>.</li>
+          <li><code>scriptella.jar</code> — the all-in-one Scriptella JAR (about 620&nbsp;KB in 1.4). Driver-specific dependencies still need to be supplied separately.</li>
         </ul>
         <p>Java sources are included in <code>scriptella-src-ide.zip</code>, which can be attached to <code>scriptella.jar</code> in an IDE.</p>
       </section>
@@ -576,7 +576,7 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
     &lt;version&gt;${scriptella.version}&lt;/version&gt;
   &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
-        <p><code>scriptella-core</code> provides execution and JDBC support, <code>scriptella-drivers</code> provides the bundled non-core drivers, and <code>scriptella-tools</code> provides the command-line and Ant integrations. Driver-specific third-party libraries may still need separate dependencies. JavaScript consumers must add <code>org.mozilla:rhino-engine:1.9.1</code> themselves; Scriptella does not publish Rhino transitively.</p>
+        <p><code>scriptella-core</code> provides execution and JDBC support, <code>scriptella-drivers</code> provides the bundled non-core drivers, and <code>scriptella-tools</code> provides the command-line and Ant integrations. Driver-specific third-party libraries may still need separate dependencies.</p>
         <p>Release artifacts resolve from Maven Central. Build and install locally with <code>mvn clean install</code> when working from a source checkout.</p>
       </section>
 
@@ -692,7 +692,7 @@ executor.execute();</code></pre>
 
         <section id="Interaction+with+Scripting+Languages">
           <h3>Interaction with scripting languages</h3>
-          <p>Scriptella supports JSR 223-compatible scripting languages through the <a href="drivers.html#script"><code>javax.script</code> bridge driver</a>. The 1.4 binary and examples distributions bundle official Rhino 1.9.1 under <code>lib/</code>, so JavaScript works from an intact archive through <code>java -jar</code> and the launchers. Maven and embedded consumers must put <code>org.mozilla:rhino-engine:1.9.1</code> on the same application classpath as Scriptella. A script connection's <code>classpath</code> attribute is not a supported way to install a JSR-223 provider. Other engines depend on the runtime and libraries on that application classpath.</p>
+          <p>Scriptella can use JSR 223-compatible scripting languages through the optional <a href="drivers.html#script"><code>javax.script</code> bridge driver</a>. This is not required for ordinary SQL, CSV, or JEXL ETL. If you choose JavaScript, add a JSR-223 engine to the application classpath; see the <a href="drivers.html#script">script driver</a> for the supported coordinates.</p>
         </section>
 
         <section id="Producing+Reports+with+Velocity">
