@@ -2,6 +2,8 @@
 
 Use `page.html` for standard pages such as downloads, support, and short guides.
 Use `docs-page.html` for reference pages that need the documentation navigation.
+The GitHub star aside lives in `github-prompt.html`. Copy that block
+unchanged; do not rewrite the wording on individual pages.
 Both templates use the shared `../style.css` stylesheet.
 They also load `../theme.js`, which applies and persists the Light, Dark, or
 System theme selected in the header.
