@@ -58,6 +58,36 @@
     updateControls();
   }
 
+  function initializeCopyButtons() {
+    document.querySelectorAll("[data-copy-button]").forEach(function (button) {
+      var container = button.closest("[data-copy-code]");
+      var code = container && container.querySelector("code");
+      var status = container && container.querySelector("[data-copy-status]");
+      if (!code || !status) {
+        return;
+      }
+      if (!navigator.clipboard) {
+        button.hidden = true;
+        return;
+      }
+
+      button.addEventListener("click", function () {
+        navigator.clipboard.writeText(code.textContent).then(function () {
+          button.setAttribute("aria-label", "Installer command copied");
+          button.setAttribute("title", "Installer command copied");
+          status.textContent = "Installer command copied.";
+          window.setTimeout(function () {
+            button.setAttribute("aria-label", "Copy installer command");
+            button.setAttribute("title", "Copy installer command");
+            status.textContent = "";
+          }, 2000);
+        }).catch(function () {
+          status.textContent = "Copy unavailable; select the command manually.";
+        });
+      });
+    });
+  }
+
   function appendToken(target, value, className) {
     if (!value) {
       return;
@@ -175,6 +205,7 @@
 
   function initializePage() {
     initializeControls();
+    initializeCopyButtons();
     initializeSyntaxHighlighting();
   }
 

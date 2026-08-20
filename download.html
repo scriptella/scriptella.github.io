@@ -45,17 +45,27 @@
   <main id="main-content" class="page-shell page-shell--reading">
     <article class="page-content">
       <h1>Download Scriptella</h1>
-      <p class="lede">Choose the binary package to start using Scriptella, or download the source and examples separately. All published releases are also available on GitHub. Maven consumers can resolve <code>org.scriptella</code> modules from Maven Central.</p>
+      <p class="lede">Choose the binary package to start using Scriptella, or download the source and examples separately. The current release is available from <a href="https://github.com/scriptella/scriptella-etl/releases/tag/scriptella-parent-1.4">GitHub Releases</a>. Maven consumers can resolve <code>org.scriptella</code> modules from <a href="https://central.sonatype.com/artifact/org.scriptella/scriptella-core" rel="nofollow">Maven Central</a>.</p>
 
       <aside class="note" aria-label="Release status">
-        <strong>Version 1.4, released August 14, 2026.</strong> Binary, source, and example distributions are available below. Maven consumers can resolve the <code>org.scriptella</code> modules from Maven Central. Scriptella 1.4 requires Java 17. Scriptella 1.3 remains available for Java 8.
+        <strong>Version 1.4, released August 14, 2026.</strong> Binary, source, and example distributions are available below. Maven consumers can resolve the <code>org.scriptella</code> modules from <a href="https://central.sonatype.com/artifact/org.scriptella/scriptella-core" rel="nofollow">Maven Central</a>. Scriptella 1.4 requires Java 17. Scriptella 1.3 remains available for Java 8.
       </aside>
 
       <section aria-labelledby="one-command-installer">
         <span id="one-command-installer" class="anchor-target" aria-hidden="true"></span>
         <h2>Experimental curl installer</h2>
         <p>Install Scriptella 1.4 with <code>curl</code>:</p>
-        <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
+        <div class="copy-code" data-copy-code>
+          <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
+          <button class="copy-code__button" type="button" data-copy-button aria-label="Copy installer command" title="Copy installer command">
+            <svg class="copy-code__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span class="visually-hidden">Copy installer command</span>
+          </button>
+          <span class="copy-code__status visually-hidden" data-copy-status aria-live="polite"></span>
+        </div>
         <p>The installer places Scriptella under <code>${HOME}/.local/scriptella</code>. It either adds <code>${HOME}/.local/scriptella/bin</code> to an existing startup file or prints the exact PATH command to add manually. The guaranteed command is the packaged <code>scriptella.sh</code> launcher:</p>
         <pre><code>scriptella.sh path/to/file.etl.xml</code></pre>
         <p>The installer does not install Java; Scriptella 1.4 requires Java 17 or newer. When the installer updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>. Manual ZIP installation and <code>java -jar scriptella.jar</code> remain available below.</p>

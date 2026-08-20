@@ -275,6 +275,43 @@ a:hover {
   content: "☾";
 }
 
+.copy-code {
+  position: relative;
+  margin-block: 0 1.25rem;
+}
+
+.copy-code pre {
+  margin: 0;
+  padding-right: 3.5rem;
+}
+
+.copy-code__button {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  color: var(--text-secondary);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 0.35rem;
+  cursor: pointer;
+}
+
+.copy-code__button:hover,
+.copy-code__button:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.copy-code__icon {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
