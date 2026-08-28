@@ -439,16 +439,18 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
             <table>
               <thead><tr><th>Option</th><th>Description</th></tr></thead>
               <tbody>
-                <tr><td><code>-help</code>, <code>-h</code></td><td>Display help.</td></tr>
-                <tr><td><code>-debug</code>, <code>-d</code></td><td>Print debugging information.</td></tr>
-                <tr><td><code>-quiet</code>, <code>-q</code></td><td>Suppress nonessential output.</td></tr>
-                <tr><td><code>-version</code>, <code>-v</code></td><td>Print the Scriptella version.</td></tr>
-                <tr><td><code>-nostat</code></td><td>Disable statistics collection to reduce overhead.</td></tr>
-                <tr><td><code>-nojmx</code></td><td>Disable JMX MBean registration.</td></tr>
-                <tr><td><code>-template</code>, <code>-t</code></td><td>Create an <code>etl.xml</code> template in the current directory.</td></tr>
+                <tr><td><code>--help</code>, <code>-h</code></td><td>Display help.</td></tr>
+                <tr><td><code>--debug</code>, <code>-d</code></td><td>Print debugging information.</td></tr>
+                <tr><td><code>--quiet</code>, <code>-q</code></td><td>Suppress nonessential output.</td></tr>
+                <tr><td><code>--version</code>, <code>-v</code></td><td>Print the Scriptella version.</td></tr>
+                <tr><td><code>--check</code></td><td>Experimentally load and statically check ETL configuration without opening configured connections or executing scripts and queries.</td></tr>
+                <tr><td><code>--no-stat</code></td><td>Disable statistics collection to reduce overhead.</td></tr>
+                <tr><td><code>--no-jmx</code></td><td>Disable JMX MBean registration.</td></tr>
+                <tr><td><code>--template</code>, <code>-t</code></td><td>Create an <code>etl.xml</code> template in the current directory.</td></tr>
               </tbody>
             </table>
           </div>
+          <p>Single-dash long forms such as <code>-help</code>, <code>-quiet</code>, <code>-nostat</code>, and <code>-nojmx</code> remain accepted for compatibility. Prefer the canonical double-dash forms in new scripts. A successful <code>--check</code> verifies configuration loading and implemented static checks; it does not validate runtime SQL, contact external systems, or guarantee safe execution.</p>
         </section>
       </section>
 

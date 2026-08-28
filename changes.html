@@ -51,6 +51,7 @@
         <h2>Contents</h2>
         <ul>
           <li><a href="#introduction">About this page</a></li>
+          <li><a href="#version_1.5">Version 1.5 (in preparation)</a></li>
           <li><a href="#version_1.4">Version 1.4 (2026-08-14)</a></li>
           <li><a href="#version_1.3">Version 1.3 (2026-07-17)</a></li>
           <li><a href="#version_1.2">Version 1.2 (2019-10-03)</a></li>
@@ -69,6 +70,27 @@
 
       <h2 id="introduction">About this page</h2>
       <p>From Release 1.3 onward, the authoritative changelog is <a href="https://github.com/scriptella/scriptella-etl/blob/master/CHANGELOG.md">CHANGELOG.md</a> in the source repository.</p>
+
+      <h2 id="version_1.5">Version 1.5 (in preparation)</h2>
+      <p>Scriptella 1.5 is a focused compatibility and usability release. The final date and release links will be added after the immutable artifacts are published and verified.</p>
+
+      <h3 id="code_1.5">Planned changes</h3>
+      <ul>
+        <li>First-class current PostgreSQL and MariaDB JDBC guidance and a targeted MySQL 8.4.11 / Connector/J 26.7.0 validation lane. Vendor JDBC drivers remain external.</li>
+        <li>A dedicated MariaDB alias, current preferred MySQL, Oracle, and SQL Server driver classes, and canonical URL autodetection.</li>
+        <li>Clearer, credential-safe diagnostics for missing, broken, or URL-incompatible JDBC drivers.</li>
+        <li>Apache Velocity Engine 2.4.1, Commons Lang 3.20.0, and Spring Framework 7.0.9 replace unsupported or vulnerable optional integration dependencies.</li>
+        <li>Release validation on JDK 17 and JDK 25 while emitted Scriptella classes retain the Java 17 baseline.</li>
+        <li>An experimental <code>--check</code> command that loads and statically checks ETL configuration without executing it.</li>
+      </ul>
+
+      <h3 id="upgrade_1.5">Upgrade notes</h3>
+      <ul>
+        <li>Java 17 remains the minimum runtime.</li>
+        <li>Use current JDBC driver generations and the documented external connection <code>classpath</code>; Scriptella does not bundle vendor JDBC drivers.</li>
+        <li>Oracle and SQL Server adapter updates are provisional compatibility improvements, not real-server certification claims.</li>
+        <li>The Velocity and Spring optional integrations have new runtime dependency sets; review the final release notes before upgrading applications that use them.</li>
+      </ul>
 
       <h2 id="version_1.4">Version 1.4 (2026-08-14)</h2>
       <p>Scriptella 1.4 is a maintenance and modernization release focused on making the project easier to build, run, and maintain on current Java platforms while preserving its lightweight ETL model and existing scripting behavior.</p>
