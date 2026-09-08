@@ -163,7 +163,7 @@ a:hover {
 .site-header__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   height: 100%;
 }
 
@@ -203,7 +203,7 @@ a:hover {
 
 .primary-nav ul {
   display: flex;
-  margin: 0;
+  margin: 0 0 0 auto;
   padding: 0;
   list-style: none;
 }
@@ -247,7 +247,7 @@ a:hover {
   place-items: center;
   width: 2.25rem;
   height: 2.25rem;
-  margin-left: 1.25rem;
+  margin-left: 0;
   padding: 0;
   color: var(--text-primary);
   background: var(--bg-surface);
@@ -273,6 +273,103 @@ a:hover {
 
 .theme-toggle[data-theme-current="dark"]::before {
   content: "☾";
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  margin-left: 2.5rem;
+}
+
+.language-menu {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.language-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.language-toggle:hover,
+.language-toggle:focus-visible {
+  color: var(--accent);
+  background: var(--bg-raised);
+  border-color: var(--accent);
+}
+
+.language-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.language-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.language-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  z-index: 30;
+  min-width: 10rem;
+  padding: 0.35rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 0.6rem 1.5rem rgb(0 0 0 / 18%);
+}
+
+.language-menu__dropdown a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.5rem 0.65rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-radius: calc(var(--radius) - 0.1rem);
+}
+
+.language-menu__dropdown span,
+.language-menu__dropdown small {
+  white-space: nowrap;
+}
+
+.language-menu__dropdown a:hover,
+.language-menu__dropdown a:focus-visible {
+  color: var(--accent-hover);
+  background: var(--bg-raised);
+}
+
+.language-menu__dropdown a::after {
+  display: none;
+}
+
+.language-menu__dropdown small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.language-menu__dropdown small::before {
+  content: "— ";
 }
 
 .copy-code {
@@ -992,6 +1089,7 @@ th {
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 0.15rem 1rem;
+    margin-left: 0;
   }
 
   .primary-nav li {
@@ -999,6 +1097,15 @@ th {
   }
 
   .theme-toggle {
+    margin-left: 0;
+  }
+
+  .language-menu {
+    margin-left: 0;
+  }
+
+  .header-controls {
+    align-self: flex-end;
     margin-left: 0;
   }
 

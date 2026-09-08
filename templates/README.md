@@ -6,7 +6,8 @@ The GitHub star aside lives in `github-prompt.html`. Copy that block
 unchanged; do not rewrite the wording on individual pages.
 Both templates use the shared `../style.css` stylesheet.
 They also load `../theme.js`, which applies and persists the Light, Dark, or
-System theme selected in the header.
+System theme selected in the header. Keep the language menu next to the theme
+control when creating or refreshing a page header.
 
 The templates live one directory below the site root, so local paths begin with
 `../`. After copying a template, adjust the stylesheet, favicon, logo, and

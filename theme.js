@@ -58,6 +58,48 @@
     updateControls();
   }
 
+  function initializeLanguageMenus() {
+    var menus = document.querySelectorAll("[data-language-menu]");
+    menus.forEach(function (menu) {
+      var toggle = menu.querySelector("[data-language-toggle]");
+      var dropdown = menu.querySelector("[data-language-dropdown]");
+      if (!toggle || !dropdown) {
+        return;
+      }
+
+      function close() {
+        dropdown.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+      }
+
+      function open() {
+        dropdown.hidden = false;
+        toggle.setAttribute("aria-expanded", "true");
+      }
+
+      toggle.addEventListener("click", function () {
+        if (dropdown.hidden) {
+          open();
+        } else {
+          close();
+        }
+      });
+
+      menu.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          close();
+          toggle.focus();
+        }
+      });
+
+      document.addEventListener("click", function (event) {
+        if (!menu.contains(event.target)) {
+          close();
+        }
+      });
+    });
+  }
+
   function initializeCopyButtons() {
     document.querySelectorAll("[data-copy-button]").forEach(function (button) {
       var container = button.closest("[data-copy-code]");
@@ -205,6 +247,7 @@
 
   function initializePage() {
     initializeControls();
+    initializeLanguageMenus();
     initializeCopyButtons();
     initializeSyntaxHighlighting();
   }
