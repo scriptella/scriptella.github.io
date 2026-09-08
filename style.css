@@ -328,7 +328,8 @@ a:hover {
   top: calc(100% + 0.55rem);
   right: 0;
   z-index: 30;
-  min-width: 10rem;
+  width: max-content;
+  min-width: 12.5rem;
   padding: 0.35rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-strong);
@@ -338,10 +339,11 @@ a:hover {
 
 .language-menu__dropdown a {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
   align-items: baseline;
-  gap: 1rem;
-  padding: 0.5rem 0.65rem;
+  gap: 1.25rem;
+  padding: 0.5rem 0.75rem;
   color: var(--text-primary);
   font-size: 0.9rem;
   text-decoration: none;
