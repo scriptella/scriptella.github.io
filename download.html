@@ -46,23 +46,40 @@
   <main id="main-content" class="page-shell page-shell--reading">
     <article class="page-content">
       <h1>Download Scriptella</h1>
-      <p class="lede">Scriptella 1.5 is being prepared on an unpublished website branch. Until its artifacts are published and verified, Scriptella 1.4 remains the current downloadable release from <a href="https://github.com/scriptella/scriptella-etl/releases/tag/scriptella-parent-1.4">GitHub Releases</a> and Maven Central.</p>
+      <p class="lede">Scriptella 1.5 is the latest stable release, available from <a href="https://github.com/scriptella/scriptella-etl/releases/tag/scriptella-parent-1.5">GitHub Releases</a> and Maven Central.</p>
 
       <aside class="note" aria-label="Release status">
-        <strong>Version 1.5 is in release preparation.</strong> Do not use planned 1.5 URLs until Maven Central and GitHub publication are complete. Version 1.4 remains available below; both versions use a Java 17 baseline. Scriptella 1.3 remains available for Java 8.
+        <strong>Version 1.5 is available.</strong> It uses a Java 17 baseline. Version 1.4 remains available below, and Scriptella 1.3 remains available for Java 8 compatibility.
       </aside>
 
       <section aria-labelledby="version-1-5">
-        <h2 id="version-1-5">Version 1.5 (in preparation)</h2>
+        <h2 id="version-1-5">Version 1.5 (September 8, 2026)</h2>
         <p>Scriptella 1.5 focuses on current JDBC database compatibility, clearer driver-loading diagnostics, maintained optional Spring and Velocity integrations, and release validation on JDK 17 and JDK 25.</p>
-        <p>PostgreSQL and MariaDB have recorded full candidate validation. MySQL has one targeted MySQL 8.4.11 / Connector/J 26.7.0 lane rather than a broad compatibility matrix. Vendor JDBC drivers remain external dependencies.</p>
-        <p>This section will receive the final release date, GitHub asset links, Maven example, and verified installer status only after the immutable 1.5 artifacts are public.</p>
+        <p>PostgreSQL and MariaDB have recorded full release validation. MySQL has one targeted MySQL 8.4.11 / Connector/J 26.7.0 lane rather than a broad compatibility matrix. Vendor JDBC drivers remain external dependencies.</p>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Scriptella 1.5 downloads">
+          <table>
+            <thead>
+              <tr><th scope="col">Package</th><th scope="col">Download</th><th scope="col">Verification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Binary distribution</td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-1.5.zip">scriptella-1.5.zip</a></td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-1.5.zip.asc">signature</a> · <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-1.5.zip.sha256">SHA-256</a></td></tr>
+              <tr><td>Source distribution</td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-1.5-src.zip">scriptella-1.5-src.zip</a></td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-1.5-src.zip.asc">signature</a> · <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-1.5-src.zip.sha256">SHA-256</a></td></tr>
+              <tr><td>Examples</td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-examples-1.5.zip">scriptella-examples-1.5.zip</a></td><td><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-examples-1.5.zip.asc">signature</a> · <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-examples-1.5.zip.sha256">SHA-256</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Maven coordinates:</p>
+        <pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.scriptella&lt;/groupId&gt;
+  &lt;artifactId&gt;scriptella-core&lt;/artifactId&gt;
+  &lt;version&gt;1.5&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
       </section>
 
       <section aria-labelledby="one-command-installer">
         <span id="one-command-installer" class="anchor-target" aria-hidden="true"></span>
         <h2>Experimental curl installer</h2>
-        <p>The installer continues to install the published Scriptella 1.4 ZIP while 1.5 is being prepared:</p>
+        <p>The installer installs the published Scriptella 1.5 ZIP:</p>
         <div class="copy-code" data-copy-code>
           <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
           <button class="copy-code__button" type="button" data-copy-button aria-label="Copy installer command" title="Copy installer command">
@@ -76,7 +93,7 @@
         </div>
         <p>The installer places Scriptella under <code>${HOME}/.local/scriptella</code>. It either adds <code>${HOME}/.local/scriptella/bin</code> to an existing startup file or prints the exact PATH command to add manually. The guaranteed command is the packaged <code>scriptella.sh</code> launcher:</p>
         <pre><code>scriptella.sh path/to/file.etl.xml</code></pre>
-        <p>The installer does not install Java; Scriptella requires Java 17 or newer. It will be updated to 1.5 only after the final ZIP hash is frozen and the published archive passes a clean disposable-home test. When the installer updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>.</p>
+        <p>The installer does not install Java; Scriptella requires Java 17 or newer. It is pinned to the published 1.5 archive and checksum. When the installer updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>.</p>
       </section>
 
       <section aria-labelledby="version-1-4">
