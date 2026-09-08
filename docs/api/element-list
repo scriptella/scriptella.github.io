@@ -15,6 +15,7 @@ scriptella.driver.jndi
 scriptella.driver.ldap
 scriptella.driver.ldap.ldif
 scriptella.driver.mail
+scriptella.driver.mariadb
 scriptella.driver.mssql
 scriptella.driver.mysql
 scriptella.driver.oracle
