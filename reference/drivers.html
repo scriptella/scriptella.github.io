@@ -71,7 +71,15 @@
           <strong>Note:</strong> JDBC adapters are recommended, but any JDBC-compliant driver can be used directly.
         </aside>
         <aside class="note" aria-label="Scriptella 1.5 database compatibility">
-          <strong>Scriptella 1.5:</strong> PostgreSQL and MariaDB have recorded full release validation with current drivers. MySQL has one targeted MySQL 8.4.11 / Connector/J 26.7.0 lane. Oracle and SQL Server use current preferred driver classes but remain provisional because they do not yet have real-server matrix results. Vendor JDBC JARs are supplied externally through a connection <code>classpath</code>.
+          <strong>Scriptella 1.5:</strong> PostgreSQL and MariaDB have recorded full
+          release validation with current drivers. MySQL has one targeted MySQL
+          8.4.11 / Connector/J 26.7.0 lane. Oracle and SQL Server use current
+          preferred driver classes but remain provisional because they do not
+          yet have real-server matrix results. Vendor JDBC JARs are supplied
+          externally through a connection <code>classpath</code>. See the <a
+          href="https://github.com/scriptella/scriptella-etl/blob/master/docs/core-database-compatibility.md">core
+          database compatibility matrix</a> for validation targets, driver
+          download links, and connection <code>classpath</code> examples.
         </aside>
         <div class="table-scroll" tabindex="0" role="region" aria-label="JDBC bridge drivers">
           <table class="drivers-matrix">
