@@ -14,6 +14,45 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Scriptella — Simple ETL and script execution">
   <meta name="twitter:description" content="Scriptella is an open source Java ETL and script execution tool built around SQL and simple XML configuration.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://scriptella.org/#software",
+        "name": "Scriptella",
+        "description": "An open source Java ETL and script execution tool built around SQL and simple XML configuration.",
+        "url": "https://scriptella.org/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Linux, macOS, Windows",
+        "softwareRequirements": "Java 17 or later",
+        "softwareVersion": "1.5",
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "downloadUrl": "https://scriptella.org/download.html",
+        "sameAs": "https://github.com/scriptella/scriptella-etl",
+        "offers": {
+          "@type": "Offer",
+          "price": 0,
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://scriptella.org/#source",
+        "name": "Scriptella source code",
+        "url": "https://github.com/scriptella/scriptella-etl",
+        "codeRepository": "https://github.com/scriptella/scriptella-etl",
+        "programmingLanguage": "Java",
+        "runtimePlatform": "Java 17 or later",
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "targetProduct": {
+          "@id": "https://scriptella.org/#software"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">
   <script src="theme.js"></script>
@@ -120,6 +159,39 @@
           <li>Parameterized execution of SQL and other scripts</li>
           <li>A focused alternative to the Ant <code>&lt;sql&gt;</code> task</li>
         </ul>
+      </section>
+
+      <section id="when-to-use" aria-labelledby="when-to-use-title">
+        <h2 id="when-to-use-title">When to use Scriptella</h2>
+        <p>Choose Scriptella when SQL does most of the work and you need lightweight, repeatable orchestration across databases, files, or other data sources. For a different primary job, a more specialized tool may fit better.</p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Choose</th>
+                <th scope="col">When it fits best</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Scriptella</th>
+                <td>SQL-centric ETL, data migration, or coordinated script execution across multiple data sources, with minimal infrastructure.</td>
+              </tr>
+              <tr>
+                <th scope="row">Plain scripts</th>
+                <td>Small, one-off tasks with simple control flow and no need for reusable ETL structure.</td>
+              </tr>
+              <tr>
+                <th scope="row">Flyway or Liquibase</th>
+                <td>Versioned database schema changes are the primary goal, especially as part of application deployment.</td>
+              </tr>
+              <tr>
+                <th scope="row">Spring Batch</th>
+                <td>Large or complex batch workloads need chunk processing, job restartability, retry policies, or deep Spring integration.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section id="features" class="getting-started" aria-labelledby="getting-started-title">
