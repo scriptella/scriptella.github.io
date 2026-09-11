@@ -175,19 +175,19 @@
             <tbody>
               <tr>
                 <th scope="row">Scriptella</th>
-                <td>SQL-centric ETL, data migration, or coordinated script execution across multiple data sources, with minimal infrastructure.</td>
+                <td>SQL-centric ETL, data migration, straightforward database initialization and schema upgrades, and coordinated script execution across multiple data sources, with minimal infrastructure.</td>
               </tr>
               <tr>
                 <th scope="row">Plain scripts</th>
                 <td>Small, one-off tasks with simple control flow and no need for reusable ETL structure.</td>
               </tr>
               <tr>
-                <th scope="row">Flyway or Liquibase</th>
-                <td>Versioned database schema changes are the primary goal, especially as part of application deployment.</td>
+                <th scope="row">Dedicated schema migration tools</th>
+                <td>Schema versioning and deployment history are the primary concern and need specialized migration lifecycle features.</td>
               </tr>
               <tr>
-                <th scope="row">Spring Batch</th>
-                <td>Large or complex batch workloads need chunk processing, job restartability, retry policies, or deep Spring integration.</td>
+                <th scope="row">Batch frameworks</th>
+                <td>Complex batch workloads need chunk processing, persistent job state, restartability, retry policies, or deep application-framework integration.</td>
               </tr>
             </tbody>
           </table>
