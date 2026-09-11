@@ -67,8 +67,11 @@
         <p>
           Current JDBC guidance covers PostgreSQL, MariaDB, MySQL, Oracle, and SQL
           Server. PostgreSQL and MariaDB have full
-          release validation; MySQL has targeted validation, while Oracle and SQL
-          Server remain provisional. See the <a
+          release validation; MySQL has targeted validation. Oracle Free and SQL
+          Server have focused public real-database compatibility tests through the
+          <a href="https://github.com/scriptella/scriptella-testcontainers">Scriptella
+          Testcontainers suite</a>, but this is not a broad compatibility or
+          certification matrix. See the <a
           href="https://github.com/scriptella/scriptella-etl/blob/master/docs/core-database-compatibility.md">core
           database compatibility matrix</a> for details, driver links, and
           <code>classpath</code> examples.
@@ -133,7 +136,7 @@
                 <td><a href="../docs/api/scriptella/driver/mssql/package-summary.html#package.description">Microsoft SQL Server Database</a></td>
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>mssql</strong>.<wbr>Driver</code></td>
                 <td class="col-native-driver"><code>com.<wbr>microsoft.<wbr>sqlserver.<wbr>jdbc.<wbr>SQLServerDriver</code></td>
-                <td>Preferred class for <code>jdbc:sqlserver:</code> URLs; adapter-level coverage only, without a recorded real-server matrix.</td>
+                <td>Preferred class for <code>jdbc:sqlserver:</code> URLs; focused public Linux Testcontainers coverage, not a broad release matrix.</td>
               </tr>
               <tr id="mysql">
                 <td><a href="../docs/api/scriptella/driver/mysql/package-summary.html#package.description">MySQL Database</a></td>
@@ -145,7 +148,7 @@
                 <td><a href="../docs/api/scriptella/driver/oracle/package-summary.html#package.description">Oracle Database</a></td>
                 <td class="col-driver-name"><code>scriptella.<wbr>driver.<wbr><strong>oracle</strong>.<wbr>Driver</code></td>
                 <td class="col-native-driver"><code>oracle.<wbr>jdbc.<wbr>OracleDriver</code></td>
-                <td>Preferred class for <code>jdbc:oracle:</code> URLs, including simplified handling of PL/SQL blocks; adapter-level coverage only, without a recorded real-server matrix.</td>
+                <td>Preferred class for <code>jdbc:oracle:</code> URLs, including simplified handling of PL/SQL blocks; focused public Oracle Free Testcontainers coverage, not a broad release matrix.</td>
               </tr>
               <tr id="postgresql">
                 <td><a href="../docs/api/scriptella/driver/postgresql/package-summary.html#package.description">PostgreSQL Database</a></td>
