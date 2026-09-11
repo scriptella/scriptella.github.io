@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Initialize a database on application startup — Scriptella</title>
-  <meta name="description" content="Use Scriptella to initialize and upgrade a database when a Java web application starts.">
+  <meta name="description" content="Use Scriptella with Jakarta Servlet or Spring Framework 7 to initialize and upgrade a database when a Java application starts.">
   <link rel="canonical" href="https://scriptella.org/howto/initialize-database.html">
   <meta property="og:title" content="Initialize a database on application startup — Scriptella">
-  <meta property="og:description" content="Use Scriptella to initialize and upgrade a database when a Java web application starts.">
+  <meta property="og:description" content="Use Scriptella with Jakarta Servlet or Spring Framework 7 to initialize and upgrade a database when a Java application starts.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://scriptella.org/howto/initialize-database.html">
   <meta property="og:image" content="https://scriptella.org/images/scriptella-logo.svg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Initialize a database on application startup — Scriptella">
-  <meta name="twitter:description" content="Use Scriptella to initialize and upgrade a database when a Java web application starts.">
+  <meta name="twitter:description" content="Use Scriptella with Jakarta Servlet or Spring Framework 7 to initialize and upgrade a database when a Java application starts.">
   <link rel="icon" href="../favicon.ico" sizes="32x32">
   <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
   <script src="../theme.js"></script>
@@ -50,7 +50,14 @@
       <ul>
         <li><a href="../reference/index.html">Reference</a></li>
         <li><a href="../reference/drivers.html">Drivers</a></li>
-        <li><a href="initialize-database.html" aria-current="page">How-tos</a></li>
+        <li>
+          <span class="docs-nav__group-label">How-tos</span>
+          <ul>
+            <li><a href="create-database.html">Create and initialize a database</a></li>
+            <li><a href="initialize-database.html" aria-current="page">Initialize on application startup</a></li>
+            <li><a href="migrate-from-ant.html">Migrate from the Ant SQL task</a></li>
+          </ul>
+        </li>
         <li><a href="../faq.html">FAQ</a></li>
         <li><a href="../docs/api/index.html">API documentation</a></li>
         <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
@@ -59,9 +66,12 @@
 
     <article class="page-content">
       <h1>Initialize a database on application startup</h1>
-      <p class="lede">This guide shows one way to automate database schema initialization and upgrades with Scriptella, using the Spring ImageDB sample application as its example.</p>
 
-      <aside class="note" aria-label="Document status"><strong>Status:</strong> This historical how-to is a work in progress. Its Spring 2.0 sample links and APIs may require adaptation for a current application.</aside>
+      <aside class="note" aria-label="Basic database setup"><strong>Looking for basic database setup?</strong> See <a href="create-database.html">Create and initialize a database</a> for PostgreSQL and MariaDB setup and what you can do next with Scriptella.</aside>
+
+      <p class="lede">This guide shows how to automate database schema initialization and upgrades with Scriptella, using either Jakarta Servlet or Spring Framework 7 and a small ImageDB schema as the example.</p>
+
+      <aside class="note" aria-label="Compatibility"><strong>Compatibility:</strong> This guide targets Java 17+, with separate integration options for Jakarta Servlet 6.1 and Spring Framework 7.</aside>
 
       <section id="Intended-Audience">
         <h2>Intended audience</h2>
@@ -86,7 +96,8 @@
 
       <section id="Prerequisites">
         <h2>Prerequisites</h2>
-        <p>The original example is based on the ImageDB sample from Spring 2.0. You can use the same technique with your own Java web application, SQL schema files, and JDBC driver.</p>
+        <p>Use Scriptella with Java 17 or newer. For the Spring-managed connection example, add Spring Framework 7 and your JDBC driver to the application. A web application also needs a Jakarta Servlet 6.1 container, such as Tomcat 11 or Jetty 12.1.</p>
+        <p>The small ImageDB schema is adapted from the original Spring 2.0 sample, but the integration code and configuration below use currently supported APIs. You can apply the same technique to your own application and SQL schema files.</p>
       </section>
 
       <section id="Steps">
@@ -156,29 +167,35 @@
 
         <section id="Automatic+initialization+in+a+ServletContextListener">
           <h3>3. Run it from a servlet context listener</h3>
-          <p>Create a <code>ServletContextListener</code> that executes the ETL when the application starts:</p>
-          <pre><code class="language-java">public class WebDbInitializer implements ServletContextListener {
+          <p>In a web application, use the Jakarta Servlet API. The <code>@WebListener</code> annotation registers a listener that executes the ETL when the application starts:</p>
+          <pre><code class="language-java">import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
+import java.net.URL;
+import scriptella.execution.EtlExecutor;
+import scriptella.execution.EtlExecutorException;
+
+@WebListener
+public class WebDbInitializer implements ServletContextListener {
   static void initDatabase(URL etlUrl) throws EtlExecutorException {
     EtlExecutor.newExecutor(etlUrl).execute();
   }
 
+  @Override
   public void contextInitialized(ServletContextEvent event) {
     ServletContext context = event.getServletContext();
     try {
       initDatabase(context.getResource("/WEB-INF/db/webinit.etl.xml"));
       context.log("DB script executed");
     } catch (Exception e) {
-      context.log("Unable to execute DB script", e);
+      throw new IllegalStateException("Database initialization failed", e);
     }
   }
 }</code></pre>
-          <p>Register the listener in <code>web.xml</code>:</p>
-          <pre><code class="language-xml">&lt;web-app&gt;
-  &lt;listener&gt;
-    &lt;listener-class&gt;scriptella.imagedb.WebDbInitializer&lt;/listener-class&gt;
-  &lt;/listener&gt;
-&lt;/web-app&gt;</code></pre>
-          <p>For an H2 deployment on Tomcat, <code>webinit.etl.properties</code> can contain:</p>
+          <p>Failing application startup is the safer production default: the application should not serve requests if schema creation or migration did not complete. Use best-effort initialization only when the application can safely operate without the database, and make that behavior explicit.</p>
+          <p>You can register the listener in a Jakarta Servlet 6.1 <code>web.xml</code> deployment descriptor instead if your application does not scan servlet annotations.</p>
+          <p>For an H2 deployment on Tomcat 11, <code>webinit.etl.properties</code> can contain:</p>
           <pre><code>driver=h2
 url=jdbc:h2:file:${catalina.home}/db/imagedb
 user=sa
@@ -187,11 +204,23 @@ password=</code></pre>
 
         <section id="Integration+with+Spring+Framework">
           <h3>Alternative: integrate with Spring</h3>
-          <p>The Scriptella Spring adapter can start the ETL from an application context:</p>
-          <pre><code class="language-xml">&lt;bean class="scriptella.driver.spring.EtlExecutorBean"&gt;
-  &lt;property name="configLocation" value="/WEB-INF/db/webinit.etl.xml"/&gt;
-  &lt;property name="autostart" value="true"/&gt;
-&lt;/bean&gt;</code></pre>
+          <p>For a Spring application, prefer Java configuration. Place the ETL files under <code>src/main/resources/db</code>, then define an <code>EtlExecutorBean</code> that starts after Spring has supplied its configuration:</p>
+          <pre><code class="language-java">import java.io.IOException;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import scriptella.driver.spring.EtlExecutorBean;
+
+@Configuration
+public class DatabaseConfiguration {
+  @Bean
+  EtlExecutorBean databaseInitializer() throws IOException {
+    EtlExecutorBean executor = new EtlExecutorBean();
+    executor.setConfigLocation(new ClassPathResource("db/webinit.etl.xml"));
+    executor.setAutostart(true);
+    return executor;
+  }
+}</code></pre>
           <span id="configLocation" class="anchor-target" aria-hidden="true"></span>
           <span id="autostart" class="anchor-target" aria-hidden="true"></span>
           <p>The corresponding properties use the Spring-managed data source:</p>
@@ -208,6 +237,7 @@ url=dataSource</code></pre>
           <li><a href="https://martinfowler.com/articles/evodb.html">Evolutionary Database Design</a> by Martin Fowler and Pramod Sadalage</li>
         </ul>
       </section>
+      <aside class="note" aria-label="Testing status"><strong>Testing status:</strong> This complete application-startup flow has not been fully tested with the current versions. If you run into a problem, please <a href="https://github.com/scriptella/scriptella-etl/issues/new">file an issue</a> with details about your environment and configuration.</aside>
       <aside class="github-prompt" aria-label="Support Scriptella">
         <strong>Scriptella useful?</strong>
         <p>Star it on GitHub to help others discover it.</p>

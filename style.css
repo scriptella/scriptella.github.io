@@ -641,6 +641,23 @@ a:hover {
   border-left-color: var(--accent);
 }
 
+.docs-nav__group-label {
+  display: block;
+  padding: 0.45rem 0.65rem 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.docs-nav li ul {
+  margin-left: 0.6rem;
+}
+
+.docs-nav li ul a {
+  font-size: 0.86rem;
+}
+
 h1,
 h2,
 h3,
