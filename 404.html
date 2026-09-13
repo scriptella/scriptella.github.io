@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Page not found — Scriptella</title>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-192.png" sizes="192x192">
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .error-page {
+      display: grid;
+      min-height: 100vh;
+      min-height: 100svh;
+      place-items: center;
+    }
+
+    .error-page__content {
+      width: min(100% - 3rem, 32rem);
+      text-align: center;
+    }
+
+    .error-page__code {
+      margin: 0;
+      color: var(--accent);
+      font: 700 clamp(5rem, 25vw, 9rem)/0.85 var(--font-mono);
+      letter-spacing: -0.08em;
+    }
+
+    .error-page h1 {
+      margin: 1.5rem 0 2.5rem;
+      color: var(--text-primary);
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      line-height: 1.2;
+    }
+
+    .error-page__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      justify-content: center;
+    }
+
+    .error-page__links a {
+      font-weight: 700;
+    }
+
+    .error-page__suggestion {
+      margin: 0 0 1.5rem;
+    }
+
+    .error-page__suggestion[hidden] {
+      display: none;
+    }
+  </style>
+</head>
+<body class="error-page">
+  <main class="error-page__content">
+    <p class="error-page__code">404</p>
+    <h1>Page not found</h1>
+    <p class="error-page__suggestion" data-page-suggestion hidden>
+      Looking for <a data-page-suggestion-link></a>?
+    </p>
+    <nav class="error-page__links" aria-label="Where to go next">
+      <a href="https://scriptella.org/">scriptella.org</a>
+      <a href="https://github.com/scriptella/scriptella-etl">Scriptella GitHub</a>
+    </nav>
+  </main>
+  <script>
+    (function () {
+      "use strict";
+
+      var routes = [
+        { pattern: /(?:^|\/)api(?:\/|$)/, label: "the API documentation", href: "/docs/api/" },
+        { pattern: /(?:^|\/)(?:docs?|reference)(?:\/|$)/, label: "the documentation", href: "/reference/" },
+        { pattern: /(?:^|\/)drivers?(?:[./_-]|$)/, label: "the driver reference", href: "/reference/drivers.html" },
+        { pattern: /(?:^|\/)tutorial(?:[./_-]|$)/, label: "the tutorial", href: "/tutorial.html" },
+        { pattern: /(?:^|\/)downloads?(?:[./_-]|$)/, label: "downloads", href: "/download.html" },
+        { pattern: /(?:^|\/)faq(?:[./_-]|$)/, label: "the FAQ", href: "/faq.html" },
+        { pattern: /(?:^|\/)support(?:[./_-]|$)/, label: "support", href: "/support.html" },
+        { pattern: /(?:^|\/)(?:changes?|changelog)(?:[./_-]|$)/, label: "the change history", href: "/changes.html" },
+        { pattern: /(?:^|\/)licen[cs]e(?:[./_-]|$)/, label: "the license", href: "/license.html" }
+      ];
+
+      var path;
+      try {
+        path = decodeURIComponent(window.location.pathname).toLowerCase();
+      } catch (error) {
+        path = window.location.pathname.toLowerCase();
+      }
+
+      var route = routes.find(function (candidate) {
+        return candidate.pattern.test(path);
+      });
+
+      if (!route) {
+        return;
+      }
+
+      var suggestion = document.querySelector("[data-page-suggestion]");
+      var link = document.querySelector("[data-page-suggestion-link]");
+      link.href = route.href;
+      link.textContent = route.label;
+      suggestion.hidden = false;
+    }());
+  </script>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>
