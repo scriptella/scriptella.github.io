@@ -48,21 +48,11 @@
       <h1>Download Scriptella</h1>
       <p class="lede">Scriptella 1.5 is the latest stable release, available from <a href="https://github.com/scriptella/scriptella-etl/releases/tag/scriptella-parent-1.5">GitHub Releases</a> and Maven Central.</p>
 
-      <aside class="note" aria-label="Release status">
-        <strong>Version 1.5 is available.</strong> It uses a Java 17 baseline. Version 1.4 remains available below, and Scriptella 1.3 remains available for Java 8 compatibility.
-      </aside>
-
       <section aria-labelledby="version-1-5">
         <h2 id="version-1-5">Version 1.5 (September 8, 2026)</h2>
+        <p><strong>Version 1.5 is available.</strong> It uses a Java 17 baseline. Version 1.4 remains available below, and Scriptella 1.3 remains available for Java 8 compatibility.</p>
         <p>Scriptella 1.5 focuses on current JDBC database compatibility, clearer driver-loading diagnostics, maintained optional Spring and Velocity integrations, and release validation on JDK 17 and JDK 25.</p>
-        <p>A public <a href="https://github.com/scriptella/scriptella-testcontainers">Testcontainers-powered compatibility suite</a> exercises focused ETL behavior against PostgreSQL, MariaDB, Oracle Free, and Microsoft SQL Server.</p>
-        <p>PostgreSQL and MariaDB have recorded full release validation. MySQL
-        has one targeted MySQL 8.4.11 / Connector/J 26.7.0 lane rather than a
-        broad compatibility matrix. Vendor JDBC drivers remain external
-        dependencies. See the <a
-        href="https://github.com/scriptella/scriptella-etl/blob/master/docs/core-database-compatibility.md">core
-        database compatibility matrix</a> for validation targets, driver
-        download links, and connection <code>classpath</code> examples.</p>
+        <p>PostgreSQL and MariaDB have full release validation. MySQL has one targeted MySQL 8.4.11 / Connector/J 26.7.0 lane, not a broad compatibility matrix. Vendor JDBC drivers remain external dependencies. See the <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/core-database-compatibility.md">core database compatibility matrix</a> for validation targets, driver links, and connection <code>classpath</code> examples.</p>
         <div class="table-scroll" tabindex="0" role="region" aria-label="Scriptella 1.5 downloads">
           <table>
             <thead>
@@ -133,7 +123,7 @@
       <section aria-labelledby="version-1-3">
         <span id="Version%3A+1.3+%28July+16%2C+2026%29" class="anchor-target" aria-hidden="true"></span>
         <h2 id="version-1-3">Previous version: 1.3 (July 17, 2026)</h2>
-        <p>Scriptella 1.3 remains the Java 8 line. Use it when you need Java 8, the historical HSQLDB adapter, or the JDBC-ODBC bridge adapter.</p>
+        <p>Scriptella 1.3 remains available for Java 8 compatibility. Use it when you need Java 8, the historical HSQLDB adapter, or the JDBC-ODBC bridge adapter.</p>
         <div class="table-scroll" tabindex="0" role="region" aria-label="Scriptella 1.3 downloads">
           <table>
             <thead>

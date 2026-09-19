@@ -87,7 +87,9 @@ USE myapp;</code></pre>
 
       <section id="initialize-with-scriptella">
         <h2>Initialize it with Scriptella</h2>
-        <p>Place the PostgreSQL JDBC driver in Scriptella's <code>lib</code> directory. Then save this example as <code>init.etl.xml</code>; it connects to the PostgreSQL database, creates a table, and inserts its first row:</p>
+        <p>If you have not installed Scriptella yet, use the <a href="../download.html#one-command-installer">one-command installer</a>:</p>
+        <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
+        <p>Follow the installer's instructions for adding Scriptella to your <code>PATH</code>. If it updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>; if it says PATH was not changed automatically, add the printed export line. Download the <a href="https://jdbc.postgresql.org/download/">PostgreSQL pgJDBC driver</a> and place the JAR in <code>${HOME}/.local/scriptella/lib</code>. Save this example as <code>init.etl.xml</code>; it connects to the PostgreSQL database, creates a table, and inserts its first row:</p>
         <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
 &lt;etl&gt;
   &lt;connection
@@ -106,8 +108,8 @@ USE myapp;</code></pre>
   &lt;/script&gt;
 &lt;/etl&gt;</code></pre>
         <p>Run the ETL file with Scriptella:</p>
-        <pre><code>scriptella init.etl.xml</code></pre>
-        <p>This creates the table and inserts the first row. The same approach works with MariaDB and other JDBC databases by changing the connection URL and JDBC driver.</p>
+        <pre><code>scriptella.sh init.etl.xml</code></pre>
+        <p>This creates the table and inserts the first row. The same approach works with <a href="https://mariadb.com/docs/connectors/mariadb-connector-j/">MariaDB</a> and other JDBC databases by changing the JDBC driver and connection URL.</p>
         <p>For larger schemas, SQL can also be kept in separate files and included from the ETL file.</p>
       </section>
 
