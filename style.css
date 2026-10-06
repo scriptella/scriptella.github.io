@@ -466,11 +466,22 @@ a:hover {
 
 .hero__example pre {
   margin: 0;
-  overflow-x: hidden;
+  overflow-x: auto;
   border: 0;
   border-radius: 0;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  white-space: pre;
+  overflow-wrap: normal;
+  scrollbar-color: var(--border-strong) transparent;
+  scrollbar-width: thin;
+}
+
+.hero__example pre::-webkit-scrollbar {
+  height: 0.55rem;
+}
+
+.hero__example pre::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
 }
 
 .code-label {
@@ -527,7 +538,6 @@ a:hover {
   margin-bottom: 0;
 }
 
-.split-section,
 .release-note {
   display: grid;
   grid-template-columns: minmax(15rem, 0.75fr) minmax(0, 1.25fr);
@@ -536,7 +546,6 @@ a:hover {
   border-block: 1px solid var(--border);
 }
 
-.split-section h2,
 .release-note h2 {
   margin-top: 0;
 }
@@ -1008,29 +1017,12 @@ th {
   border-color: var(--accent);
 }
 
-.button--github {
-  color: var(--accent);
-  background: transparent;
-  border-color: var(--accent);
-}
-
-.button--github:hover {
-  color: var(--accent-contrast);
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-}
-
 .github-prompt {
-  margin-block: 2rem;
-  padding: 1.25rem;
-  background: var(--bg-raised);
-  border: 1px solid var(--border-strong);
-  border-inline-start: 3px solid var(--accent);
-  border-radius: var(--radius);
+  margin-block: 2rem 0;
 }
 
 .github-prompt p {
-  margin-block: 0.35rem 1rem;
+  margin: 0;
 }
 
 .site-footer {
@@ -1088,16 +1080,32 @@ th {
   color: var(--accent-hover);
 }
 
+/* Keep the example beside the intro only while its longest line fits. */
+@media (max-width: 68rem) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 56rem) {
   .site-header {
     height: auto;
   }
 
   .site-header__inner {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.6rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "logo controls"
+      "nav nav";
+    align-items: center;
+    column-gap: 1rem;
+    row-gap: 0.35rem;
     padding-block: 0.85rem;
+  }
+
+  .site-logo {
+    grid-area: logo;
   }
 
   .site-logo img {
@@ -1105,6 +1113,7 @@ th {
   }
 
   .primary-nav ul {
+    grid-area: nav;
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 0.15rem 1rem;
@@ -1115,16 +1124,14 @@ th {
     margin: 0;
   }
 
-  .theme-toggle {
-    margin-left: 0;
-  }
-
+  .theme-toggle,
   .language-menu {
     margin-left: 0;
   }
 
   .header-controls {
-    align-self: flex-end;
+    grid-area: controls;
+    justify-self: end;
     margin-left: 0;
   }
 
@@ -1137,7 +1144,6 @@ th {
   .feature-grid,
   .route-grid,
   .link-grid,
-  .split-section,
   .release-note {
     grid-template-columns: 1fr;
   }
