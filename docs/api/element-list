@@ -24,6 +24,7 @@ scriptella.driver.script
 scriptella.driver.scriptella
 scriptella.driver.shell
 scriptella.driver.spring
+scriptella.driver.sqlite
 scriptella.driver.sybase
 scriptella.driver.text
 scriptella.driver.velocity

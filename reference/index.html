@@ -164,7 +164,7 @@
 
       <section id="System+Requirements">
         <h2>System requirements</h2>
-        <p>Current Scriptella releases require a Java 17 JDK or JRE and publish Java 17 bytecode. Scriptella 1.5 release validation covers JDK 17 and JDK 25. Remain on Scriptella 1.3 if you need Java 8. Memory use depends on the ETL and the connection providers it loads; in-process databases may need additional heap.</p>
+        <p>Current Scriptella releases require a Java 17 JDK or JRE and publish Java 17 bytecode. Scriptella 1.6 release validation covers JDK 17 and JDK 25. Remain on Scriptella 1.3 if you need Java 8. Memory use depends on the ETL and the connection providers it loads; in-process databases may need additional heap.</p>
       </section>
 
       <section id="Installation">
@@ -563,11 +563,23 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
         </section>
       </section>
 
+      <section id="direct-sql">
+        <h2>Run one SQL file directly</h2>
+        <p>Scriptella 1.6 can execute a UTF-8 SQL file without an ETL XML wrapper. The launcher uses the normal Scriptella executor and accepts standard JDBC URLs:</p>
+        <pre><code>scriptella.sh execute-sql --url jdbc:postgresql://localhost/app --user app schema.sql</code></pre>
+        <p>Property and expression substitution is enabled by default. Add <code>--no-substitution</code> to preserve dollar and question-mark text literally. For credentials, prefer the shared <code>${env.*}</code> configuration namespace over a password on the command line; see the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.6/docs/cli-usage.md">CLI and credential guide</a>.</p>
+        <p>Applications can use <code>EtlExecutor.newSqlFileExecutor(...)</code> and the same execution engine:</p>
+        <pre><code class="language-java">EtlExecutor executor = EtlExecutor.newSqlFileExecutor(
+    new File("schema.sql"), "jdbc:postgresql://localhost/app", user, password);
+ExecutionStatistics result = executor.execute();</code></pre>
+        <p>See the <a href="../docs/api/scriptella/execution/EtlExecutor.html">EtlExecutor API</a> and the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.6/docs/java-execution.md">Java execution guide</a>.</p>
+      </section>
+
       <section id="maven">
         <h2>Maven integration</h2>
-        <p>Use the modules needed by your application. The following copy-paste example uses Scriptella 1.5:</p>
+        <p>Use the modules needed by your application. The following copy-paste example uses Scriptella 1.6:</p>
         <pre><code class="language-xml">&lt;properties&gt;
-  &lt;scriptella.version&gt;1.5&lt;/scriptella.version&gt;
+  &lt;scriptella.version&gt;1.6&lt;/scriptella.version&gt;
 &lt;/properties&gt;
 
 &lt;dependencies&gt;
