@@ -108,7 +108,7 @@ INSERT INTO message VALUES (1, 'Hello from Scriptella');</code></pre>
   --user YOUR_POSTGRES_USER \
   --password YOUR_POSTGRES_PASSWORD \
   init.sql</code></pre>
-        <p>Or save this ETL file as <code>init.etl.xml</code> alongside <code>init.sql</code>:</p>
+        <p>Or you can create a simple ETL process that runs the SQL file. Save this as <code>init.etl.xml</code> alongside <code>init.sql</code>:</p>
         <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
 &lt;etl&gt;
   &lt;connection
@@ -123,7 +123,7 @@ INSERT INTO message VALUES (1, 'Hello from Scriptella');</code></pre>
 &lt;/etl&gt;</code></pre>
         <p>Run the ETL file:</p>
         <pre><code>scriptella.sh init.etl.xml</code></pre>
-        <p>This creates the table and inserts the first row. See <a href="../reference/index.html#direct-sql">direct SQL execution</a> for command options, or the <a href="../tutorial.html">tutorial</a> for more ETL examples.</p>
+        <p>Both approaches execute the same SQL file, creating the table and inserting the first row. See <a href="../reference/index.html#direct-sql">direct SQL execution</a> for command options, or the <a href="../tutorial.html">tutorial</a> for more ETL examples.</p>
         <p>The same approach works with <a href="https://mariadb.com/docs/connectors/mariadb-connector-j/">MariaDB</a> and other JDBC databases by installing the appropriate JDBC driver and changing the connection URL. For MariaDB, use <code>jdbc:mariadb://localhost/myapp</code>.</p>
       </section>
 
