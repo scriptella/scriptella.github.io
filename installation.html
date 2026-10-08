@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Install Scriptella — macOS, Linux, and Windows</title>
+  <meta name="description" content="Install Scriptella with the curl installer or a binary ZIP on macOS, Linux, and Windows. Java, PATH, and JDBC driver setup.">
+  <link rel="canonical" href="https://scriptella.org/installation.html">
+  <meta property="og:title" content="Install Scriptella — macOS, Linux, and Windows">
+  <meta property="og:description" content="Install Scriptella with the curl installer or a binary ZIP on macOS, Linux, and Windows. Java, PATH, and JDBC driver setup.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://scriptella.org/installation.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Scriptella">
+  <meta property="og:image:width" content="1731">
+  <meta property="og:image:height" content="909">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.png">
+  <meta name="twitter:title" content="Install Scriptella — macOS, Linux, and Windows">
+  <meta name="twitter:description" content="Install Scriptella with the curl installer or a binary ZIP on macOS, Linux, and Windows. Java, PATH, and JDBC driver setup.">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="reference/index.html">Documentation</a></li>
+          <li><a href="tutorial.html">Tutorial</a></li>
+          <li><a href="installation.html" aria-current="page">Install</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <div class="language-menu" data-language-menu><button class="language-toggle" type="button" data-language-toggle aria-expanded="false" aria-label="Language" title="Choose language"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg><span class="visually-hidden">Choose language</span></button><div class="language-menu__dropdown" data-language-dropdown hidden><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.zh-CN.md"><span>简体中文</span><small>README</small></a><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.ko.md"><span>한국어</span><small>README</small></a><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.de.md"><span>Deutsch</span><small>Geschichte</small></a></div></div>
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme — switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell page-shell--reading">
+    <article class="page-content">
+      <h1>Install Scriptella</h1>
+      <p class="lede">Install Scriptella on macOS, Linux, or Windows, then run SQL files and ETL processes from the command line.</p>
+      <p>Scriptella 1.6 requires Java 17 or newer. Check that Java is available before installing:</p>
+      <pre><code>java -version</code></pre>
+      <nav aria-label="Installation methods">
+        <ul>
+          <li><a href="#one-command-installer">Curl installer for macOS and Linux</a></li>
+          <li><a href="#manual-installation">Manual installation on macOS and Linux</a></li>
+          <li><a href="#windows-installation">Windows installation</a></li>
+          <li><a href="#jdbc-drivers">JDBC drivers</a></li>
+        </ul>
+      </nav>
+
+      <section aria-labelledby="one-command-installer">
+        <h2 id="one-command-installer">Curl installer</h2>
+        <div class="markdown-alert markdown-alert-note" role="note">
+          <p class="markdown-alert-title"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm0 1.5a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13ZM7.25 7h1.5v5h-1.5Zm0-3h1.5v1.5h-1.5Z"/></svg>Note</p>
+          <p>The curl installer was added in Scriptella 1.6.</p>
+        </div>
+        <p>On macOS or Linux, install the published Scriptella 1.6 ZIP with:</p>
+        <div class="copy-code" data-copy-code>
+          <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
+          <button class="copy-code__button" type="button" data-copy-button aria-label="Copy installer command" title="Copy installer command">
+            <svg class="copy-code__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span class="visually-hidden">Copy installer command</span>
+          </button>
+          <span class="copy-code__status visually-hidden" data-copy-status aria-live="polite"></span>
+        </div>
+        <p>The installer places Scriptella under <code>${HOME}/.local/scriptella</code>. It either adds <code>${HOME}/.local/scriptella/bin</code> to an existing startup file or prints the exact PATH command to add manually. The guaranteed command is the packaged <code>scriptella.sh</code> launcher:</p>
+        <pre><code>scriptella.sh path/to/file.etl.xml</code></pre>
+        <p>The installer does not install Java; Scriptella requires Java 17 or newer. It is pinned to the published 1.6 archive and checksum. When the installer updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>.</p>
+      </section>
+
+      <section id="manual-installation">
+        <h2>Manual installation on macOS or Linux</h2>
+        <p>Download the <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.6/scriptella-1.6.zip">Scriptella 1.6 binary ZIP</a> and extract it to a directory of your choice. Add its <code>bin</code> directory to your PATH, replacing the example path below with your installation directory:</p>
+        <pre><code>export PATH="/path/to/scriptella-1.6/bin:$PATH"
+scriptella.sh --version</code></pre>
+        <p>To keep this setting, add the export line to your shell's startup file (for example <code>~/.zshrc</code> for Zsh or <code>~/.bashrc</code> for Bash), then open a new shell.</p>
+      </section>
+
+      <section id="windows-installation">
+        <h2>Windows installation</h2>
+        <ol>
+          <li>Install Java 17 or newer and confirm <code>java -version</code> works in Command Prompt.</li>
+          <li>Download the <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.6/scriptella-1.6.zip">Scriptella 1.6 binary ZIP</a> and extract it, for example to <code>C:\tools\scriptella-1.6</code>. This directory should contain <code>bin</code> and <code>lib</code>.</li>
+          <li>In Command Prompt, add the <code>bin</code> directory to PATH for the current session:
+            <pre><code>set "PATH=C:\tools\scriptella-1.6\bin;%PATH%"
+scriptella.bat --version</code></pre>
+            <p>To make this permanent, add <code>C:\tools\scriptella-1.6\bin</code> to your user <code>Path</code> in Windows Environment Variables, then open a new Command Prompt.</p>
+          </li>
+        </ol>
+        <p>Use <code>scriptella.bat</code> wherever the tutorial shows <code>scriptella.sh</code>. Run your ETL file from its working directory:</p>
+        <pre><code>scriptella.bat csv-to-sql.etl.xml</code></pre>
+        <p>For database connections, place the required JDBC driver JARs in <code>C:\tools\scriptella-1.6\lib</code>, or set the connection's <code>classpath</code> attribute.</p>
+      </section>
+
+      <section id="jdbc-drivers">
+        <h2>JDBC drivers</h2>
+        <p>For database connections, download the database vendor's JDBC driver JAR and put it in your Scriptella installation's <code>lib</code> directory. With the curl installer, this is <code>${HOME}/.local/scriptella/lib</code>. Alternatively, set the <code>classpath</code> attribute on a connection element.</p>
+        <p>See the <a href="reference/drivers.html">drivers matrix</a> for supported databases and configuration details. CSV and text examples need no JDBC driver.</p>
+      </section>
+      <p>Continue with the <a href="tutorial.html">tutorial</a> or <a href="howto/create-database.html">create and initialize a database</a>.</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="reference/index.html">Documentation</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="docs/api/index.html">API Docs</a></li>
+          <li><a href="docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="changes.html">Change History</a></li>
+          <li><a href="license.html">License</a></li>
+          <li><a href="support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>

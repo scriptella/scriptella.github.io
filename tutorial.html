@@ -35,11 +35,10 @@
         </a>
         <ul>
           <li><a href="reference/index.html">Documentation</a></li>
-          <li><a href="tutorial.html">Tutorial</a></li>
-          <li><a href="reference/drivers.html">Drivers</a></li>
-          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="tutorial.html" aria-current="page">Tutorial</a></li>
+          <li><a href="installation.html">Install</a></li>
           <li><a href="download.html">Download</a></li>
-          <li><a href="support.html">Support</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
         </ul>
         <div class="header-controls">
         <div class="language-menu" data-language-menu><button class="language-toggle" type="button" data-language-toggle aria-expanded="false" aria-label="Language" title="Choose language"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg><span class="visually-hidden">Choose language</span></button><div class="language-menu__dropdown" data-language-dropdown hidden><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.zh-CN.md"><span>简体中文</span><small>README</small></a><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.ko.md"><span>한국어</span><small>README</small></a><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.de.md"><span>Deutsch</span><small>Geschichte</small></a></div></div>
@@ -57,7 +56,6 @@
         <h2>Contents</h2>
         <ul>
           <li><a href="#Installation">Installation</a></li>
-          <li><a href="#Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</a></li>
           <li><a href="#Command-Line+Execution">Command-Line Execution</a></li>
           <li><a href="#Executing+ETL+Files+from+Java">Executing ETL Files from Java</a></li>
           <li><a href="#Examples">Examples</a>
@@ -67,32 +65,22 @@
               <li><a href="#Supporting+several+SQL+dialects">Supporting several SQL dialects</a></li>
             </ul>
           </li>
+          <li><a href="#Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</a></li>
         </ul>
       </nav>
 
       <h2 id="Installation">Installation</h2>
-      <ul>
-        <li><a href="download.html">Download</a> the Scriptella binary distribution or <a href="https://github.com/scriptella/scriptella-etl#build-from-source">build from source</a>.</li>
-        <li>Unpack it and add <code>&lt;SCRIPTELLA_DIR&gt;/bin</code> to a system <code>PATH</code> variable.
-          <p>Use <code>set PATH=%PATH%;SCRIPTELLA_DIR\bin</code> for Windows and <code>export PATH=${PATH}:SCRIPTELLA_DIR/bin</code> for Unix.</p>
-        </li>
-        <li>Confirm Java 17 or newer is available by running <code>java -version</code>. Current Scriptella releases require Java 17.</li>
-        <li><em>Optional step:</em> Put JDBC drivers required by your scripts in the <code>&lt;SCRIPTELLA_DIR&gt;/lib</code> directory, or set the <code>classpath</code> attribute on connection elements.</li>
-      </ul>
-
-      <h2 id="Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</h2>
-      <p>In order to use Scriptella as Ant task you will need the following taskdef declaration:</p>
-      <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties" classpath="/path/to/scriptella.jar[;additional_drivers.jar]"/&gt;</code></pre>
-      <aside class="note"><strong>Note:</strong> Additional drivers classpath entries are optional. You may directly specify classpath attribute in a connection XML element declaration. Example: <code>&lt;connection driver="sybase" classpath="jconn3.jar"/&gt;</code></aside>
-      <p>Running Scriptella files from Ant is simple:</p>
-      <pre><code class="language-xml">&lt;etl/&gt; &lt;!-- Execute etl.xml file in the current directory --&gt;</code></pre>
-      <p>or</p>
-      <pre><code class="language-xml">&lt;etl file="path/to/your/file"/&gt; &lt;!-- Execute ETL file from specified location --&gt;</code></pre>
+      <p>Scriptella requires Java 17 or newer. Check your Java version with <code>java -version</code>, then install Scriptella on macOS or Linux:</p>
+      <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
+      <p>Follow the installer's instructions for adding Scriptella to your <code>PATH</code>. Start a new shell or reload the updated startup file, then verify the installation:</p>
+      <pre><code>scriptella.sh --version</code></pre>
+      <p>For Windows, follow the <a href="installation.html#windows-installation">Windows installation instructions</a>. For other manual installations, see the <a href="installation.html#manual-installation">installation guide</a>.</p>
+      <p>The example below needs no JDBC driver. For database examples, put the required JDBC driver JARs in <code>${HOME}/.local/scriptella/lib</code> (or your installation's <code>lib</code> directory), or set the <code>classpath</code> attribute on a connection.</p>
 
       <h2 id="Command-Line+Execution">Command-Line Execution</h2>
-      <p>Just type <code>scriptella</code> to run the file named <code>etl.xml</code> in the current directory. Alternatively you can use the Java launcher from the unpacked binary directory:</p>
-      <pre><code>java -jar scriptella.jar [arguments]</code></pre>
-      <p>A first runnable example needs no database. Create <code>people.csv</code> next to <code>scriptella.jar</code>:</p>
+      <p>Run <code>scriptella.sh</code> to execute <code>etl.xml</code> in the current directory, or pass an ETL filename as shown below.</p>
+      <p>On Windows, use <code>scriptella.bat</code> instead of <code>scriptella.sh</code> in the commands below. For example: <code>scriptella.bat csv-to-sql.etl.xml</code>.</p>
+      <p>A first runnable example needs no database. Create <code>people.csv</code> in a working directory of your choice:</p>
       <pre><code>id,name
 1,Ada
 2,Grace</code></pre>
@@ -109,7 +97,7 @@
     &lt;/query&gt;
 &lt;/etl&gt;</code></pre>
       <p>The CSV query produces one row per data line. The nested script runs once per row, and <code>connection-id</code> selects the destination. <code>$id</code> and <code>$name</code> expand as text. When the destination is JDBC, use <code>?id</code> and <code>?name</code> parameters instead.</p>
-      <pre><code>java -jar scriptella.jar csv-to-sql.etl.xml</code></pre>
+      <pre><code>scriptella.sh csv-to-sql.etl.xml</code></pre>
 
       <h2 id="Executing+ETL+Files+from+Java">Executing ETL Files from Java</h2>
       <p>It is extremely easy to run Scriptella ETL files from java code. Just make sure scriptella.jar is on classpath and use any of the following methods to execute an ETL file:</p>
@@ -120,7 +108,7 @@ EtlExecutor.newExecutor(
       <p>See <a href="docs/api/scriptella/execution/EtlExecutor.html">EtlExecutor Javadoc</a> for more details on how to execute ETL files from Java code.</p>
 
       <h2 id="Examples">Examples</h2>
-      <p>For a quick start type <code>scriptella -t</code> to create a template <code>etl.xml</code> file.</p>
+      <p>For a quick start type <code>scriptella.sh -t</code> to create a template <code>etl.xml</code> file.</p>
 
       <h3 id="Copy+table+to+another+database">Copy table to another database</h3>
       <p><img src="images/table_copy.png" alt="Migration of table records"></p>
@@ -182,7 +170,16 @@ EtlExecutor.newExecutor(
      &lt;/script&gt;
 &lt;/etl&gt;</code></pre>
       <aside class="note"><strong>Note:</strong> See <a href="https://github.com/scriptella/scriptella-examples">Scriptella examples on GitHub</a> or <a href="download.html">download</a> Scriptella examples distribution.</aside>
-      <p><strong>Next steps:</strong> <a href="howto/create-database.html">Create and initialize a database</a> or <a href="howto/initialize-database.html">initialize a database on application startup</a>.</p>
+      <h2 id="Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</h2>
+      <p>In order to use Scriptella as Ant task you will need the following taskdef declaration:</p>
+      <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties" classpath="/path/to/scriptella.jar[;additional_drivers.jar]"/&gt;</code></pre>
+      <aside class="note"><strong>Note:</strong> Additional drivers classpath entries are optional. You may directly specify classpath attribute in a connection XML element declaration. Example: <code>&lt;connection driver="sybase" classpath="jconn3.jar"/&gt;</code></aside>
+      <p>Running Scriptella files from Ant is simple:</p>
+      <pre><code class="language-xml">&lt;etl/&gt; &lt;!-- Execute etl.xml file in the current directory --&gt;</code></pre>
+      <p>or</p>
+      <pre><code class="language-xml">&lt;etl file="path/to/your/file"/&gt; &lt;!-- Execute ETL file from specified location --&gt;</code></pre>
+
+      <p><strong>Next steps:</strong> Follow the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.6/docs/first-migration.md">MySQL-to-PostgreSQL migration guide</a> for a complete database-copy example with setup and verification, <a href="howto/create-database.html">create and initialize a database</a>, or <a href="howto/initialize-database.html">initialize a database on application startup</a>.</p>
       <aside class="github-prompt" aria-label="Support Scriptella">
         <p>Scriptella useful? <a href="https://github.com/scriptella/scriptella-etl">Star it on GitHub</a> to help others discover it.</p>
       </aside>

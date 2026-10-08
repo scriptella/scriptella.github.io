@@ -36,10 +36,9 @@
         <ul>
           <li><a href="../reference/index.html" aria-current="page">Documentation</a></li>
           <li><a href="../tutorial.html">Tutorial</a></li>
-          <li><a href="../reference/drivers.html">Drivers</a></li>
-          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="../installation.html">Install</a></li>
           <li><a href="../download.html">Download</a></li>
-          <li><a href="../support.html">Support</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
         </ul>
         <div class="header-controls">
         <div class="language-menu" data-language-menu><button class="language-toggle" type="button" data-language-toggle aria-expanded="false" aria-label="Language" title="Choose language"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg><span class="visually-hidden">Choose language</span></button><div class="language-menu__dropdown" data-language-dropdown hidden><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.zh-CN.md"><span>简体中文</span><small>README</small></a><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.ko.md"><span>한국어</span><small>README</small></a><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.de.md"><span>Deutsch</span><small>Geschichte</small></a></div></div>
@@ -92,7 +91,7 @@ USE myapp;</code></pre>
 
       <section id="initialize-with-scriptella">
         <h2>Initialize it with Scriptella</h2>
-        <p>If you have not installed Scriptella yet, use the <a href="../download.html#one-command-installer">one-command installer</a>:</p>
+        <p>If you have not installed Scriptella yet, use the <a href="../installation.html#one-command-installer">one-command installer</a>:</p>
         <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
         <p>Follow the installer's instructions for adding Scriptella to your <code>PATH</code>. If it updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>; if it says PATH was not changed automatically, add the printed export line.</p>
         <p>Download the <a href="https://jdbc.postgresql.org/download/">PostgreSQL pgJDBC driver</a> and place the JAR in <code>${HOME}/.local/scriptella/lib</code>. Save this SQL as <code>init.sql</code>:</p>

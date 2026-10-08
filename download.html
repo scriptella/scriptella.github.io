@@ -36,9 +36,9 @@
         <ul>
           <li><a href="reference/index.html">Documentation</a></li>
           <li><a href="tutorial.html">Tutorial</a></li>
-          <li><a href="reference/drivers.html">Drivers</a></li>
-          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="installation.html">Install</a></li>
           <li><a href="download.html" aria-current="page">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
         </ul>
         <div class="header-controls">
         <div class="language-menu" data-language-menu><button class="language-toggle" type="button" data-language-toggle aria-expanded="false" aria-label="Language" title="Choose language"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg><span class="visually-hidden">Choose language</span></button><div class="language-menu__dropdown" data-language-dropdown hidden><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.zh-CN.md"><span>简体中文</span><small>README</small></a><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.ko.md"><span>한국어</span><small>README</small></a><a href="https://github.com/scriptella/scriptella-etl/blob/master/README.de.md"><span>Deutsch</span><small>Geschichte</small></a></div></div>
@@ -76,30 +76,12 @@
 &lt;/dependency&gt;</code></pre>
       </section>
 
+      <p id="one-command-installer"><span id="windows-installation">For setup on macOS, Linux, or Windows, follow the <a href="installation.html">installation guide</a>.</span></p>
+
       <section aria-labelledby="version-1-5">
         <h2 id="version-1-5">Previous release: 1.5 (September 8, 2026)</h2>
         <p>Scriptella 1.5 remains available from <a href="https://github.com/scriptella/scriptella-etl/releases/tag/scriptella-parent-1.5">GitHub Releases</a>. It uses Java 17 and includes the current JDBC compatibility and integration updates described in its <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.5/CHANGELOG.md">changelog</a>.</p>
         <p><a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-1.5.zip">Binary</a> · <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-1.5-src.zip">Source</a> · <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.5/scriptella-examples-1.5.zip">Examples</a></p>
-      </section>
-
-      <section aria-labelledby="one-command-installer">
-        <span id="one-command-installer" class="anchor-target" aria-hidden="true"></span>
-        <h2>Experimental curl installer</h2>
-        <p>The installer installs the published Scriptella 1.6 ZIP:</p>
-        <div class="copy-code" data-copy-code>
-          <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
-          <button class="copy-code__button" type="button" data-copy-button aria-label="Copy installer command" title="Copy installer command">
-            <svg class="copy-code__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="11" height="11" rx="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            <span class="visually-hidden">Copy installer command</span>
-          </button>
-          <span class="copy-code__status visually-hidden" data-copy-status aria-live="polite"></span>
-        </div>
-        <p>The installer places Scriptella under <code>${HOME}/.local/scriptella</code>. It either adds <code>${HOME}/.local/scriptella/bin</code> to an existing startup file or prints the exact PATH command to add manually. The guaranteed command is the packaged <code>scriptella.sh</code> launcher:</p>
-        <pre><code>scriptella.sh path/to/file.etl.xml</code></pre>
-        <p>The installer does not install Java; Scriptella requires Java 17 or newer. It is pinned to the published 1.6 archive and checksum. When the installer updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>.</p>
       </section>
 
       <section aria-labelledby="version-1-4">
