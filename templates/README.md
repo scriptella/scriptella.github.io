@@ -4,10 +4,10 @@ Use `page.html` for standard pages such as downloads, support, and short guides.
 Use `docs-page.html` for reference pages that need the documentation navigation.
 The GitHub star aside lives in `github-prompt.html`. Copy that block
 unchanged; do not rewrite the wording on individual pages.
-Both templates use the shared `../style.css` stylesheet. Its `?v=` query
-parameter busts browser caches. When changing `style.css`, update this parameter
-on all pages and templates to the first 12 characters of the stylesheet's
-SHA-256 hash.
+Both templates use the shared `../style.css` stylesheet. Its `?v=YYYYMMDD`
+query parameter busts browser caches. When changing `style.css`, update the date
+on affected pages and templates; update all pages for shared style changes.
+For another change on the same day, add a suffix such as `20261008-2`.
 They also load `../theme.js`, which applies and persists the Light, Dark, or
 System theme selected in the header. Keep the language menu next to the theme
 control when creating or refreshing a page header.
