@@ -1248,7 +1248,8 @@ th {
 }
 
 .markdown-alert .markdown-alert-title {
-  display: flex;
+  display: inline-flex;
+  vertical-align: baseline;
   align-items: center;
   gap: 0.5rem;
   color: var(--note);
