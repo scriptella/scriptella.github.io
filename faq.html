@@ -82,6 +82,7 @@
               <li><a href="#SET_VARIABLE">1.4. How to share a mutable variable between script/query elements of an ETL file?</a></li>
               <li><a href="#EXECUTE_STATIC_METHOD">1.5. How to call a static method in JEXL expression?</a></li>
               <li><a href="#COLUMN_SPACES">1.6. How to escape spaces in field names?</a></li>
+              <li><a href="#PERFORMANCE">1.7. How does Scriptella approach performance and resource usage?</a></li>
             </ul>
           </li>
           <li><a href="#sql">2. SQL</a>
@@ -171,6 +172,10 @@
         $1,$secondColumn,${etl.getParameter('My Column')},$4
     &lt;/script&gt;
 &lt;/query&gt;</code></pre>
+
+      <h3 id="PERFORMANCE">1.7. How does Scriptella approach performance and resource usage?</h3>
+      <p>We prioritize performance and low resource usage. Since Scriptella 1.6, we have followed a formal benchmarking process. Our <a href="benchmarks.html">published CSV import benchmarks</a> include results, methodology, and limitations; they reflect specific workloads and environments rather than universal performance rankings.</p>
+      <p>For lower-level performance checks, explore the <a href="https://github.com/scriptella/scriptella-etl/tree/master/core/src/test">core</a> and <a href="https://github.com/scriptella/scriptella-etl/tree/master/drivers/src/test">driver</a> performance tests in the Scriptella ETL repository.</p>
 
       <h2 id="sql">2. SQL</h2>
 
