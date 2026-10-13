@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSV import benchmarks — Scriptella</title>
+  <meta name="description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with local and GitHub Actions measurements.">
+  <link rel="canonical" href="https://scriptella.org/benchmarks.html">
+  <meta property="og:title" content="CSV import benchmarks — Scriptella">
+  <meta property="og:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with local and GitHub Actions measurements.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://scriptella.org/benchmarks.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Scriptella">
+  <meta property="og:image:width" content="1731">
+  <meta property="og:image:height" content="909">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.png">
+  <meta name="twitter:title" content="CSV import benchmarks — Scriptella">
+  <meta name="twitter:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with local and GitHub Actions measurements.">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css?v=20261008">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="reference/index.html">Documentation</a></li>
+          <li><a href="tutorial.html">Tutorial</a></li>
+          <li><a href="installation.html">Install</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <div class="language-menu" data-language-menu>
+          <button class="language-toggle" type="button" data-language-toggle aria-expanded="false" aria-label="Language" title="Choose language">
+            <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg>
+            <span class="visually-hidden">Choose language</span>
+          </button>
+          <div class="language-menu__dropdown" data-language-dropdown hidden>
+            <a href="https://github.com/scriptella/scriptella-etl/blob/master/README.zh-CN.md"><span>简体中文</span><small>README</small></a>
+            <a href="https://github.com/scriptella/scriptella-etl/blob/master/README.ko.md"><span>한국어</span><small>README</small></a>
+            <a href="https://github.com/scriptella/scriptella-etl/blob/master/README.de.md"><span>Deutsch</span><small>Geschichte</small></a>
+          </div>
+        </div>
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme — switch to Light">
+          <span class="visually-hidden">Change color theme</span>
+        </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell page-shell--reading">
+    <article class="page-content">
+      <h1>CSV import benchmarks</h1>
+      <p class="lede">One million rows, two databases, and a reproducible comparison of Scriptella 1.6, handwritten JDBC, and csvsql.</p>
+      <p>Batched Scriptella imported the fixture in 14.79 seconds on PostgreSQL and 9.52 seconds on MariaDB on a local development machine. Handwritten JDBC was faster; csvsql’s tested direct-import workflow took about 9–10 minutes. PostgreSQL COPY is included as a separate native reference.</p>
+      <p>These are exploratory results for one workload. The <a href="https://github.com/scriptella/scriptella-benchmarks">benchmark repository</a> contains the implementation, raw measurements, dependency metadata, and full reports.</p>
+
+      <h2 id="local-results">Local development machine</h2>
+      <p>Median durations from two complete runs. Each import used the same million-row CSV and a pre-created table. Lower is faster.</p>
+      <div class="table-scroll" role="region" aria-label="Local import durations" tabindex="0">
+        <table>
+          <caption>Local results: median of two runs, seconds</caption>
+          <thead><tr><th scope="col">Import path</th><th scope="col">PostgreSQL</th><th scope="col">MariaDB</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Scriptella, batch 1000</th><td>14.792</td><td>9.523</td></tr>
+            <tr><th scope="row">JDBC, batch 1000</th><td>13.631</td><td>6.649</td></tr>
+            <tr><th scope="row">csvsql, chunk 1000</th><td>557.945</td><td>597.053</td></tr>
+            <tr><th scope="row">PostgreSQL COPY, native reference</th><td>1.672</td><td>Not measured</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Scriptella’s elapsed-time advantage over csvsql was 37.7× on PostgreSQL and 62.7× on MariaDB, calculated as csvsql duration divided by Scriptella duration. Chunking and JDBC batching use different mechanisms; matching the row-group size does not make the import paths equivalent.</p>
+      <figure>
+        <img src="images/benchmarks/local-postgres.svg" width="879" height="447" alt="Local PostgreSQL durations: Scriptella 14.792 seconds, JDBC 13.631 seconds, csvsql 557.945 seconds, and native COPY 1.672 seconds.">
+        <figcaption>PostgreSQL: logarithmic duration axis. Read the printed seconds for absolute differences.</figcaption>
+      </figure>
+      <figure>
+        <img src="images/benchmarks/local-mariadb.svg" width="879" height="447" loading="lazy" alt="Local MariaDB durations: Scriptella 9.523 seconds, JDBC 6.649 seconds, and csvsql 597.053 seconds.">
+        <figcaption>MariaDB: logarithmic duration axis. The full report also includes unbatched imports.</figcaption>
+      </figure>
+      <p>The host was an Intel Core i9-9980HK Mac with 32 GiB RAM, running Docker through x86_64 Colima with 4 CPUs and 6 GiB RAM. See the <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-12-local">local result notes</a> and <a href="https://github.com/scriptella/scriptella-benchmarks/blob/main/docs/results/2026-10-12-local/report.md">all individual measurements</a>.</p>
+
+      <h2 id="ci-results">GitHub Actions reproduction</h2>
+      <p>One complete run on an Ubuntu 24.04 x86_64 hosted runner produced the following durations. These are single observations, kept separate from the local medians. Hosted-runner hardware can vary between executions.</p>
+      <div class="table-scroll" role="region" aria-label="GitHub Actions import durations" tabindex="0">
+        <table>
+          <caption>GitHub Actions: one run, seconds</caption>
+          <thead><tr><th scope="col">Import path</th><th scope="col">PostgreSQL</th><th scope="col">MariaDB</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Scriptella, batch 1000</th><td>6.858</td><td>4.446</td></tr>
+            <tr><th scope="row">JDBC, batch 1000</th><td>5.854</td><td>2.998</td></tr>
+            <tr><th scope="row">csvsql, chunk 1000</th><td>221.805</td><td>214.924</td></tr>
+            <tr><th scope="row">PostgreSQL COPY, native reference</th><td>0.968</td><td>Not measured</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-13-ci">CI result set</a> includes all eleven cases and environment metadata. No RAM measurements were collected in CI.</p>
+
+      <h2 id="method">What was measured</h2>
+      <ul>
+        <li><strong>Workload:</strong> 1,000,000 deterministic CSV rows with an integer ID, two strings, an exact decimal amount, and a timestamp. No nulls, transformations, indexes, or primary keys.</li>
+        <li><strong>Versions:</strong> Scriptella 1.6, Java 17, csvsql 2.2.0, PostgreSQL 17.11, and MariaDB 11.8.8. Database durability and JDBC driver options retain normal defaults.</li>
+        <li><strong>Transactions:</strong> one transaction and one commit per import, including unbatched cases. Scriptella and JDBC use identical driver settings and explicit typed conversions.</li>
+        <li><strong>Timing:</strong> fresh client process startup through exit after commit and cleanup. Fixture generation, database startup, warmup, table reset, and verification are excluded.</li>
+        <li><strong>Checks:</strong> all cases pass a 2,001-row smoke import. Each measured import is checked independently for row count and first, middle, and last values before its timing is recorded.</li>
+      </ul>
+      <p>An untimed 20,000-row import precedes each measured case. It primes file and database caches, but the measured Java process starts a fresh JVM, so its JIT is not warmed. Case order is fixed. Two local runs and one CI run support a directional comparison, without establishing precise uncertainty or universal speedups.</p>
+      <p>csvsql uses its documented direct-import path with default type inference and <code>--chunk-size 1000</code>. Its in-memory table preparation differs from Scriptella’s streaming CSV path. COPY streams the fixture through PostgreSQL’s native import interface; it is a database-specific reference, not a performance ceiling.</p>
+      <p>Coarse first-run MariaDB process resident high-water observations were approximately 188 MiB for batched Scriptella, 146 MiB for batched JDBC, and 895 MiB for csvsql. One-second polling can miss late peaks; these are whole-process observations, not Java heap or total database/container memory. Sampling and manual progress checks occurred during parts of the first local run; the second had no sampler. See the <a href="https://github.com/scriptella/scriptella-benchmarks/blob/main/docs/results/2026-10-12-local/memory-summary.md">memory collection notes</a>.</p>
+
+      <h2 id="reproduce">Run it yourself</h2>
+      <p>The host needs Git, a Docker-compatible runtime, and Docker Compose. The benchmark image supplies Java, Python, Scriptella, and the database clients.</p>
+      <pre><code>git clone https://github.com/scriptella/scriptella-benchmarks.git
+cd scriptella-benchmarks
+ENVIRONMENT_ID=my-machine-docker \
+ENVIRONMENT_DESCRIPTION='Describe CPU and Docker runtime' \
+SCRIPTELLA_VERSION=1.6 docker compose up --build \
+  --abort-on-container-exit --exit-code-from benchmark</code></pre>
+      <p>The local runs took about 33–35 minutes each. Results and diagnostics are saved under <code>results/</code>. After inspection, remove the experiment’s stopped containers and database volumes with <code>docker compose down --volumes</code>.</p>
+      <p>For smoke-only runs, aggregation, and the full measurement contract, see the <a href="https://github.com/scriptella/scriptella-benchmarks#run-the-comparison">benchmark instructions</a>.</p>
+
+      <!-- GitHub star prompt: keep in sync with github-prompt.html -->
+      <aside class="github-prompt" aria-label="Support Scriptella">
+        <p>Scriptella useful? <a href="https://github.com/scriptella/scriptella-etl">Star it on GitHub</a> to help others discover it.</p>
+      </aside>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="reference/index.html">Documentation</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="docs/api/index.html">API Docs</a></li>
+          <li><a href="docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="benchmarks.html">Benchmarks</a></li>
+          <li><a href="changes.html">Change History</a></li>
+          <li><a href="license.html">License</a></li>
+          <li><a href="support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>
