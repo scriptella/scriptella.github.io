@@ -9,8 +9,7 @@ query parameter busts browser caches. When changing `style.css`, update the date
 on affected pages and templates; update all pages for shared style changes.
 For another change on the same day, add a suffix such as `20261008-2`.
 They also load `../theme.js`, which applies and persists the Light, Dark, or
-System theme selected in the header. Keep the language menu next to the theme
-control when creating or refreshing a page header.
+System theme selected in the header.
 
 The templates live one directory below the site root, so local paths begin with
 `../`. After copying a template, adjust the stylesheet, favicon, logo, and
