@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CSV import benchmarks — Scriptella</title>
-  <meta name="description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with verified GitHub Actions measurements.">
+  <meta name="description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with completed benchmark v4 GitHub Actions results.">
   <link rel="canonical" href="https://scriptella.org/benchmarks.html">
   <meta property="og:title" content="CSV import benchmarks — Scriptella">
-  <meta property="og:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with verified GitHub Actions measurements.">
+  <meta property="og:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with completed benchmark v4 GitHub Actions results.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://scriptella.org/benchmarks.html">
   <meta property="og:image" content="https://scriptella.org/images/scriptella-og.png">
@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.png">
   <meta name="twitter:title" content="CSV import benchmarks — Scriptella">
-  <meta name="twitter:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with verified GitHub Actions measurements.">
+  <meta name="twitter:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with completed benchmark v4 GitHub Actions results.">
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">
   <script src="theme.js"></script>
@@ -56,8 +56,8 @@
       <p>Batched Scriptella imported the fixture in 7.775 seconds on PostgreSQL and 6.694 seconds on MariaDB in one GitHub Actions run. Handwritten JDBC was faster; csvsql’s tested direct-import workflow took about 6 minutes.</p>
       <p>These are exploratory results for this workload and environment. JDBC batching and csvsql chunking use different mechanisms; PostgreSQL COPY is a database-specific reference.</p>
 
-      <h2 id="ci-results">Current CSV import results</h2>
-      <p>The charts show single observations from one complete Ubuntu 24.04 x86_64 run on October 21, 2026. Lower is faster.</p>
+      <h2 id="ci-results">Benchmark v4 results</h2>
+      <p>The full v4 comparison, including csvsql, completed successfully on October 21, 2026. The charts show single observations from that Ubuntu 24.04 x86_64 run. Lower is faster.</p>
       <figure>
         <img src="images/benchmarks/v4-ci-postgres.svg" width="879" height="447" alt="PostgreSQL durations: Scriptella batch 1000 7.775 seconds, JDBC batch 1000 6.320 seconds, csvsql chunk 1000 378.555 seconds, and native COPY 1.401 seconds.">
         <figcaption>PostgreSQL: logarithmic duration axis. Read the printed seconds for absolute differences.</figcaption>
