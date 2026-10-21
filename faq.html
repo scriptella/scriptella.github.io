@@ -89,6 +89,7 @@
               <li><a href="#PLSQL">2.1. How to create an Oracle trigger (run a PL/SQL block)?</a></li>
               <li><a href="#COMMIT">2.2. How to control commit options and transactions?</a></li>
               <li><a href="#UPSERT">2.3. How to UPSERT (update or insert into a table)?</a></li>
+              <li><a href="#POSTGRES_BATCH_INSERTS">2.4. How can I speed up PostgreSQL batch inserts?</a></li>
             </ul>
           </li>
           <li><a href="#csvtext">3. CSV/Text</a>
@@ -247,6 +248,17 @@
        &lt;/script&gt;
     &lt;/query&gt;
 &lt;/query&gt;</code></pre>
+
+      <h3 id="POSTGRES_BATCH_INSERTS">2.4. How can I speed up PostgreSQL batch inserts?</h3>
+      <p>Enable batching and pgJDBC insert rewriting in the connection body:</p>
+      <pre><code class="language-xml">&lt;connection id="db" driver="postgresql"
+            url="jdbc:postgresql://localhost:5432/test"
+            user="username" password="password"&gt;
+    autocommit=false
+    statement.batchSize=1000
+    reWriteBatchedInserts=true
+&lt;/connection&gt;</code></pre>
+      <p>Rewriting combines compatible batched inserts into multi-row INSERT statements. See the <a href="docs/api/scriptella/driver/postgresql/package-summary.html">PostgreSQL driver documentation</a> for details.</p>
 
       <h2 id="csvtext">3. CSV/Text</h2>
 
