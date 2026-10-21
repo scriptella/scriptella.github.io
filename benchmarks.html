@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CSV import benchmarks — Scriptella</title>
-  <meta name="description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with local and GitHub Actions measurements.">
+  <meta name="description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with verified GitHub Actions measurements.">
   <link rel="canonical" href="https://scriptella.org/benchmarks.html">
   <meta property="og:title" content="CSV import benchmarks — Scriptella">
-  <meta property="og:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with local and GitHub Actions measurements.">
+  <meta property="og:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with verified GitHub Actions measurements.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://scriptella.org/benchmarks.html">
   <meta property="og:image" content="https://scriptella.org/images/scriptella-og.png">
@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.png">
   <meta name="twitter:title" content="CSV import benchmarks — Scriptella">
-  <meta name="twitter:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with local and GitHub Actions measurements.">
+  <meta name="twitter:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with verified GitHub Actions measurements.">
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">
   <script src="theme.js"></script>
@@ -53,30 +53,32 @@
     <article class="page-content">
       <h1>CSV import benchmarks</h1>
       <p class="lede">One million rows, two databases, and a reproducible comparison of Scriptella 1.6, handwritten JDBC, and csvsql.</p>
-      <p>Batched Scriptella imported the fixture in 14.79 seconds on PostgreSQL and 9.52 seconds on MariaDB on a local development machine. Handwritten JDBC was faster; csvsql’s tested direct-import workflow took about 9–10 minutes.</p>
+      <p>Batched Scriptella imported the fixture in 7.775 seconds on PostgreSQL and 6.694 seconds on MariaDB in one GitHub Actions run. Handwritten JDBC was faster; csvsql’s tested direct-import workflow took about 6 minutes.</p>
       <p>These are exploratory results for this workload and environment. JDBC batching and csvsql chunking use different mechanisms; PostgreSQL COPY is a database-specific reference.</p>
 
-      <h2 id="local-results">Local development machine</h2>
-      <p>The charts show median durations from two runs of the same million-row import. Lower is faster.</p>
+      <h2 id="ci-results">Current CSV import results</h2>
+      <p>The charts show single observations from one complete Ubuntu 24.04 x86_64 run on October 21, 2026. Lower is faster.</p>
       <figure>
-        <img src="images/benchmarks/local-postgres.svg" width="879" height="447" alt="Local PostgreSQL durations: Scriptella 14.792 seconds, JDBC 13.631 seconds, csvsql 557.945 seconds, and native COPY 1.672 seconds.">
+        <img src="images/benchmarks/v4-ci-postgres.svg" width="879" height="447" alt="PostgreSQL durations: Scriptella batch 1000 7.775 seconds, JDBC batch 1000 6.320 seconds, csvsql chunk 1000 378.555 seconds, and native COPY 1.401 seconds.">
         <figcaption>PostgreSQL: logarithmic duration axis. Read the printed seconds for absolute differences.</figcaption>
       </figure>
       <figure>
-        <img src="images/benchmarks/local-mariadb.svg" width="879" height="447" loading="lazy" alt="Local MariaDB durations: Scriptella 9.523 seconds, JDBC 6.649 seconds, and csvsql 597.053 seconds.">
+        <img src="images/benchmarks/v4-ci-mariadb.svg" width="879" height="447" loading="lazy" alt="MariaDB durations: Scriptella batch 1000 6.694 seconds, JDBC batch 1000 4.465 seconds, and csvsql chunk 1000 370.594 seconds.">
         <figcaption>MariaDB: logarithmic duration axis. Read the printed seconds for absolute differences.</figcaption>
       </figure>
-      <p>Measured on an Intel Core i9 Mac using Docker through Colima. See the <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-12-local">full results and environment details</a>, including individual runs and unbatched imports.</p>
+      <p><small>Benchmark <strong>v4</strong>, Scriptella 1.6. PostgreSQL explicitly enables <code>reWriteBatchedInserts=true</code> for both Scriptella and handwritten JDBC; MariaDB uses driver defaults. Scriptella’s general adapter default is unchanged. These are single observations, not repeated-run medians. RAM was not measured.</small></p>
+      <p>See the <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-21-ci-v4">full v4 results and environment details</a>, including all eleven cases, unbatched imports, and raw measurements, and the <a href="https://github.com/scriptella/scriptella-benchmarks/actions/runs/39688830534">successful CI run</a>.</p>
 
       <h2 id="method">About the comparison</h2>
       <p>All import paths load the same CSV into a pre-created table, with one transaction per import and no indexes or transformations. Timings include client startup, parsing, insertion, and commit; setup and verification are excluded. Every measured import passed independent row-count and sampled-value checks.</p>
-      <p>The experiment uses Scriptella 1.6, Java 17, csvsql 2.2.0, PostgreSQL 17.11, and MariaDB 11.8.8 with normal database and driver defaults. See the <a href="https://github.com/scriptella/scriptella-benchmarks#measurement-method">methodology and limitations</a> for the full comparison.</p>
+      <p>The experiment uses Scriptella 1.6, Java 17, csvsql 2.2.0, PostgreSQL 17.11 with pgJDBC 42.7.13, and MariaDB 11.8.8 with Connector/J 3.5.7. Database durability uses normal defaults. See the <a href="https://github.com/scriptella/scriptella-benchmarks/blob/main/docs/benchmark-guide.md">methodology and limitations</a> for the full comparison.</p>
+      <p>GitHub-hosted hardware and load vary between runs. These results do not establish an improvement over historical measurements. A separate <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-21-pg-rewrite">repeated local comparison of PostgreSQL batch rewriting</a> measures the effect of that setting with rewriting off and on.</p>
 
-      <h2 id="ci-results">GitHub Actions reproduction</h2>
-      <p>A separate Ubuntu 24.04 run showed the same ordering: batched Scriptella imported the million rows in 6.86 seconds on PostgreSQL and 4.45 seconds on MariaDB. These are single observations, kept separate from the local medians. See the <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-13-ci">CI results</a>.</p>
+      <h2 id="historical-results">Historical results</h2>
+      <p>Earlier benchmark definitions and environments are documented separately: <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-14-ci-v3">v3 CI results</a>, <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-13-ci">v2 CI results</a>, and <a id="local-results" href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-12-local">v2 local results</a>. Results from different versions and environments are not pooled.</p>
 
       <h2 id="reproduce">Run it yourself</h2>
-      <p>The benchmark runs with Docker Compose and includes all dependencies. The <a href="https://github.com/scriptella/scriptella-benchmarks#run-the-comparison">repository instructions</a> cover running the comparison, inspecting results, and repeating it on your own hardware.</p>
+      <p>The benchmark runs with Docker Compose and includes all dependencies. The <a href="https://github.com/scriptella/scriptella-benchmarks#reproduce">repository instructions</a> cover running the comparison, inspecting results, and repeating it on your own hardware.</p>
 
       <!-- GitHub star prompt: keep in sync with github-prompt.html -->
       <aside class="github-prompt" aria-label="Support Scriptella">
