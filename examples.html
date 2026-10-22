@@ -41,7 +41,8 @@
           <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
         </ul>
         <div class="header-controls">
-        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change
+          color theme</span></button>
         </div>
       </div>
     </nav>
@@ -50,7 +51,8 @@
   <main id="main-content" class="page-shell page-shell--reading">
     <article class="page-content">
       <h1>Examples and patterns</h1>
-      <p>Explore database copying, binary data, SQL dialects, Java embedding, and Ant integration. If you are new to Scriptella, start with the <a href="tutorial.html">guided tutorial</a>.</p>
+      <p>Explore database copying, binary data, SQL dialects, Java embedding, and Ant integration. If you are new to Scriptella, start with
+        the <a href="tutorial.html">guided tutorial</a>.</p>
       <nav aria-label="Table of contents"><h2>Contents</h2><ul>
         <li><a href="#Copy+table+to+another+database">Copy a table</a></li>
         <li><a href="#Working+with+BLOBs">Work with BLOBs</a></li>
@@ -61,7 +63,8 @@
       <h2 id="Examples">Database examples</h2>
       <h3 id="Copy+table+to+another+database">Copy table to another database</h3>
       <p><img src="images/table_copy.png" alt="Migration of table records"></p>
-      <p>Assume Database #1 contains Table Product with id, category and name columns. The following script copies software products from this table to Database #2. Additionally Name column is changed to Product_Name.</p>
+      <p>Assume Database #1 contains Table Product with id, category and name columns. The following script copies software products from
+        this table to Database #2. Additionally Name column is changed to Product_Name.</p>
       <p><strong>etl.xml:</strong></p>
       <pre><code class="language-xml">&lt;etl&gt;
     &lt;connection id="db1" url="jdbc:database1:sample" user="sa" password="" classpath="external.jar"/&gt;
@@ -75,8 +78,15 @@
 &lt;/etl&gt;</code></pre>
 
       <h3 id="Working+with+BLOBs">Working with BLOBs</h3>
-      <figure><picture><source media="(max-width: 600px)" srcset="images/examples-local-blobs-mobile.svg" width="320" height="500"><img src="images/examples-local-blobs.svg" width="760" height="220" alt="Scriptella reads local song1.mp3 and song2.mp3 files and inserts their binary content into the Track table DATA column."></picture><figcaption>Each local file supplies the binary content for one track.</figcaption></figure>
-      <p>This example creates a table of music tracks. Each track stores the binary content of a local file in its DATA column. Place song1.mp3 and song2.mp3 in the same directory as etl.xml.</p>
+      <figure>
+        <picture>
+          <source media="(max-width: 600px)" srcset="images/examples-local-blobs-mobile.svg" width="320" height="500">
+          <img src="images/examples-local-blobs.svg" width="760" height="220" alt="Scriptella reads local song1.mp3 and song2.mp3 files and inserts their binary content into the Track table DATA column.">
+        </picture>
+        <figcaption>Each local file supplies the binary content for one track.</figcaption>
+      </figure>
+      <p>This example creates a table of music tracks. Each track stores the binary content of a local file in its DATA column. Place
+        song1.mp3 and song2.mp3 in the same directory as etl.xml.</p>
       <p><strong>etl.xml:</strong></p>
       <pre><code class="language-xml">&lt;etl&gt;
     &lt;connection driver="h2" url="jdbc:h2:./tracks" user="sa" password="" classpath="h2.jar"/&gt;
@@ -95,7 +105,8 @@
 &lt;/etl&gt;</code></pre>
 
       <h3 id="Supporting+several+SQL+dialects">Supporting several SQL dialects</h3>
-      <p><code>&lt;dialect&gt;</code> element allows including vendor specific content. The following example creates a database schema for H2, Oracle, or MySQL depending on the selected driver:</p>
+      <p><code>&lt;dialect&gt;</code> element allows including vendor specific content. The following example creates a database schema for
+        H2, Oracle, or MySQL depending on the selected driver:</p>
       <pre><code class="language-xml">&lt;etl&gt;
     &lt;properties&gt;
         &lt;include href="etl.properties"/&gt;
@@ -118,7 +129,8 @@
             VALUES (2, 'Development', 'Java application');
      &lt;/script&gt;
 &lt;/etl&gt;</code></pre>
-      <aside class="note"><strong>Note:</strong> See <a href="https://github.com/scriptella/scriptella-examples">Scriptella examples on GitHub</a> or <a href="download.html">download</a> Scriptella examples distribution.</aside>
+      <aside class="note"><strong>Note:</strong> See <a href="https://github.com/scriptella/scriptella-examples">Scriptella examples on
+        GitHub</a> or <a href="download.html">download</a> Scriptella examples distribution.</aside>
       <h2 id="Executing+ETL+Files+from+Java">Executing ETL Files from Java</h2>
       <p>Put Scriptella and the required drivers on your application classpath, then execute an ETL file with one of these methods:</p>
       <pre><code class="language-java">EtlExecutor.newExecutor(new File("etl.xml")).execute();
@@ -130,7 +142,9 @@ EtlExecutor.newExecutor(
       <h2 id="Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</h2>
       <p>In order to use Scriptella as Ant task you will need the following taskdef declaration:</p>
       <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties" classpath="/path/to/scriptella.jar[;additional_drivers.jar]"/&gt;</code></pre>
-      <aside class="note"><strong>Note:</strong> Additional drivers classpath entries are optional. You may directly specify classpath attribute in a connection XML element declaration. Example: <code>&lt;connection driver="sybase" classpath="jconn3.jar"/&gt;</code></aside>
+      <aside class="note"><strong>Note:</strong> Additional drivers classpath entries are optional. You may directly specify classpath
+        attribute in a connection XML element declaration. Example: <code>&lt;connection driver="sybase"
+        classpath="jconn3.jar"/&gt;</code></aside>
       <p>Running Scriptella files from Ant is simple:</p>
       <pre><code class="language-xml">&lt;etl/&gt; &lt;!-- Execute etl.xml file in the current directory --&gt;</code></pre>
       <p>or</p>
@@ -145,7 +159,8 @@ EtlExecutor.newExecutor(
   <footer class="site-footer">
     <div class="site-footer__inner">
       <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
-      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <p class="site-footer__credit">Built by
+        <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
       <nav aria-label="Footer navigation">
         <ul>
           <li><a href="reference/index.html">Documentation</a></li>

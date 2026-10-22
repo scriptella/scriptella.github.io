@@ -41,7 +41,8 @@
           <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
         </ul>
         <div class="header-controls">
-        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change
+          color theme</span></button>
         </div>
       </div>
     </nav>
@@ -50,7 +51,8 @@
   <main id="main-content" class="page-shell page-shell--reading">
     <article class="page-content">
       <h1>Scriptella ETL tutorial</h1>
-      <p>Scriptella runs SQL and other scripts from an XML ETL file, using JDBC to connect to databases. In this tutorial, you will run a job from the command line, see how it processes rows, and use the same pattern to copy data between databases.</p>
+      <p>Scriptella runs SQL and other scripts from an XML ETL file, using JDBC to connect to databases. In this tutorial, you will run a
+        job from the command line, see how it processes rows, and use the same pattern to copy data between databases.</p>
       <nav aria-label="Table of contents"><h2>On this page</h2><ol>
         <li><a href="#Installation">Install Scriptella</a></li>
         <li><a href="#first-job">Your first ETL job</a></li>
@@ -64,16 +66,26 @@
 curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
       <p>Follow the installer's instructions to add Scriptella to your <code>PATH</code>. Open a new shell, then verify the installation:</p>
 <pre><code>scriptella.sh --version</code></pre>
-      <p>On Windows, follow the <a href="installation.html#windows-installation">Windows installation instructions</a> and use <code>scriptella.bat</code> for the commands below. See the <a href="installation.html#manual-installation">installation guide</a> for manual installation.</p>
+      <p>On Windows, follow the <a href="installation.html#windows-installation">Windows installation instructions</a> and use
+        <code>scriptella.bat</code> for the commands below. See the <a href="installation.html#manual-installation">installation guide</a>
+        for manual installation.</p>
       <h2 id="first-job">2. Your first ETL job</h2>
       <p>Generate a SQL file from a CSV file. This job uses the bundled CSV and text drivers, so you need no database or extra driver downloads.</p>
-<figure><picture><source media="(max-width: 600px)" srcset="images/tutorial-csv-mobile.svg" width="320" height="500"><img src="images/tutorial-csv.svg" width="760" height="220" alt="people.csv passes through a Scriptella ETL job to produce load.sql."></picture><figcaption>Two input rows become two INSERT statements.</figcaption></figure>
+      <figure>
+        <picture>
+          <source media="(max-width: 600px)" srcset="images/tutorial-csv-mobile.svg" width="320" height="500">
+          <img src="images/tutorial-csv.svg" width="760" height="220" alt="people.csv passes through a Scriptella ETL job to produce load.sql.">
+        </picture>
+        <figcaption>Two input rows become two INSERT statements.</figcaption>
+      </figure>
       <p>Create a new working directory and put these two files in it.</p>
       <h3>people.csv</h3>
 <pre><code>id,name
 1,Ada
 2,Grace</code></pre>
-      <p>By default, Scriptella treats the first CSV row as column headers (<code>id,name</code>). These names become <code>$id</code> and <code>$name</code> variables, while subsequent rows contain the data. For headerless CSV files, set <code>headers=false</code> in the CSV connection properties.</p>
+      <p>By default, Scriptella treats the first CSV row as column headers (<code>id,name</code>). These names become <code>$id</code> and
+        <code>$name</code> variables, while subsequent rows contain the data. For headerless CSV files, set <code>headers=false</code> in
+        the CSV connection properties.</p>
       <h3>csv-to-sql.etl.xml</h3>
 <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
 &lt;etl&gt;
@@ -92,20 +104,40 @@ curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
       <p>Open the generated <code>load.sql</code>. It contains these statements (leading whitespace may differ):</p>
 <pre><code class="language-sql">INSERT INTO people (id, name) VALUES (1, 'Ada');
 INSERT INTO people (id, name) VALUES (2, 'Grace');</code></pre>
-      <p>You have read two CSV rows and generated one SQL statement for each. No SQL has been executed against a database. Running this job again replaces the output file.</p>
-      <aside class="note"><strong>Text output:</strong> <code>$id</code> and <code>$name</code> insert text into the output. This small example assumes names without apostrophes; it does not escape SQL strings. For inserting real data through JDBC, use bound parameters as shown below.</aside>
+      <p>You have read two CSV rows and generated one SQL statement for each. No SQL has been executed against a database. Running this job
+        again replaces the output file.</p>
+      <aside class="note"><strong>Text output:</strong> <code>$id</code> and <code>$name</code> insert text into the output. This small
+        example assumes names without apostrophes; it does not escape SQL strings. For inserting real data through JDBC, use bound
+        parameters as shown below.</aside>
       <h2 id="how-it-works">3. How Scriptella works</h2>
-      <p>An ETL file declares connections and the queries and scripts that use them. A connection can point to a database, a file, or another supported resource.</p>
-<figure><picture><source media="(max-width: 600px)" srcset="images/tutorial-rows-mobile.svg" width="320" height="500"><img src="images/tutorial-rows.svg" width="760" height="220" alt="A source query emits two rows. Each row exposes id and name variables and runs the nested destination script once."></picture><figcaption>A query supplies rows; its nested script runs once for every row.</figcaption></figure>
+      <p>An ETL file declares connections and the queries and scripts that use them. A connection can point to a database, a file, or
+        another supported resource.</p>
+      <figure>
+        <picture>
+          <source media="(max-width: 600px)" srcset="images/tutorial-rows-mobile.svg" width="320" height="500">
+          <img src="images/tutorial-rows.svg" width="760" height="220" alt="A source query emits two rows. Each row exposes id and name variables and runs the nested destination script once.">
+        </picture>
+        <figcaption>A query supplies rows; its nested script runs once for every row.</figcaption>
+      </figure>
       <ol>
-        <li><code>&lt;query connection-id="input"&gt;</code> reads the CSV rows. An empty CSV query reads all data rows using the header names as variables.</li>
-        <li>For the first row, <code>id</code> is <code>1</code> and <code>name</code> is <code>Ada</code>. The nested script writes one statement through the <code>output</code> connection.</li>
+        <li><code>&lt;query connection-id="input"&gt;</code> reads the CSV rows. An empty CSV query reads all data rows using the header
+          names as variables.</li>
+        <li>For the first row, <code>id</code> is <code>1</code> and <code>name</code> is <code>Ada</code>. The nested script writes one
+          statement through the <code>output</code> connection.</li>
         <li>The query advances to Grace's row and runs the same script with the new values.</li>
       </ol>
-      <p>The <code>connection-id</code> selects which connection executes a query or script. With a JDBC source, the query contains a SQL <code>SELECT</code>; each result row exposes its columns to the nested script.</p>
+      <p>The <code>connection-id</code> selects which connection executes a query or script. With a JDBC source, the query contains a SQL
+        <code>SELECT</code>; each result row exposes its columns to the nested script.</p>
       <h2 id="Copy+table+to+another+database">4. Copy rows between databases</h2>
-      <p>Now use that pattern to copy a <code>people</code> table from MySQL to PostgreSQL. This example assumes both servers are running and you can create tables in <code>source_db</code> and <code>target_db</code>.</p>
-<figure><picture><source media="(max-width: 600px)" srcset="images/tutorial-databases-mobile.svg" width="320" height="500"><img src="images/tutorial-databases.svg" width="760" height="220" alt="MySQL source_db sends people rows through Scriptella to PostgreSQL target_db using bound JDBC parameters."></picture><figcaption>The source SELECT supplies values for the target INSERT.</figcaption></figure>
+      <p>Now use that pattern to copy a <code>people</code> table from MySQL to PostgreSQL. This example assumes both servers are running
+        and you can create tables in <code>source_db</code> and <code>target_db</code>.</p>
+      <figure>
+        <picture>
+          <source media="(max-width: 600px)" srcset="images/tutorial-databases-mobile.svg" width="320" height="500">
+          <img src="images/tutorial-databases.svg" width="760" height="220" alt="MySQL source_db sends people rows through Scriptella to PostgreSQL target_db using bound JDBC parameters.">
+        </picture>
+        <figcaption>The source SELECT supplies values for the target INSERT.</figcaption>
+      </figure>
       <h3>Prepare the databases and drivers</h3>
       <p>Create this table in both databases. Start with an empty target table:</p>
 <pre><code class="language-sql">CREATE TABLE people (
@@ -114,23 +146,26 @@ INSERT INTO people (id, name) VALUES (2, 'Grace');</code></pre>
 );</code></pre>
       <p>Insert the sample rows in MySQL only:</p>
 <pre><code class="language-sql">INSERT INTO people (id, name) VALUES (1, 'Ada'), (2, 'Grace');</code></pre>
-      <p>Download <a href="https://dev.mysql.com/downloads/connector/j/">MySQL Connector/J</a> and the <a href="https://jdbc.postgresql.org/download/">PostgreSQL JDBC driver</a>. Create a <code>lib</code> directory beside your new ETL file. Copy the downloaded JARs into it and rename them to match these paths:</p>
+      <p>Download <a href="https://dev.mysql.com/downloads/connector/j/">MySQL Connector/J</a> and the
+        <a href="https://jdbc.postgresql.org/download/">PostgreSQL JDBC driver</a>. Create a <code>lib</code> directory beside your new ETL
+        file. Copy the downloaded JARs into it and rename them to match these paths:</p>
 <pre><code>database-copy/
 ├── mysql-to-postgres.etl.xml
 └── lib/
     ├── mysql-connector-j.jar
     └── postgresql.jar</code></pre>
       <h3>Create mysql-to-postgres.etl.xml</h3>
-      <p>Use the following file, adjusting the JDBC URLs for your servers. The driver paths are relative to the ETL file.</p>
+      <p>Use the following file, replacing the JDBC URLs, usernames, and password placeholders with the values for your databases. The
+        driver paths are relative to the ETL file.</p>
 <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
 &lt;etl&gt;
     &lt;connection id="source" driver="mysql"
                 url="jdbc:mysql://localhost:3306/source_db"
-                user="${env.SOURCE_DB_USER}" password="${env.SOURCE_DB_PASSWORD}"
+                user="source_user" password="replace-with-source-password"
                 classpath="lib/mysql-connector-j.jar"/&gt;
     &lt;connection id="target" driver="postgresql"
                 url="jdbc:postgresql://localhost:5432/target_db"
-                user="${env.TARGET_DB_USER}" password="${env.TARGET_DB_PASSWORD}"
+                user="target_user" password="replace-with-target-password"
                 classpath="lib/postgresql.jar"/&gt;
 
     &lt;query connection-id="source"&gt;
@@ -140,17 +175,14 @@ INSERT INTO people (id, name) VALUES (2, 'Grace');</code></pre>
         &lt;/script&gt;
     &lt;/query&gt;
 &lt;/etl&gt;</code></pre>
-      <p><code>?id</code> and <code>?name</code> bind the current row's values as JDBC prepared-statement parameters. Leave them unquoted: JDBC handles value types and string escaping, including names containing apostrophes.</p>
+      <p><code>?id</code> and <code>?name</code> bind the current row's values as JDBC prepared-statement parameters. Leave them unquoted:
+        JDBC handles value types and string escaping, including names containing apostrophes.</p>
+      <aside class="note"><strong>Passwords:</strong> For real jobs, use environment variables such as
+        <code>password="${env.DB_PASSWORD}"</code> instead of hardcoding passwords in the ETL file. This keeps credentials out of files you
+        share or commit. Environment variables still need protection; see the
+        <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/cli-usage.md#environment-variables">credential guidance and
+        security considerations</a>.</aside>
       <h3>Run and verify</h3>
-      <p>Set the four environment variables used by the connections. For example, in a macOS or Linux shell:</p>
-<pre><code>export SOURCE_DB_USER='source_user'
-export SOURCE_DB_PASSWORD='replace-with-source-password'
-export TARGET_DB_USER='target_user'
-export TARGET_DB_PASSWORD='replace-with-target-password'</code></pre>
-      <p>In Windows PowerShell, set environment variables with <code>$env:</code> instead:</p>
-<pre><code>$env:SOURCE_DB_USER = "source_user"
-$env:SOURCE_DB_PASSWORD = "replace-with-source-password"</code></pre>
-      <p>Set <code>TARGET_DB_USER</code> and <code>TARGET_DB_PASSWORD</code> using the same pattern, with your PostgreSQL credentials.</p>
       <p>From the directory containing the ETL file, run:</p>
 <pre><code>scriptella.sh mysql-to-postgres.etl.xml</code></pre>
       <p>In your PostgreSQL client, verify the target data:</p>
@@ -158,14 +190,18 @@ $env:SOURCE_DB_PASSWORD = "replace-with-source-password"</code></pre>
 ---+------
  1 | Ada
  2 | Grace</code></pre>
-      <p>This example inserts rows into an empty target. A second run with the same IDs will fail on the primary key. For repeatable imports, choose an upsert or clear a dedicated staging table before loading.</p>
+      <p>This example inserts rows into an empty target. A second run with the same IDs will fail on the primary key. For repeatable
+        imports, choose an upsert or clear a dedicated staging table before loading.</p>
       <h2 id="next-steps">5. Where to go next</h2>
       <ul>
-        <li><a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.6/docs/first-migration.md">MySQL-to-PostgreSQL migration walkthrough</a>: another complete database copy, using customer records.</li>
+        <li><a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/first-migration.md">MySQL-to-PostgreSQL migration
+          walkthrough</a>: another complete database copy, using customer records.</li>
         <li><a href="reference/index.html">Reference documentation</a>: connections, queries, scripts, properties, and error handling.</li>
         <li><a href="examples.html">Examples and patterns</a>: more database examples and integration techniques.</li>
-        <li id="Executing+ETL+Files+from+Java"><a href="examples.html#Executing+ETL+Files+from+Java">Java embedding</a>: execute ETL files from your application.</li>
-        <li><a href="reference/index.html#Command+Line+Execution">Command-line reference</a> and <a href="howto/create-database.html">database initialization how-to</a>: more ways to run Scriptella.</li>
+        <li id="Executing+ETL+Files+from+Java"><a href="examples.html#Executing+ETL+Files+from+Java">Java embedding</a>: execute ETL files
+          from your application.</li>
+        <li><a href="reference/index.html#Command+Line+Execution">Command-line reference</a> and
+          <a href="howto/create-database.html">database initialization how-to</a>: more ways to run Scriptella.</li>
       </ul>
       <p>Looking for a section from the previous tutorial? These examples now live in <a href="examples.html">Examples and patterns</a>:</p>
       <ul>
@@ -183,7 +219,8 @@ $env:SOURCE_DB_PASSWORD = "replace-with-source-password"</code></pre>
   <footer class="site-footer">
     <div class="site-footer__inner">
       <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
-      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <p class="site-footer__credit">Built by
+        <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
       <nav aria-label="Footer navigation">
         <ul>
           <li><a href="reference/index.html">Documentation</a></li>
