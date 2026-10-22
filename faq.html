@@ -217,12 +217,13 @@
       <ul>
         <li><code>transaction.isolation</code> - Transaction isolation level name</li>
         <li><code>autocommit</code> - Enables/disables auto-commit mode.</li>
-        <li><code>autocommit.size</code> - Enables/disables auto-commit mode.</li>
+        <li><code>autocommit.size</code> - Controls periodic commits: the number of statements executed between commits when positive. Use with <code>autocommit=false</code>.</li>
       </ul>
-      <aside class="note"><strong>Note:</strong> In general avoid using <code>autocommit.size</code>, because in this case an ETL process cannot be rolled back correctly. Use this parameter only for performance critical operations (bulk inserts etc.). If the <code>autocommit</code> is true, then setting <code>autocommit.size</code> has no effect.</aside>
+      <aside class="note"><strong>Note:</strong> Periodic commits can limit transaction size in long ETL jobs, but previously committed work cannot be rolled back if a later step fails. More frequent commits may also reduce throughput. Leave <code>autocommit.size</code> unset or set it to <code>0</code> to retain the normal transaction boundary. Do not combine a positive <code>autocommit.size</code> with <code>autocommit=true</code>: Scriptella still attempts explicit commits at the configured threshold, which can cause the ETL job to fail with drivers such as PostgreSQL's pgJDBC.</aside>
       <p><strong>Example:</strong></p>
       <pre><code class="language-xml">&lt;connection driver="auto" url="jdbc:h2:mem:test"&gt;
-    autocommit.size=4 &lt;!-- Automatically commit after every 4th statement --&gt;
+    autocommit=false
+    autocommit.size=4 &lt;!-- Periodic commits after every 4 statements --&gt;
     transaction.isolation=SERIALIZABLE &lt;!-- Sets TX level to Serializable --&gt;
 &lt;/connection&gt;</code></pre>
 
