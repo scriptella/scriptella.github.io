@@ -258,7 +258,7 @@
     statement.batchSize=1000
     reWriteBatchedInserts=true
 &lt;/connection&gt;</code></pre>
-      <p>Rewriting combines compatible batched inserts into multi-row INSERT statements. See the <a href="docs/api/scriptella/driver/postgresql/package-summary.html">PostgreSQL driver documentation</a> for details.</p>
+      <p>Rewriting combines compatible batched inserts into multi-row INSERT statements. See the <a href="docs/api/scriptella/driver/postgresql/package-summary.html">PostgreSQL driver documentation</a> for details. For batch sizes, transaction boundaries, PostgreSQL and MariaDB settings, and tuning recommendations, see the <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/batching-performance.md">batching and insert performance guide</a>.</p>
 
       <h2 id="csvtext">3. CSV/Text</h2>
 

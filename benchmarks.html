@@ -52,6 +52,7 @@
   <main id="main-content" class="page-shell page-shell--reading">
     <article class="page-content">
       <h1>CSV import benchmarks</h1>
+      <p>For practical configuration advice, see the <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/batching-performance.md">batching and insert performance guide</a>, covering PostgreSQL and MariaDB driver settings, batch sizes, and transaction boundaries.</p>
       <p class="lede">One million rows, two databases, and a reproducible comparison of Scriptella 1.6, handwritten JDBC, and csvsql.</p>
       <p>Batched Scriptella imported the fixture in 7.775 seconds on PostgreSQL and 6.694 seconds on MariaDB in one GitHub Actions run. Handwritten JDBC was faster; csvsql’s tested direct-import workflow took about 6 minutes.</p>
       <p>These are exploratory results for this workload and environment. JDBC batching and csvsql chunking use different mechanisms; PostgreSQL COPY is a database-specific reference.</p>
