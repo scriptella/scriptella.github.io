@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reference documentation — Scriptella</title>
+  <title>Reference documentation: Scriptella</title>
   <meta name="description" content="Scriptella reference documentation: concepts, ETL syntax, integrations, JDBC adapters, data sources, examples, and best practices.">
   <link rel="canonical" href="https://scriptella.org/reference/">
-  <meta property="og:title" content="Reference documentation — Scriptella">
+  <meta property="og:title" content="Reference documentation: Scriptella">
   <meta property="og:description" content="Scriptella reference documentation: concepts, ETL syntax, integrations, JDBC adapters, data sources, examples, and best practices.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://scriptella.org/reference/">
@@ -17,12 +17,12 @@
   <meta property="og:image:height" content="909">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.png">
-  <meta name="twitter:title" content="Reference documentation — Scriptella">
+  <meta name="twitter:title" content="Reference documentation: Scriptella">
   <meta name="twitter:description" content="Scriptella reference documentation: concepts, ETL syntax, integrations, JDBC adapters, data sources, examples, and best practices.">
   <link rel="icon" href="../favicon.ico" sizes="32x32">
   <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
   <script src="../theme.js"></script>
-  <link rel="stylesheet" href="../style.css?v=20261015">
+  <link rel="stylesheet" href="../style.css?v=20261022">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -41,7 +41,7 @@
           <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
         </ul>
         <div class="header-controls">
-        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme — switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
         </div>
       </div>
     </nav>
@@ -146,7 +146,7 @@
           <dt>Query</dt>
           <dd>Code that reads a data source. A query can contain nested queries and scripts.</dd>
         </dl>
-        <p>Queries work like <em>for each</em> statements. They iterate through rows—such as JDBC result-set rows, LDAP entries, XML elements, or regular-expression matches—and expose each row's columns or attributes as variables to nested elements.</p>
+        <p>Queries work like <em>for each</em> statements. They iterate through rows (such as JDBC result-set rows, LDAP entries, XML elements, or regular-expression matches) and expose each row's columns or attributes as variables to nested elements.</p>
         <figure>
           <img src="../images/reference/example1.png" alt="Example of values flowing from a query into a nested script">
         </figure>
@@ -156,7 +156,7 @@
           <p>Scriptella is a good fit when you need to:</p>
           <ul>
             <li>Store and execute database SQL without depending on vendor command-line tools, while retaining JDBC features such as references to BLOB content.</li>
-            <li>Work with several data sources—for example, reading statistics from one database and storing them in another.</li>
+            <li>Work with several data sources, for example, reading statistics from one database and storing them in another.</li>
             <li>Keep queries visible as SQL instead of expressing them through a visual query designer.</li>
             <li>Generate test data during execution instead of storing large generated files.</li>
             <li>Perform schema evolution or data migration.</li>
@@ -198,10 +198,10 @@
 └── NOTICE</code></pre>
         <p>The main libraries are:</p>
         <ul>
-          <li><code>lib/scriptella-core.jar</code> — core execution classes.</li>
-          <li><code>lib/scriptella-drivers.jar</code> — built-in data-source drivers and adapters.</li>
-          <li><code>lib/scriptella-tools.jar</code> — command-line, Ant, and supporting tools.</li>
-          <li><code>scriptella.jar</code> — the all-in-one Scriptella JAR. Driver-specific dependencies still need to be supplied separately.</li>
+          <li><code>lib/scriptella-core.jar</code>: core execution classes.</li>
+          <li><code>lib/scriptella-drivers.jar</code>: built-in data-source drivers and adapters.</li>
+          <li><code>lib/scriptella-tools.jar</code>: command-line, Ant, and supporting tools.</li>
+          <li><code>scriptella.jar</code>: the all-in-one Scriptella JAR. Driver-specific dependencies still need to be supplied separately.</li>
         </ul>
         <p>Java sources are included in <code>scriptella-src-ide.zip</code>, which can be attached to <code>scriptella.jar</code> in an IDE.</p>
       </section>
@@ -550,8 +550,8 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
           <section id="Supported+Templates">
             <h4>Supported templates</h4>
             <ul>
-              <li><strong>Default</strong> — creates a simple ETL template for a quick start.</li>
-              <li><a href="../docs/api/scriptella/tools/template/DataMigrator.html"><strong>DataMigrator</strong></a> — creates a template for transferring data between tables in different databases.</li>
+              <li><strong>Default</strong>: creates a simple ETL template for a quick start.</li>
+              <li><a href="../docs/api/scriptella/tools/template/DataMigrator.html"><strong>DataMigrator</strong></a>: creates a template for transferring data between tables in different databases.</li>
             </ul>
           </section>
           <section id="Examples-N10532">
@@ -767,7 +767,7 @@ executor.execute();</code></pre>
       <section id="Best+Practices">
         <h2>Best practices</h2>
         <ul>
-          <li>Keep connection properties and other settings—such as driver names, URLs, and mode flags—in a property file such as <code>etl.properties</code> instead of hardcoding them.</li>
+          <li>Keep connection properties and other settings (such as driver names, URLs, and mode flags) in a property file such as <code>etl.properties</code> instead of hardcoding them.</li>
           <li>Use Scriptella's JDBC adapters when possible.</li>
           <li>Use <code>&lt;dialect&gt;</code> for database-specific SQL. Properties can make data types configurable across database vendors:
             <pre><code class="language-sql">CREATE TABLE User (

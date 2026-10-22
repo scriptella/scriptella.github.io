@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="220" viewBox="0 0 760 220" role="img" aria-labelledby="title desc">
+  <title id="title">One nested script execution per row</title><desc id="desc">A source query emits rows. The current row supplies variables to the destination script, which executes once per row.</desc>
+  <style>
+    :root {
+      --diagram-bg: #f4f7fa;
+      --diagram-box: #ffffff;
+      --diagram-text: #233746;
+      --diagram-border: #708a9d;
+      --diagram-arrow: #526777;
+    }
+    /* Embedded SVGs inherit the page's color-scheme, including manual theme selection. */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --diagram-bg: #181818;
+        --diagram-box: #242424;
+        --diagram-text: #e4e9ed;
+        --diagram-border: #708a9d;
+        --diagram-arrow: #9bb0bf;
+      }
+    }
+  </style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--diagram-arrow)"/></marker></defs>
+  <rect width="760" height="220" rx="12" fill="var(--diagram-bg)"/>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="var(--diagram-text)">
+    <rect x="20" y="60" width="180" height="110" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="110.0" y="90" font-size="17" font-weight="600">Source query</text>
+    <text x="110.0" y="115" font-size="14">CSV or SELECT</text>
+    <text x="110.0" y="140" font-size="14">Produces rows</text>
+    <rect x="255" y="40" width="235" height="150" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="372.5" y="70" font-size="17" font-weight="600">Current row variables</text>
+    <text x="372.5" y="95" font-size="14">1 · Ada → run script</text>
+    <text x="372.5" y="120" font-size="14">2 · Grace → run script</text>
+    <rect x="545" y="60" width="195" height="110" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="642.5" y="90" font-size="17" font-weight="600">Destination script</text>
+    <text x="642.5" y="115" font-size="14">Uses row values</text>
+    <text x="642.5" y="140" font-size="14">Runs twice</text>
+    <path d="M205 115 H245" fill="none" stroke="var(--diagram-arrow)" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M495 115 H535" fill="none" stroke="var(--diagram-arrow)" stroke-width="2" marker-end="url(#arrow)"/>
+  </g>
+</svg>

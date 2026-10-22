@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="220" viewBox="0 0 760 220" role="img" aria-labelledby="title desc">
+  <title id="title">Local files to database BLOBs</title><desc id="desc">Scriptella reads song1.mp3 and song2.mp3 beside etl.xml and binds their binary content to the DATA column of two Track rows in H2.</desc>
+  <style>
+    :root {
+      --diagram-bg: #f4f7fa;
+      --diagram-box: #ffffff;
+      --diagram-text: #233746;
+      --diagram-border: #708a9d;
+      --diagram-arrow: #526777;
+    }
+    /* Embedded SVGs inherit the page's color-scheme, including manual theme selection. */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --diagram-bg: #181818;
+        --diagram-box: #242424;
+        --diagram-text: #e4e9ed;
+        --diagram-border: #708a9d;
+        --diagram-arrow: #9bb0bf;
+      }
+    }
+  </style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--diagram-arrow)"/></marker></defs>
+  <rect width="760" height="220" rx="12" fill="var(--diagram-bg)"/>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="var(--diagram-text)">
+    <rect x="20" y="60" width="200" height="110" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="120.0" y="90" font-size="17" font-weight="600">Local files</text>
+    <text x="120.0" y="115" font-size="14">song1.mp3 · song2.mp3</text>
+    <text x="120.0" y="140" font-size="14">Beside etl.xml</text>
+    <rect x="280" y="60" width="200" height="110" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="380.0" y="90" font-size="17" font-weight="600">Scriptella</text>
+    <text x="380.0" y="115" font-size="14">Read binary content</text>
+    <text x="380.0" y="140" font-size="14">?{file 'song1.mp3'}</text>
+    <rect x="540" y="60" width="200" height="110" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="640.0" y="90" font-size="17" font-weight="600">H2 database</text>
+    <text x="640.0" y="115" font-size="14">Track.DATA</text>
+    <text x="640.0" y="140" font-size="14">One BLOB per track</text>
+    <path d="M225 115 H270" fill="none" stroke="var(--diagram-arrow)" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M485 115 H530" fill="none" stroke="var(--diagram-arrow)" stroke-width="2" marker-end="url(#arrow)"/>
+  </g>
+</svg>

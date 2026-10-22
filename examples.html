@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scriptella Examples and Patterns: SQL, Java and Ant</title>
+  <meta name="description" content="Scriptella examples for database copying, BLOBs, SQL dialects, Java embedding, and Ant integration.">
+  <link rel="canonical" href="https://scriptella.org/examples.html">
+  <meta property="og:title" content="Scriptella Examples and Patterns: SQL, Java and Ant">
+  <meta property="og:description" content="Scriptella examples for database copying, BLOBs, SQL dialects, Java embedding, and Ant integration.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://scriptella.org/examples.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Scriptella">
+  <meta property="og:image:width" content="1731">
+  <meta property="og:image:height" content="909">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.png">
+  <meta name="twitter:title" content="Scriptella Examples and Patterns: SQL, Java and Ant">
+  <meta name="twitter:description" content="Scriptella examples for database copying, BLOBs, SQL dialects, Java embedding, and Ant integration.">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css?v=20261022">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="reference/index.html">Documentation</a></li>
+          <li><a href="tutorial.html">Tutorial</a></li>
+          <li><a href="installation.html">Install</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell page-shell--reading">
+    <article class="page-content">
+      <h1>Examples and patterns</h1>
+      <p>Explore database copying, binary data, SQL dialects, Java embedding, and Ant integration. If you are new to Scriptella, start with the <a href="tutorial.html">guided tutorial</a>.</p>
+      <nav aria-label="Table of contents"><h2>Contents</h2><ul>
+        <li><a href="#Copy+table+to+another+database">Copy a table</a></li>
+        <li><a href="#Working+with+BLOBs">Work with BLOBs</a></li>
+        <li><a href="#Supporting+several+SQL+dialects">Support several SQL dialects</a></li>
+        <li><a href="#Executing+ETL+Files+from+Java">Embed Scriptella in Java</a></li>
+        <li><a href="#Use+Scriptella+as+Ant+Task">Run from Ant</a></li>
+      </ul></nav>
+      <h2 id="Examples">Database examples</h2>
+      <h3 id="Copy+table+to+another+database">Copy table to another database</h3>
+      <p><img src="images/table_copy.png" alt="Migration of table records"></p>
+      <p>Assume Database #1 contains Table Product with id, category and name columns. The following script copies software products from this table to Database #2. Additionally Name column is changed to Product_Name.</p>
+      <p><strong>etl.xml:</strong></p>
+      <pre><code class="language-xml">&lt;etl&gt;
+    &lt;connection id="db1" url="jdbc:database1:sample" user="sa" password="" classpath="external.jar"/&gt;
+    &lt;connection id="db2" url="jdbc:database2:sample" user="sa" password=""/&gt;
+    &lt;query connection-id="db1"&gt;
+        SELECT * FROM Product WHERE category='software';
+        &lt;script connection-id="db2"&gt;
+            INSERT INTO Product(id, category, product_name) values (?id, ?{category}, ?name);
+        &lt;/script&gt;
+    &lt;/query&gt;
+&lt;/etl&gt;</code></pre>
+
+      <h3 id="Working+with+BLOBs">Working with BLOBs</h3>
+      <figure><picture><source media="(max-width: 600px)" srcset="images/examples-local-blobs-mobile.svg" width="320" height="500"><img src="images/examples-local-blobs.svg" width="760" height="220" alt="Scriptella reads local song1.mp3 and song2.mp3 files and inserts their binary content into the Track table DATA column."></picture><figcaption>Each local file supplies the binary content for one track.</figcaption></figure>
+      <p>This example creates a table of music tracks. Each track stores the binary content of a local file in its DATA column. Place song1.mp3 and song2.mp3 in the same directory as etl.xml.</p>
+      <p><strong>etl.xml:</strong></p>
+      <pre><code class="language-xml">&lt;etl&gt;
+    &lt;connection driver="h2" url="jdbc:h2:./tracks" user="sa" password="" classpath="h2.jar"/&gt;
+    &lt;script&gt;
+        CREATE TABLE Track (
+          ID INT,
+          ALBUM_ID INT,
+          NAME VARCHAR(100),
+          DATA LONGVARBINARY
+        );
+        INSERT INTO Track(id, album_id, name, data) values
+               (1, 1, 'Song1.mp3', ?{file 'song1.mp3'});
+        INSERT INTO Track(id, album_id, name, data) values
+               (2, 2, 'Song2.mp3', ?{file 'song2.mp3'});
+    &lt;/script&gt;
+&lt;/etl&gt;</code></pre>
+
+      <h3 id="Supporting+several+SQL+dialects">Supporting several SQL dialects</h3>
+      <p><code>&lt;dialect&gt;</code> element allows including vendor specific content. The following example creates a database schema for H2, Oracle, or MySQL depending on the selected driver:</p>
+      <pre><code class="language-xml">&lt;etl&gt;
+    &lt;properties&gt;
+        &lt;include href="etl.properties"/&gt;
+    &lt;/properties&gt;
+    &lt;connection url="$url" user="$user"
+        password="$password" classpath="$classpath"/&gt;
+    &lt;script&gt;
+        &lt;dialect name="h2"&gt;
+            &lt;include href="h2-schema.sql"/&gt;
+        &lt;/dialect&gt;
+        &lt;dialect name="oracle"&gt;
+            &lt;include href="oracle-schema.sql"/&gt;
+        &lt;/dialect&gt;
+        &lt;dialect name="mysql"&gt;
+            &lt;include href="mysql-schema.sql"/&gt;
+        &lt;/dialect&gt;
+        INSERT INTO Product(id, category, product_name)
+            VALUES (1, 'ETL', 'Scriptella ETL');
+        INSERT INTO Product(id, category, product_name)
+            VALUES (2, 'Development', 'Java application');
+     &lt;/script&gt;
+&lt;/etl&gt;</code></pre>
+      <aside class="note"><strong>Note:</strong> See <a href="https://github.com/scriptella/scriptella-examples">Scriptella examples on GitHub</a> or <a href="download.html">download</a> Scriptella examples distribution.</aside>
+      <h2 id="Executing+ETL+Files+from+Java">Executing ETL Files from Java</h2>
+      <p>Put Scriptella and the required drivers on your application classpath, then execute an ETL file with one of these methods:</p>
+      <pre><code class="language-java">EtlExecutor.newExecutor(new File("etl.xml")).execute();
+EtlExecutor.newExecutor(getClass().getResource("etl.xml")).execute();
+EtlExecutor.newExecutor(
+    servletContext.getResource("/WEB-INF/db/init.etl.xml")).execute();</code></pre>
+      <p>See <a href="docs/api/scriptella/execution/EtlExecutor.html">EtlExecutor Javadoc</a> for more details on how to execute ETL files from Java code.</p>
+
+      <h2 id="Use+Scriptella+as+Ant+Task">Use Scriptella as Ant Task</h2>
+      <p>In order to use Scriptella as Ant task you will need the following taskdef declaration:</p>
+      <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties" classpath="/path/to/scriptella.jar[;additional_drivers.jar]"/&gt;</code></pre>
+      <aside class="note"><strong>Note:</strong> Additional drivers classpath entries are optional. You may directly specify classpath attribute in a connection XML element declaration. Example: <code>&lt;connection driver="sybase" classpath="jconn3.jar"/&gt;</code></aside>
+      <p>Running Scriptella files from Ant is simple:</p>
+      <pre><code class="language-xml">&lt;etl/&gt; &lt;!-- Execute etl.xml file in the current directory --&gt;</code></pre>
+      <p>or</p>
+      <pre><code class="language-xml">&lt;etl file="path/to/your/file"/&gt; &lt;!-- Execute ETL file from specified location --&gt;</code></pre>
+
+      <aside class="github-prompt" aria-label="Support Scriptella">
+        <p>Scriptella useful? <a href="https://github.com/scriptella/scriptella-etl">Star it on GitHub</a> to help others discover it.</p>
+      </aside>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="reference/index.html">Documentation</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="docs/api/index.html">API Docs</a></li>
+          <li><a href="docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="benchmarks.html">Benchmarks</a></li>
+          <li><a href="changes.html">Change History</a></li>
+          <li><a href="license.html">License</a></li>
+          <li><a href="support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>

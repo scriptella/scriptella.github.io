@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="220" viewBox="0 0 760 220" role="img" aria-labelledby="title desc">
+  <title id="title">CSV to SQL file</title><desc id="desc">Scriptella reads people.csv and writes load.sql using the instructions in csv-to-sql.etl.xml.</desc>
+  <style>
+    :root {
+      --diagram-bg: #f4f7fa;
+      --diagram-box: #ffffff;
+      --diagram-text: #233746;
+      --diagram-border: #708a9d;
+      --diagram-arrow: #526777;
+    }
+    /* Embedded SVGs inherit the page's color-scheme, including manual theme selection. */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --diagram-bg: #181818;
+        --diagram-box: #242424;
+        --diagram-text: #e4e9ed;
+        --diagram-border: #708a9d;
+        --diagram-arrow: #9bb0bf;
+      }
+    }
+  </style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--diagram-arrow)"/></marker></defs>
+  <rect width="760" height="220" rx="12" fill="var(--diagram-bg)"/>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="var(--diagram-text)">
+    <rect x="25" y="65" width="180" height="90" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="115.0" y="95" font-size="17" font-weight="600">people.csv</text>
+    <text x="115.0" y="120" font-size="14">Ada · Grace</text>
+    <rect x="270" y="52" width="220" height="116" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="380.0" y="82" font-size="17" font-weight="600">Scriptella</text>
+    <text x="380.0" y="107" font-size="14">csv-to-sql.etl.xml</text>
+    <text x="380.0" y="132" font-size="14">CSV → text driver</text>
+    <rect x="555" y="65" width="180" height="90" rx="8" fill="var(--diagram-box)" stroke="var(--diagram-border)" stroke-width="1.5"/>
+    <text x="645.0" y="95" font-size="17" font-weight="600">load.sql</text>
+    <text x="645.0" y="120" font-size="14">Two INSERT statements</text>
+    <path d="M210 110 H260" fill="none" stroke="var(--diagram-arrow)" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M495 110 H545" fill="none" stroke="var(--diagram-arrow)" stroke-width="2" marker-end="url(#arrow)"/>
+  </g>
+</svg>
