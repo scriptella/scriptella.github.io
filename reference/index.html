@@ -277,7 +277,7 @@
             <dt><code>connection-id</code></dt>
             <dd>Selects the connection used to execute the script.</dd>
             <dt><code>new-tx</code></dt>
-            <dd>When <code>true</code>, executes the script using a dedicated connection instead of the shared transaction.</dd>
+            <dd>When <code>true</code>, uses a separate connection opened lazily and reused across invocations of this script element. Successful invocations are not committed individually. An unhandled script failure rolls back its pending work, including earlier rows, and execution continues on the same connection.</dd>
             <dt><code>if</code></dt>
             <dd>Controls conditional execution. For example, <code>if="rownum gt 1 and name != null and name.length() gt 0"</code> executes only when the row number is greater than one and <code>name</code> is not empty.</dd>
           </dl>
