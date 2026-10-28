@@ -52,13 +52,11 @@
   <main id="main-content" class="page-shell page-shell--reading">
     <article class="page-content">
       <h1>CSV import benchmarks</h1>
-      <p>For practical configuration advice, see the <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/batching-performance.md">batching and insert performance guide</a>, covering PostgreSQL and MariaDB driver settings, batch sizes, and transaction boundaries.</p>
-      <p class="lede">One million rows, two databases, and a reproducible comparison of Scriptella 1.6, handwritten JDBC, and csvsql.</p>
-      <p>Batched Scriptella imported the fixture in 7.775 seconds on PostgreSQL and 6.694 seconds on MariaDB in one GitHub Actions run. Handwritten JDBC was faster; csvsql’s tested direct-import workflow took about 6 minutes.</p>
-      <p>These are exploratory results for this workload and environment. JDBC batching and csvsql chunking use different mechanisms; PostgreSQL COPY is a database-specific reference.</p>
+      <p class="lede">One million CSV rows imported in under 8 seconds with Scriptella 1.6 on PostgreSQL and MariaDB.</p>
+      <p>Batched Scriptella took 7.775 seconds on PostgreSQL and 6.694 seconds on MariaDB. Handwritten JDBC was faster; csvsql’s tested direct-import workflow took about 6 minutes.</p>
 
-      <h2 id="ci-results">Benchmark v4 results</h2>
-      <p>The full v4 comparison, including csvsql, completed successfully on October 21, 2026. The charts show single observations from that Ubuntu 24.04 x86_64 run. Lower is faster.</p>
+      <h2 id="ci-results">Benchmark results</h2>
+      <p>Benchmark v4: single observations from the October 21, 2026 GitHub Actions run on Ubuntu 24.04. Lower is faster.</p>
       <figure>
         <img src="images/benchmarks/v4-ci-postgres.svg" width="879" height="447" alt="PostgreSQL durations: Scriptella batch 1000 7.775 seconds, JDBC batch 1000 6.320 seconds, csvsql chunk 1000 378.555 seconds, and native COPY 1.401 seconds.">
         <figcaption>PostgreSQL: logarithmic duration axis. Read the printed seconds for absolute differences.</figcaption>
@@ -67,19 +65,10 @@
         <img src="images/benchmarks/v4-ci-mariadb.svg" width="879" height="447" loading="lazy" alt="MariaDB durations: Scriptella batch 1000 6.694 seconds, JDBC batch 1000 4.465 seconds, and csvsql chunk 1000 370.594 seconds.">
         <figcaption>MariaDB: logarithmic duration axis. Read the printed seconds for absolute differences.</figcaption>
       </figure>
-      <p><small>Benchmark <strong>v4</strong>, Scriptella 1.6. PostgreSQL explicitly enables <code>reWriteBatchedInserts=true</code> for both Scriptella and handwritten JDBC; MariaDB uses driver defaults. Scriptella’s general adapter default is unchanged. These are single observations, not repeated-run medians. RAM was not measured.</small></p>
-      <p>See the <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-21-ci-v4">full v4 results and environment details</a>, including all eleven cases, unbatched imports, and raw measurements, and the <a href="https://github.com/scriptella/scriptella-benchmarks/actions/runs/39688830534">successful CI run</a>.</p>
-
-      <h2 id="method">About the comparison</h2>
-      <p>All import paths load the same CSV into a pre-created table, with one transaction per import and no indexes or transformations. Timings include client startup, parsing, insertion, and commit; setup and verification are excluded. Every measured import passed independent row-count and sampled-value checks.</p>
-      <p>The experiment uses Scriptella 1.6, Java 17, csvsql 2.2.0, PostgreSQL 17.11 with pgJDBC 42.7.13, and MariaDB 11.8.8 with Connector/J 3.5.7. Database durability uses normal defaults. See the <a href="https://github.com/scriptella/scriptella-benchmarks/blob/main/docs/benchmark-guide.md">methodology and limitations</a> for the full comparison.</p>
-      <p>GitHub-hosted hardware and load vary between runs. These results do not establish an improvement over historical measurements. A separate <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-21-pg-rewrite">repeated local comparison of PostgreSQL batch rewriting</a> measures the effect of that setting with rewriting off and on.</p>
-
-      <h2 id="historical-results">Historical results</h2>
-      <p>Earlier benchmark definitions and environments are documented separately: <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-14-ci-v3">v3 CI results</a>, <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-13-ci">v2 CI results</a>, and <a id="local-results" href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-12-local">v2 local results</a>. Results from different versions and environments are not pooled.</p>
-
-      <h2 id="reproduce">Run it yourself</h2>
-      <p>The benchmark runs with Docker Compose and includes all dependencies. The <a href="https://github.com/scriptella/scriptella-benchmarks#reproduce">repository instructions</a> cover running the comparison, inspecting results, and repeating it on your own hardware.</p>
+      <p><small>Same million-row CSV, pre-created tables, one transaction per import, no indexes or transformations. Timings include client startup, CSV parsing, insertion, and commit; setup and verification are excluded. PostgreSQL batch rewriting is enabled for both Scriptella and JDBC; MariaDB uses driver defaults. These are single observations, not repeated-run medians. Results depend on workload and environment; PostgreSQL COPY is a database-specific reference.</small></p>
+      <p>See the <a href="https://github.com/scriptella/scriptella-benchmarks">benchmarks repository</a> for <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-21-ci-v4">full results and environment details</a>, methodology, and instructions to reproduce the comparison.</p>
+      <p>For tuning advice, see the <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/batching-performance.md">batching and insert performance guide</a>.</p>
+      <p>Further reading: <a href="https://pvrlabs.xyz/articles/importing-a-million-csv-rows.html">Importing a million CSV rows</a> and <a href="https://pvrlabs.xyz/java-performance/experiments/postgresql-batch-rewrite.html">how PostgreSQL batch rewriting improved import performance</a> on PVR Labs.</p>
 
       <!-- GitHub star prompt: keep in sync with github-prompt.html -->
       <aside class="github-prompt" aria-label="Support Scriptella">
