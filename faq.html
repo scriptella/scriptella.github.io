@@ -81,6 +81,7 @@
               <li><a href="#SET_VARIABLE">1.4. How to share a mutable variable between script/query elements of an ETL file?</a></li>
               <li><a href="#EXECUTE_STATIC_METHOD">1.5. How to call a static method in JEXL expression?</a></li>
               <li><a href="#COLUMN_SPACES">1.6. How to escape spaces in field names?</a></li>
+              <li><a href="#JOB_DURATION">1.8. How can I estimate how long a large ETL job will take?</a></li>
               <li><a href="#PERFORMANCE">1.7. How does Scriptella approach performance and resource usage?</a></li>
             </ul>
           </li>
@@ -177,6 +178,9 @@
       <p>We prioritize performance and low resource usage. Since Scriptella 1.6, we have followed a formal benchmarking process. Our <a href="benchmarks.html">published CSV import benchmarks</a> include results, methodology, and limitations; they reflect specific workloads and environments rather than universal performance rankings.</p>
       <p>For lower-level performance checks, explore the <a href="https://github.com/scriptella/scriptella-etl/tree/master/core/src/test">core</a> and <a href="https://github.com/scriptella/scriptella-etl/tree/master/drivers/src/test">driver</a> performance tests in the Scriptella ETL repository.</p>
 
+      <h3 id="JOB_DURATION">1.8. How can I estimate how long a large ETL job will take?</h3>
+      <p>Run a representative subset of your data with <code>--progress=10s</code> and observe the average statement throughput. Use the sample's execution time to estimate the full workload, then monitor throughput during the actual run to refine your estimate.</p>
+      <p>Statement counts don't always correspond directly to rows processed, so establish that relationship using your sample. Performance may also vary with database load, batching, and transaction size.</p>
       <h2 id="sql">2. SQL</h2>
 
       <h3 id="PLSQL">2.1. How to create an Oracle trigger (run a PL/SQL block)?</h3>

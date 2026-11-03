@@ -12,6 +12,7 @@ scriptella.driver.h2
 scriptella.driver.janino
 scriptella.driver.jexl
 scriptella.driver.jndi
+scriptella.driver.json
 scriptella.driver.ldap
 scriptella.driver.ldap.ldif
 scriptella.driver.mail

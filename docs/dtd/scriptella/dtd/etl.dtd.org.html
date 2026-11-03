@@ -243,7 +243,7 @@
 <span class="dtd_comment">&lt;!--</span>
 <span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr connection-id</span><span class="dtd_comment"> references connection by identifier. The value of this attribute is inherited for nested elements.</span>
 <span class="dtd_comment">       For single connection ETL files the connection-id is optional.</span>
-<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr new-tx</span><span class="dtd_comment"> true if a new transaction(and extra connection) is required for this element.</span>
+<span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr new-tx</span><span class="dtd_comment"> true to use a separate connection for this script element. Opened lazily and reused across invocations; not committed after each invocation.</span>
 <span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr if</span><span class="dtd_comment"> expression to test. If result of evaluation is true - the element is evaluated, otherwise skipped.</span>
 <span class="dtd_comment">        Use &lt;a href=&quot;http://jakarta.apache.org/commons/jexl&quot;&gt;JEXL&lt;/a&gt; syntax for expressions.</span>
 <span class="dtd_comment"> </span><span class="dtd_dtddoc_tag">@attr id</span><span class="dtd_comment"> script identifier(name).</span>

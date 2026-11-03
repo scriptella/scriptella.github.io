@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSON driver: Scriptella</title>
+  <meta name="description" content="Scriptella JSON and JSON Lines driver, typed templates, and examples.">
+  <link rel="canonical" href="https://scriptella.org/reference/json.html">
+  <meta property="og:title" content="JSON driver: Scriptella">
+  <meta property="og:description" content="Scriptella JSON and JSON Lines driver, typed templates, and examples.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://scriptella.org/reference/json.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Scriptella">
+  <meta property="og:image:width" content="1731">
+  <meta property="og:image:height" content="909">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.png">
+  <meta name="twitter:title" content="JSON driver: Scriptella">
+  <meta name="twitter:description" content="Scriptella JSON and JSON Lines driver, typed templates, and examples.">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
+  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../style.css?v=20261022">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="../index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="../images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="../reference/index.html" >Documentation</a></li>
+          <li><a href="../tutorial.html">Tutorial</a></li>
+          <li><a href="../installation.html">Install</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell docs-layout">
+    <nav class="docs-nav" aria-label="Documentation navigation">
+      <h2>Documentation</h2>
+      <ul>
+        <li><a href="index.html">Reference</a></li>
+        <li><a href="drivers.html" >Drivers</a></li>
+        <li>
+          <span class="docs-nav__group-label">How-tos</span>
+          <ul>
+            <li><a href="../howto/create-database.html">Create and initialize a database</a></li>
+            <li><a href="../howto/initialize-database.html">Initialize on application startup</a></li>
+            <li><a href="../howto/migrate-from-ant.html">Migrate from the Ant SQL task</a></li>
+          </ul>
+        </li>
+        <li><a href="../faq.html">FAQ</a></li>
+        <li><a href="../docs/api/index.html">API documentation</a></li>
+        <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
+      </ul>
+    </nav>
+
+    <article class="page-content"><h1>JSON and JSON Lines driver</h1>
+      <p>Use <code>driver="json"</code> to stream structured records. A query path such as <code>response.customers</code> selects an array and exposes each typed item as <code>row</code>. Output scripts use unquoted <code>?{expression}</code> placeholders for typed and correctly escaped values.</p>
+      <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM &quot;http://scriptella.org/dtd/etl.dtd&quot;&gt;
+&lt;etl&gt;
+  &lt;connection id=&quot;source&quot; driver=&quot;json&quot; url=&quot;customers.json&quot;/&gt;
+  &lt;connection id=&quot;target&quot; driver=&quot;json&quot; url=&quot;output.json&quot;/&gt;
+  &lt;query connection-id=&quot;source&quot;&gt;response.customers
+    &lt;script connection-id=&quot;target&quot;&gt;{&quot;id&quot;: ?{row.id}, &quot;name&quot;: ?{row.customer.name}}&lt;/script&gt;
+  &lt;/query&gt;
+&lt;/etl&gt;</code></pre>
+      <p>JSON Lines is inferred from <code>.jsonl</code> and <code>.ndjson</code>, or selected with <code>format=jsonl</code>. Jackson Core is included in the standalone archives; applications using Maven must add it for JSON. Empty input leaves existing output untouched and does not create an empty array. JSON output is nontransactional and may be partial after failure or cancellation.</p>
+      <p>See the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.7.0/docs/json.md">complete guide</a> and <a href="../docs/api/scriptella/driver/json/package-summary.html">provider reference</a>. The <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.7.0/scriptella-examples-1.7.0.zip">examples ZIP</a> bundles Scriptella, Jackson Core and H2 and includes JSON-to-database, database-to-JSON, JSON-to-JSON and JSON Lines examples, the README and expected results.</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="index.html">Documentation</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../docs/api/index.html">API Docs</a></li>
+          <li><a href="../docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="../benchmarks.html">Benchmarks</a></li>
+          <li><a href="../changes.html">Change History</a></li>
+          <li><a href="../license.html">License</a></li>
+          <li><a href="../support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>

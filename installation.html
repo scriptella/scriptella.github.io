@@ -51,7 +51,7 @@
     <article class="page-content">
       <h1>Install Scriptella</h1>
       <p class="lede">Install Scriptella on macOS, Linux, or Windows, then run SQL files and ETL processes from the command line.</p>
-      <p>Scriptella 1.6 requires Java 17 or newer. Check that Java is available before installing:</p>
+      <p>Scriptella 1.7.0 requires Java 17 or newer. Check that Java is available before installing:</p>
       <pre><code>java -version</code></pre>
       <nav aria-label="Installation methods">
         <ul>
@@ -65,7 +65,7 @@
       <section aria-labelledby="one-command-installer">
         <h2 id="one-command-installer">Curl installer</h2>
         <aside class="note"><strong>Note:</strong> The curl installer was added in Scriptella 1.6.</aside>
-        <p>On macOS or Linux, install the published Scriptella 1.6 ZIP with:</p>
+        <p>On macOS or Linux, install the published Scriptella 1.7.0 ZIP with:</p>
         <div class="copy-code" data-copy-code>
           <pre><code>curl -fsSL https://scriptella.org/install.sh | sh</code></pre>
           <button class="copy-code__button" type="button" data-copy-button aria-label="Copy installer command" title="Copy installer command">
@@ -79,13 +79,13 @@
         </div>
         <p>The installer places Scriptella under <code>${HOME}/.local/scriptella</code>. It either adds <code>${HOME}/.local/scriptella/bin</code> to an existing startup file or prints the exact PATH command to add manually. The guaranteed command is the packaged <code>scriptella.sh</code> launcher:</p>
         <pre><code>scriptella.sh path/to/file.etl.xml</code></pre>
-        <p>The installer does not install Java; Scriptella requires Java 17 or newer. It is pinned to the published 1.6 archive and checksum. When the installer updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>.</p>
+        <p>The installer does not install Java; Scriptella requires Java 17 or newer. It is pinned to the published 1.7.0 archive and checksum. When the installer updates a startup file, start a new shell or reload that file before using <code>scriptella.sh</code>.</p>
       </section>
 
       <section id="manual-installation">
         <h2>Manual installation on macOS or Linux</h2>
-        <p>Download the <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.6/scriptella-1.6.zip">Scriptella 1.6 binary ZIP</a> and extract it to a directory of your choice. Add its <code>bin</code> directory to your PATH, replacing the example path below with your installation directory:</p>
-        <pre><code>export PATH="/path/to/scriptella-1.6/bin:$PATH"
+        <p>Download the <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.7.0/scriptella-1.7.0.zip">Scriptella 1.7.0 binary ZIP</a> and extract it to a directory of your choice. Add its <code>bin</code> directory to your PATH, replacing the example path below with your installation directory:</p>
+        <pre><code>export PATH="/path/to/scriptella-1.7.0/bin:$PATH"
 scriptella.sh --version</code></pre>
         <p>To keep this setting, add the export line to your shell's startup file (for example <code>~/.zshrc</code> for Zsh or <code>~/.bashrc</code> for Bash), then open a new shell.</p>
       </section>
@@ -94,16 +94,16 @@ scriptella.sh --version</code></pre>
         <h2>Windows installation</h2>
         <ol>
           <li>Install Java 17 or newer and confirm <code>java -version</code> works in Command Prompt.</li>
-          <li>Download the <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.6/scriptella-1.6.zip">Scriptella 1.6 binary ZIP</a> and extract it, for example to <code>C:\tools\scriptella-1.6</code>. This directory should contain <code>bin</code> and <code>lib</code>.</li>
+          <li>Download the <a href="https://github.com/scriptella/scriptella-etl/releases/download/scriptella-parent-1.7.0/scriptella-1.7.0.zip">Scriptella 1.7.0 binary ZIP</a> and extract it, for example to <code>C:\tools\scriptella-1.7.0</code>. This directory should contain <code>bin</code> and <code>lib</code>.</li>
           <li>In Command Prompt, add the <code>bin</code> directory to PATH for the current session:
-            <pre><code>set "PATH=C:\tools\scriptella-1.6\bin;%PATH%"
+            <pre><code>set "PATH=C:\tools\scriptella-1.7.0\bin;%PATH%"
 scriptella.bat --version</code></pre>
-            <p>To make this permanent, add <code>C:\tools\scriptella-1.6\bin</code> to your user <code>Path</code> in Windows Environment Variables, then open a new Command Prompt.</p>
+            <p>To make this permanent, add <code>C:\tools\scriptella-1.7.0\bin</code> to your user <code>Path</code> in Windows Environment Variables, then open a new Command Prompt.</p>
           </li>
         </ol>
         <p>Use <code>scriptella.bat</code> wherever the tutorial shows <code>scriptella.sh</code>. Run your ETL file from its working directory:</p>
         <pre><code>scriptella.bat csv-to-sql.etl.xml</code></pre>
-        <p>For database connections, place the required JDBC driver JARs in <code>C:\tools\scriptella-1.6\lib</code>, or set the connection's <code>classpath</code> attribute.</p>
+        <p>For database connections, place the required JDBC driver JARs in <code>C:\tools\scriptella-1.7.0\lib</code>, or set the connection's <code>classpath</code> attribute.</p>
       </section>
 
       <section id="jdbc-drivers">

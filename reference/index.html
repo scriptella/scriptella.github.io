@@ -79,6 +79,7 @@
             <h3><a href="drivers.html">Drivers and providers</a></h3>
             <p>Databases, files, directories, scripting languages, and integration adapters supported by Scriptella.</p>
           </div>
+          <div class="link-card"><h3><a href="json.html">JSON and JSON Lines</a></h3><p>Structured input, typed output, and runnable examples.</p></div>
           <div class="link-card">
             <h3><a href="../faq.html">Frequently asked questions</a></h3>
             <p>Answers about installation, execution, configuration, logging, and common usage issues.</p>
@@ -578,11 +579,17 @@ ExecutionStatistics result = executor.execute();</code></pre>
         <p>See the <a href="../docs/api/scriptella/execution/EtlExecutor.html">EtlExecutor API</a> and the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.6/docs/java-execution.md">Java execution guide</a>.</p>
       </section>
 
+      <section id="execution-reporting"><h2>Progress and execution reports</h2>
+        <p><code>--progress</code> emits periodic updates to stderr every 30 seconds by default; use <code>--progress=10s</code> or <code>--progress=2m</code> to change the interval. Durations are positive whole numbers with a one-second minimum and must fit in a signed 64-bit nanosecond interval. Counts and elapsed time reset per file and identify files in multi-file runs.</p>
+        <p>Counts are not committed rows: batches may be counted before flushing and long in-flight statements may not advance counts. Unsupported or mixed counters can be unavailable or partial. An explicit progress request remains active with <code>--quiet</code>, <code>--no-stat</code> and <code>--no-jmx</code>. See the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.7.0/docs/cli-usage.md">CLI guide</a> for options and limits.</p>
+        <p>JSON execution reports cover success, failure and cancellation, partial statistics, and available per-element and connection metrics. Unknown metrics remain distinguishable from zero; counts describe observations, not committed work. Batch, transaction, throughput and warning metrics are deferred. See the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.7.0/docs/reports/execution-report.md">report protocol and examples</a>, <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.7.0/docs/java-execution.md">Java guide</a>, and <a href="../docs/api/scriptella/execution/ExecutionReport.html">API reference</a>.</p>
+        <p>Connections are reused by default and closed at cleanup; <code>lazy-init</code> defers initialization and <code>new-tx</code> uses a separate transaction. Optional early closure is disabled by default: <code>scriptella.close.after.use</code> supplies the default and <code>close.after.use</code> overrides it per connection. Early closure commits pending work including batches, which later failures or cancellation cannot roll back. See the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.7.0/docs/connection-lifecycle.md">connection lifecycle guide</a>.</p>
+      </section>
       <section id="maven">
         <h2>Maven integration</h2>
-        <p>Use the modules needed by your application. The following copy-paste example uses Scriptella 1.6:</p>
+        <p>Use the modules needed by your application. The following copy-paste example uses Scriptella 1.7.0:</p>
         <pre><code class="language-xml">&lt;properties&gt;
-  &lt;scriptella.version&gt;1.6&lt;/scriptella.version&gt;
+  &lt;scriptella.version&gt;1.7.0&lt;/scriptella.version&gt;
 &lt;/properties&gt;
 
 &lt;dependencies&gt;
