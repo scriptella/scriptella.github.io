@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CSV import benchmarks: Scriptella</title>
-  <meta name="description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with completed benchmark v4 GitHub Actions results.">
+  <meta name="description" content="Reproducible million-row CSV import results for Scriptella 1.7.0, JDBC, Pandas, and native PostgreSQL and MariaDB loaders.">
   <link rel="canonical" href="https://scriptella.org/benchmarks.html">
   <meta property="og:title" content="CSV import benchmarks: Scriptella">
-  <meta property="og:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with completed benchmark v4 GitHub Actions results.">
+  <meta property="og:description" content="Reproducible million-row CSV import results for Scriptella 1.7.0, JDBC, Pandas, and native PostgreSQL and MariaDB loaders.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://scriptella.org/benchmarks.html">
   <meta property="og:image" content="https://scriptella.org/images/scriptella-og.png">
@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.png">
   <meta name="twitter:title" content="CSV import benchmarks: Scriptella">
-  <meta name="twitter:description" content="Reproducible million-row CSV import results for Scriptella 1.6, JDBC, csvsql, and PostgreSQL COPY, with completed benchmark v4 GitHub Actions results.">
+  <meta name="twitter:description" content="Reproducible million-row CSV import results for Scriptella 1.7.0, JDBC, Pandas, and native PostgreSQL and MariaDB loaders.">
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">
   <script src="theme.js"></script>
@@ -52,21 +52,46 @@
   <main id="main-content" class="page-shell page-shell--reading">
     <article class="page-content">
       <h1>CSV import benchmarks</h1>
-      <p class="lede">One million CSV rows imported in under 8 seconds with Scriptella 1.6 on PostgreSQL and MariaDB.</p>
-      <p>Batched Scriptella took 7.775 seconds on PostgreSQL and 6.694 seconds on MariaDB. Handwritten JDBC was faster; csvsql’s tested direct-import workflow took about 6 minutes.</p>
+      <p class="lede">One million CSV rows imported in 8.747 seconds on PostgreSQL and 7.950 seconds on MariaDB with Scriptella 1.7.0.</p>
+      <p>Handwritten JDBC was faster, at 7.642 and 5.755 seconds. Pandas took 31.551 and 20.377 seconds. PostgreSQL COPY took 1.750 seconds, and MariaDB LOAD DATA LOCAL took 3.287 seconds.</p>
 
       <h2 id="ci-results">Benchmark results</h2>
-      <p>Benchmark v4: single observations from the October 21, 2026 GitHub Actions run on Ubuntu 24.04. Lower is faster.</p>
+      <p>Benchmark v5: median of two runs on 2026-11-03, Intel Mac, Colima x86_64 with 4 CPUs and 6 GiB. Lower is faster.</p>
       <figure>
-        <img src="images/benchmarks/v4-ci-postgres.svg" width="879" height="447" alt="PostgreSQL durations: Scriptella batch 1000 7.775 seconds, JDBC batch 1000 6.320 seconds, csvsql chunk 1000 378.555 seconds, and native COPY 1.401 seconds.">
-        <figcaption>PostgreSQL: logarithmic duration axis. Read the printed seconds for absolute differences.</figcaption>
+        <img src="images/benchmarks/v5-local.svg" width="806" height="490" alt="Median import times. PostgreSQL: Scriptella 8.747 seconds, JDBC 7.642 seconds, Pandas 31.551 seconds, COPY 1.750 seconds. MariaDB: Scriptella 7.950 seconds, JDBC 5.755 seconds, Pandas 20.377 seconds, LOAD DATA LOCAL 3.287 seconds.">
+        <figcaption>Linear duration axis starting at zero. Bars are medians; dots are the two runs.</figcaption>
       </figure>
-      <figure>
-        <img src="images/benchmarks/v4-ci-mariadb.svg" width="879" height="447" loading="lazy" alt="MariaDB durations: Scriptella batch 1000 6.694 seconds, JDBC batch 1000 4.465 seconds, and csvsql chunk 1000 370.594 seconds.">
-        <figcaption>MariaDB: logarithmic duration axis. Read the printed seconds for absolute differences.</figcaption>
-      </figure>
-      <p><small>Same million-row CSV, pre-created tables, one transaction per import, no indexes or transformations. Timings include client startup, CSV parsing, insertion, and commit; setup and verification are excluded. PostgreSQL batch rewriting is enabled for both Scriptella and JDBC; MariaDB uses driver defaults. These are single observations, not repeated-run medians. Results depend on workload and environment; PostgreSQL COPY is a database-specific reference.</small></p>
-      <p>See the <a href="https://github.com/scriptella/scriptella-benchmarks">benchmarks repository</a> for <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-10-21-ci-v4">full results and environment details</a>, methodology, and instructions to reproduce the comparison.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Benchmark v5 median durations">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Database</th>
+              <th scope="col">Scriptella 1.7.0</th>
+              <th scope="col">JDBC</th>
+              <th scope="col">Pandas</th>
+              <th scope="col">Native reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">PostgreSQL</th>
+              <td>8.747 s</td>
+              <td>7.642 s</td>
+              <td>31.551 s</td>
+              <td>COPY: 1.750 s</td>
+            </tr>
+            <tr>
+              <th scope="row">MariaDB</th>
+              <td>7.950 s</td>
+              <td>5.755 s</td>
+              <td>20.377 s</td>
+              <td>LOAD DATA LOCAL: 3.287 s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><small>Same million-row CSV, pre-created tables, one transaction per import, no indexes or transformations. Timings include client startup, CSV parsing, insertion, and commit; setup and verification are excluded. Scriptella and JDBC use batch size 1000. PostgreSQL batch rewriting is enabled for both; MariaDB uses driver defaults. Pandas reads 10,000-row chunks and writes 1,000-row chunks. Values are medians of two runs. Results depend on workload and environment. COPY and LOAD DATA LOCAL are database-specific references with different parsing and error semantics.</small></p>
+      <p>See the <a href="https://github.com/scriptella/scriptella-benchmarks">benchmarks repository</a> for <a href="https://github.com/scriptella/scriptella-benchmarks/tree/main/docs/results/2026-11-03-local-v5">full results and environment details</a>, methodology, and instructions to reproduce the comparison.</p>
       <p>For tuning advice, see the <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/batching-performance.md">batching and insert performance guide</a>.</p>
       <p>Further reading: <a href="https://pvrlabs.xyz/articles/importing-a-million-csv-rows.html">Importing a million CSV rows</a> and <a href="https://pvrlabs.xyz/java-performance/experiments/postgresql-batch-rewrite.html">how PostgreSQL batch rewriting improved import performance</a> on PVR Labs.</p>
 
