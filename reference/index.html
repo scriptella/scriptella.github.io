@@ -119,12 +119,12 @@
           <li><a href="#Scripts+Syntax">Script syntax</a></li>
           <li><a href="#Expressions+and+Variables+Substitution">Expressions and variables</a></li>
           <li><a href="#Command+Line+Execution">Command line</a></li>
-          <li><a href="#Ant+Integration">Ant</a></li>
           <li><a href="#maven">Maven</a></li>
           <li><a href="#inprocess">Java integration</a></li>
-          <li><a href="#jmx">JMX</a></li>
           <li><a href="#JDBC+Adapters">JDBC adapters</a></li>
           <li><a href="#Non-relational+Datasources+Interoperability">Non-relational data</a></li>
+          <li><a href="#Ant+Integration">Ant</a></li>
+          <li><a href="#jmx">JMX</a></li>
           <li><a href="#Examples-N1071C">Examples</a></li>
           <li><a href="#Best+Practices">Best practices</a></li>
         </ul>
@@ -185,7 +185,7 @@
         <pre><code>export PATH=${PATH}:SCRIPTELLA_DIR/bin</code></pre>
         <p>The binary distribution, named <code>scriptella-&lt;version&gt;.zip</code>, has this layout:</p>
         <pre><code>scriptella-&lt;version&gt;/
-├── bin/                   launch scripts (scriptella / scriptella.bat)
+├── bin/                   launch scripts (scriptella.sh / scriptella.bat)
 ├── docs/
 │   ├── api/               API documentation
 │   └── dtd/               ETL DTD and element documentation
@@ -438,14 +438,14 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
 
       <section id="Command+Line+Execution">
         <h2>Command-line execution</h2>
-        <p>After following the <a href="#INSTALLATION">installation instructions</a>, run <code>scriptella</code> with no file arguments to execute <code>etl.xml</code> in the current directory. The launcher adds every JAR in <code>SCRIPTELLA_DIR/lib</code> to the ETL classpath.</p>
+        <p>After following the <a href="#INSTALLATION">installation instructions</a>, run <code>scriptella.sh</code> (or <code>scriptella.bat</code> on Windows) with no file arguments to execute <code>etl.xml</code> in the current directory. The launcher adds every JAR in <code>SCRIPTELLA_DIR/lib</code> to the ETL classpath.</p>
         <p>You can also use the Java launcher when <code>scriptella.jar</code> is in the current directory:</p>
         <pre><code>java -jar scriptella.jar [options] [file1] [file2] ... [fileN]</code></pre>
         <aside class="warning" aria-label="Java launcher classpath warning"><strong>Important:</strong> <code>java -jar</code> does not automatically load JARs from <code>SCRIPTELLA_DIR/lib</code>. Declare additional driver libraries with each connection's <code>classpath</code> attribute when using this form.</aside>
 
         <section id="Command+Line+Options">
           <h3>Command-line options</h3>
-          <pre><code>scriptella [options] [file1] [file2] ... [fileN]</code></pre>
+          <pre><code>scriptella.sh [options] [file1] [file2] ... [fileN]</code></pre>
           <p>Options come first; ETL file names or paths follow, separated by spaces.</p>
           <div class="table-scroll">
             <table>
@@ -466,109 +466,9 @@ VALUES (?id, ?{file binaryPath}, ?{textfile textPath})</code></pre>
         </section>
       </section>
 
-      <section id="Ant+Integration">
-        <h2>Ant integration</h2>
-        <section id="System+requirements">
-          <h3>System requirements</h3>
-          <p>The binary distribution's Ant integration is tested with Apache Ant 1.10.17. Other modern Ant versions may work but are not part of the documented release configuration.</p>
-        </section>
-
-        <section id="Installation-N103C5">
-          <h3>Installation</h3>
-          <p>Use <code>scriptella.jar</code> from the binary distribution. It contains the classes and resources required by the Ant tasks.</p>
-          <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties"
-         classpath="/path/to/scriptella.jar"/&gt;</code></pre>
-          <p>Add database drivers to the task definition's classpath when you want them available to every connection:</p>
-          <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties"&gt;
-  &lt;classpath&gt;
-    &lt;pathelement location="/path/to/scriptella.jar"/&gt;
-    &lt;pathelement location="lib/h2.jar"/&gt;
-    &lt;pathelement location="lib/jconn2.jar"/&gt;
-  &lt;/classpath&gt;
-&lt;/taskdef&gt;</code></pre>
-          <p>Drivers loaded this way are on Scriptella's boot classpath, so individual <code>&lt;connection&gt;</code> elements do not need a <code>classpath</code> attribute.</p>
-        </section>
-
-        <section id="%22etl%22+Task">
-          <h3><code>&lt;etl&gt;</code> task</h3>
-          <section id="Parameters">
-            <h4>Parameters</h4>
-            <div class="table-scroll">
-              <table>
-                <thead><tr><th>Attribute</th><th>Description</th><th>Required</th></tr></thead>
-                <tbody>
-                  <tr><td><code>file</code></td><td>ETL file to execute. The extension may be omitted.</td><td>No; defaults to <code>etl.xml</code> unless a nested fileset is used.</td></tr>
-                  <tr><td><code>inheritAll</code></td><td>Pass Ant project properties to Scriptella.</td><td>No; defaults to <code>true</code>.</td></tr>
-                  <tr><td><code>debug</code></td><td>Print debugging information.</td><td>No; defaults to <code>false</code>.</td></tr>
-                  <tr><td><code>nostat</code></td><td>Disable statistics collection.</td><td>No; defaults to <code>false</code>.</td></tr>
-                  <tr><td><code>nojmx</code></td><td>Disable JMX MBean registration.</td><td>No; defaults to <code>false</code>.</td></tr>
-                  <tr><td><code>quiet</code></td><td>Suppress nonessential output.</td><td>No; defaults to <code>false</code>.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-          <section id="Nested+Elements">
-            <h4>Nested elements</h4>
-            <p>The task accepts an Ant <a href="https://ant.apache.org/manual/Types/fileset.html"><code>&lt;fileset&gt;</code></a> to execute multiple ETL files.</p>
-          </section>
-          <section id="Examples-N1047F">
-            <h4>Examples</h4>
-            <p>Execute <code>etl.xml</code> in the current directory:</p>
-            <pre><code class="language-xml">&lt;etl/&gt;</code></pre>
-            <p>Execute <code>name.etl.xml</code>:</p>
-            <pre><code class="language-xml">&lt;etl file="name"/&gt;
-&lt;!-- Or specify the full name. --&gt;
-&lt;etl file="name.etl.xml"/&gt;</code></pre>
-            <p>Execute every <code>.etl.xml</code> file in <code>db</code>:</p>
-            <pre><code class="language-xml">&lt;etl&gt;
-  &lt;fileset dir="db" includes="*.etl.xml"/&gt;
-&lt;/etl&gt;</code></pre>
-          </section>
-        </section>
-
-        <section id="%3Cetl-template%3E+Task">
-          <h3><code>&lt;etl-template&gt;</code> task</h3>
-          <section id="Parameters-N104AB">
-            <h4>Parameters</h4>
-            <div class="table-scroll">
-              <table>
-                <thead><tr><th>Attribute</th><th>Description</th><th>Required</th></tr></thead>
-                <tbody>
-                  <tr><td><code>name</code></td><td>Template name. Omitting it generates the default quick-start ETL.</td><td>No.</td></tr>
-                  <tr><td><code>inheritAll</code></td><td>Pass Ant project properties to Scriptella.</td><td>No; defaults to <code>true</code>.</td></tr>
-                  <tr><td><code>debug</code></td><td>Print debugging information.</td><td>No; defaults to <code>false</code>.</td></tr>
-                  <tr><td><code>quiet</code></td><td>Suppress nonessential output.</td><td>No; defaults to <code>false</code>.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-          <section id="Nested+Elements-N10512">
-            <h4>Nested elements</h4>
-            <p>This task has no nested elements.</p>
-          </section>
-          <span id="supported_templates" class="anchor-target" aria-hidden="true"></span>
-          <section id="Supported+Templates">
-            <h4>Supported templates</h4>
-            <ul>
-              <li><strong>Default</strong>: creates a simple ETL template for a quick start.</li>
-              <li><a href="../docs/api/scriptella/tools/template/DataMigrator.html"><strong>DataMigrator</strong></a>: creates a template for transferring data between tables in different databases.</li>
-            </ul>
-          </section>
-          <section id="Examples-N10532">
-            <h4>Examples</h4>
-            <p>Create the default <code>etl.xml</code>:</p>
-            <pre><code class="language-xml">&lt;etl-template/&gt;</code></pre>
-            <p>Create a data-migration template using values from <code>etl.properties</code>:</p>
-            <pre><code class="language-xml">&lt;property file="etl.properties"/&gt;
-&lt;!-- Set driver, class, user, and password before this task. --&gt;
-&lt;etl-template name="DataMigrator"/&gt;</code></pre>
-          </section>
-        </section>
-      </section>
-
       <section id="direct-sql">
         <h2>Run one SQL file directly</h2>
-        <p>Scriptella 1.6 can execute a UTF-8 SQL file without an ETL XML wrapper. The launcher uses the normal Scriptella executor and accepts standard JDBC URLs:</p>
+        <p>Scriptella can execute a SQL file without an ETL XML wrapper. The launcher uses the normal Scriptella executor and accepts standard JDBC URLs:</p>
         <pre><code>scriptella.sh execute-sql --url jdbc:postgresql://localhost/app --user app schema.sql</code></pre>
         <p>Property and expression substitution is enabled by default. Add <code>--no-substitution</code> to preserve dollar and question-mark text literally. For credentials, prefer the shared <code>${env.*}</code> configuration namespace over a password on the command line; see the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.6/docs/cli-usage.md">CLI and credential guide</a>.</p>
         <p>Applications can use <code>EtlExecutor.newSqlFileExecutor(...)</code> and the same execution engine:</p>
@@ -626,39 +526,6 @@ executor.execute();</code></pre>
     EtlExecutor.newExecutor(etlUrl, externalProperties);
 executor.execute();</code></pre>
         <aside class="note" aria-label="Application integration drivers">Applications commonly use the <a href="drivers.html#spring">Spring driver</a> or <a href="drivers.html#jndi">JNDI driver</a> to reuse connections and resources managed by their deployment environment.</aside>
-      </section>
-
-      <section id="jmx">
-        <h2>JMX monitoring and management</h2>
-        <p>Scriptella registers a dedicated MBean for each monitored ETL operation. ETL MBeans use this naming convention:</p>
-        <pre><code>scriptella:type=etl,url=&lt;ETL_XML_FILE_URL&gt;[,n=&lt;COLLISION_ID&gt;]</code></pre>
-        <aside class="note" aria-label="JMX collision identifiers">The collision identifier is appended only when ETL files with identical URLs run simultaneously.</aside>
-        <p>ETL MBeans are registered automatically when Scriptella runs from the command line or Ant. When invoking <code>EtlExecutor</code> directly, enable JMX before execution:</p>
-        <pre><code class="language-java">executor.setJmxEnabled(true);
-executor.execute();</code></pre>
-        <p>By default, MBeans are registered with the platform MBean server. The JDK's <code>jconsole</code> tool can monitor and manage local or appropriately configured remote JVMs.</p>
-        <figure>
-          <img src="../images/reference/jmxconsole.png" alt="JConsole monitoring a Scriptella ETL operation">
-          <figcaption>Scriptella ETL attributes and operations exposed in JConsole.</figcaption>
-        </figure>
-
-        <section id="Attributes">
-          <h3>Attributes</h3>
-          <p>The following read-only attributes are available:</p>
-          <dl>
-            <dt><code>ExecutedStatementsCount</code></dt>
-            <dd>Number of statements executed by all connections in the ETL task.</dd>
-            <dt><code>StartDate</code></dt>
-            <dd>Date and time when the ETL task started.</dd>
-            <dt><code>Throughput</code></dt>
-            <dd>Number of statements executed per second by the managed task.</dd>
-          </dl>
-        </section>
-
-        <section id="Operations">
-          <h3>Operations</h3>
-          <p>The <code>cancel</code> operation terminates the ETL task and attempts to roll back changes made during execution.</p>
-        </section>
       </section>
 
       <section id="JDBC+Adapters">
@@ -748,6 +615,129 @@ executor.execute();</code></pre>
         </section>
       </section>
 
+      <section id="Ant+Integration">
+        <h2>Ant integration</h2>
+        <section id="System+requirements">
+          <h3>System requirements</h3>
+          <p>The binary distribution's Ant integration is tested with Apache Ant 1.10.17. Other modern Ant versions may work but are not part of the documented release configuration.</p>
+        </section>
+
+        <section id="Installation-N103C5">
+          <h3>Installation</h3>
+          <p>Use <code>scriptella.jar</code> from the binary distribution. It contains the classes and resources required by the Ant tasks.</p>
+          <p>Add database drivers to the task definition's classpath when you want them available to every connection:</p>
+          <pre><code class="language-xml">&lt;taskdef resource="antscriptella.properties"&gt;
+  &lt;classpath&gt;
+    &lt;pathelement location="/path/to/scriptella.jar"/&gt;
+    &lt;pathelement location="lib/h2.jar"/&gt;
+    &lt;pathelement location="lib/jconn2.jar"/&gt;
+  &lt;/classpath&gt;
+&lt;/taskdef&gt;</code></pre>
+          <p>Drivers loaded this way are on Scriptella's boot classpath, so individual <code>&lt;connection&gt;</code> elements do not need a <code>classpath</code> attribute.</p>
+        </section>
+
+        <section id="%22etl%22+Task">
+          <h3><code>&lt;etl&gt;</code> task</h3>
+          <section id="Parameters">
+            <h4>Parameters</h4>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Attribute</th><th>Description</th><th>Required</th></tr></thead>
+                <tbody>
+                  <tr><td><code>file</code></td><td>ETL file to execute. The extension may be omitted.</td><td>No; defaults to <code>etl.xml</code> unless a nested fileset is used.</td></tr>
+                  <tr><td><code>inheritAll</code></td><td>Pass Ant project properties to Scriptella.</td><td>No; defaults to <code>true</code>.</td></tr>
+                  <tr><td><code>debug</code></td><td>Print debugging information.</td><td>No; defaults to <code>false</code>.</td></tr>
+                  <tr><td><code>nostat</code></td><td>Disable statistics collection.</td><td>No; defaults to <code>false</code>.</td></tr>
+                  <tr><td><code>nojmx</code></td><td>Disable JMX MBean registration.</td><td>No; defaults to <code>false</code>.</td></tr>
+                  <tr><td><code>quiet</code></td><td>Suppress nonessential output.</td><td>No; defaults to <code>false</code>.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section id="Nested+Elements">
+            <h4>Nested elements</h4>
+            <p>The task accepts an Ant <a href="https://ant.apache.org/manual/Types/fileset.html"><code>&lt;fileset&gt;</code></a> to execute multiple ETL files.</p>
+          </section>
+          <section id="Examples-N1047F">
+            <h4>Examples</h4>
+            <p>Use <code>&lt;etl/&gt;</code> for the default file, or <code>&lt;etl file="name"/&gt;</code> for <code>name.etl.xml</code>. To execute multiple files:</p>
+            <pre><code class="language-xml">&lt;etl&gt;
+  &lt;fileset dir="db" includes="*.etl.xml"/&gt;
+&lt;/etl&gt;</code></pre>
+          </section>
+        </section>
+
+        <section id="%3Cetl-template%3E+Task">
+          <h3><code>&lt;etl-template&gt;</code> task</h3>
+          <section id="Parameters-N104AB">
+            <h4>Parameters</h4>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Attribute</th><th>Description</th><th>Required</th></tr></thead>
+                <tbody>
+                  <tr><td><code>name</code></td><td>Template name. Omitting it generates the default quick-start ETL.</td><td>No.</td></tr>
+                  <tr><td><code>inheritAll</code></td><td>Pass Ant project properties to Scriptella.</td><td>No; defaults to <code>true</code>.</td></tr>
+                  <tr><td><code>debug</code></td><td>Print debugging information.</td><td>No; defaults to <code>false</code>.</td></tr>
+                  <tr><td><code>quiet</code></td><td>Suppress nonessential output.</td><td>No; defaults to <code>false</code>.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section id="Nested+Elements-N10512">
+            <h4>Nested elements</h4>
+            <p>This task has no nested elements.</p>
+          </section>
+          <span id="supported_templates" class="anchor-target" aria-hidden="true"></span>
+          <section id="Supported+Templates">
+            <h4>Supported templates</h4>
+            <ul>
+              <li><strong>Default</strong>: creates a simple ETL template for a quick start.</li>
+              <li><a href="../docs/api/scriptella/tools/template/DataMigrator.html"><strong>DataMigrator</strong></a>: creates a template for transferring data between tables in different databases.</li>
+            </ul>
+          </section>
+          <section id="Examples-N10532">
+            <h4>Examples</h4>
+            <p>Use <code>&lt;etl-template/&gt;</code> for the default template, or create a data-migration template using values from <code>etl.properties</code>:</p>
+            <pre><code class="language-xml">&lt;property file="etl.properties"/&gt;
+&lt;!-- Set driver, class, user, and password before this task. --&gt;
+&lt;etl-template name="DataMigrator"/&gt;</code></pre>
+          </section>
+        </section>
+      </section>
+
+      <section id="jmx">
+        <h2>JMX monitoring and management</h2>
+        <p>Scriptella registers a dedicated MBean for each monitored ETL operation. ETL MBeans use this naming convention:</p>
+        <pre><code>scriptella:type=etl,url=&lt;ETL_XML_FILE_URL&gt;[,n=&lt;COLLISION_ID&gt;]</code></pre>
+        <aside class="note" aria-label="JMX collision identifiers">The collision identifier is appended only when ETL files with identical URLs run simultaneously.</aside>
+        <p>ETL MBeans are registered automatically when Scriptella runs from the command line or Ant. When invoking <code>EtlExecutor</code> directly, enable JMX before execution:</p>
+        <pre><code class="language-java">executor.setJmxEnabled(true);
+executor.execute();</code></pre>
+        <p>By default, MBeans are registered with the platform MBean server. The JDK's <code>jconsole</code> tool can monitor and manage local or appropriately configured remote JVMs.</p>
+        <figure>
+          <img src="../images/reference/jmxconsole.png" alt="JConsole monitoring a Scriptella ETL operation">
+          <figcaption>Scriptella ETL attributes and operations exposed in JConsole.</figcaption>
+        </figure>
+
+        <section id="Attributes">
+          <h3>Attributes</h3>
+          <p>The following read-only attributes are available:</p>
+          <dl>
+            <dt><code>ExecutedStatementsCount</code></dt>
+            <dd>Number of statements executed by all connections in the ETL task.</dd>
+            <dt><code>StartDate</code></dt>
+            <dd>Date and time when the ETL task started.</dd>
+            <dt><code>Throughput</code></dt>
+            <dd>Number of statements executed per second by the managed task.</dd>
+          </dl>
+        </section>
+
+        <section id="Operations">
+          <h3>Operations</h3>
+          <p>The <code>cancel</code> operation terminates the ETL task and attempts to roll back changes made during execution.</p>
+        </section>
+      </section>
+
       <section id="Examples-N1071C">
         <h2>Examples</h2>
         <p>The examples archive is available from the <a href="../download.html">download page</a>. Some examples require third-party libraries that cannot be redistributed; those dependencies are listed in the archive's <code>lib/readme.txt</code>.</p>
@@ -759,7 +749,7 @@ executor.execute();</code></pre>
             <tbody>
               <tr><th scope="row">Ant</th><td>Integration with Ant.</td></tr>
               <tr><th scope="row">CSV</th><td>Working with CSV data through database text tables and Scriptella's CSV and text drivers.</td></tr>
-              <tr><th scope="row">DB Upgrade</th><td>Using Scriptella as a database schema evolution tool.</td></tr>
+              <tr><th scope="row"><a href="https://github.com/scriptella/scriptella-etl/tree/scriptella-parent-1.6/samples/dbupgrade">DB Upgrade</a></th><td>Using Scriptella as a database schema evolution tool.</td></tr>
               <tr><th scope="row">LDAP</th><td>Exchanging data between a database and an LDAP directory.</td></tr>
               <tr><th scope="row">Mail</th><td>Producing and sending email from Scriptella.</td></tr>
               <tr><th scope="row">Music Store</th><td>Referencing BLOB content in external files and using JDBC escape syntax for portable date values.</td></tr>
@@ -784,13 +774,13 @@ executor.execute();</code></pre>
 -- a property file such as type-mapping.properties.</code></pre>
           </li>
           <li>Use standard JDBC escape syntax for portable dates, times, and procedure calls. Examples include <code>{ call procedure_name (...) }</code>, <code>{ ? = call procedure_name (...) }</code>, and <code>{ts 'yyyy-mm-dd hh:mm:ss.f...'}</code>.</li>
-          <li>Use the <code>.etl.xml</code> naming convention. For example, <code>scriptella init</code> finds <code>init.etl.xml</code> automatically when no file named <code>init</code> exists.</li>
+          <li>Use the <code>.etl.xml</code> naming convention. For example, <code>scriptella.sh init</code> finds <code>init.etl.xml</code> automatically when no file named <code>init</code> exists.</li>
           <li>For large included scripts, use <code>&lt;include&gt;</code> to avoid loading the whole file into memory. Consider <code>statement.batchSize</code> for bulk database loads.</li>
         </ul>
 
         <section id="Using+Scriptella+as+a+Database+Schema+Evolution+Tool">
           <h3>Using Scriptella as a database schema evolution tool</h3>
-          <p>The <em>DB Upgrade</em> example shows how to build a simple database upgrade and downgrade script. A basic upgrade framework needs to:</p>
+          <p>The <a href="https://github.com/scriptella/scriptella-etl/tree/scriptella-parent-1.6/samples/dbupgrade">DB Upgrade example</a> includes scripts and instructions for upgrading and downgrading a database. A basic upgrade framework needs to:</p>
           <ul>
             <li>Create and initialize the current schema when no database exists.</li>
             <li>Apply incremental updates that migrate an existing database from version X to version Y.</li>
