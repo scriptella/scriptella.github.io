@@ -105,12 +105,16 @@
   var sqlKeywords = "ADD|ALTER|AND|AS|ASC|BEGIN|BETWEEN|BY|CASE|COMMIT|CREATE|DELETE|DESC|DISTINCT|DROP|ELSE|END|EXISTS|FROM|FULL|GROUP|HAVING|IN|INNER|INSERT|INTO|IS|JOIN|LEFT|LIKE|LIMIT|MERGE|NOT|NULL|OFFSET|ON|OR|ORDER|OUTER|PRIMARY|RIGHT|ROLLBACK|SELECT|SET|TABLE|THEN|UNION|UNIQUE|UPDATE|VALUES|WHEN|WHERE";
   var sqlPattern = new RegExp("(--[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/)|('(?:''|[^'])*')|\\b(" + sqlKeywords + ")\\b|(\\?[A-Za-z_][\\w.]*|:[A-Za-z_][\\w.]*|\\$\\{[^}\\n]+\\})|\\b(\\d+(?:\\.\\d+)?)\\b", "gi");
 
-  function highlightSql(text, target) {
+  function highlightSql(text, target, uppercaseKeywordsOnly) {
     var lastIndex = 0;
     sqlPattern.lastIndex = 0;
     text.replace(sqlPattern, function (match, comment, string, keyword, variable, number, offset) {
       appendToken(target, text.slice(lastIndex, offset));
-      appendToken(target, match, comment ? "syntax-comment" : string ? "syntax-string" : keyword ? "syntax-keyword" : variable ? "syntax-variable" : "syntax-number");
+      if (keyword && uppercaseKeywordsOnly && keyword !== keyword.toUpperCase()) {
+        appendToken(target, match);
+      } else {
+        appendToken(target, match, comment ? "syntax-comment" : string ? "syntax-string" : keyword ? "syntax-keyword" : variable ? "syntax-variable" : "syntax-number");
+      }
       lastIndex = offset + match.length;
       return match;
     });
@@ -168,11 +172,11 @@
     var lastIndex = 0;
     var match;
     while ((match = tagPattern.exec(text)) !== null) {
-      highlightSql(text.slice(lastIndex, match.index), target);
+      highlightSql(text.slice(lastIndex, match.index), target, true);
       highlightXmlTag(match[0], target);
       lastIndex = match.index + match[0].length;
     }
-    highlightSql(text.slice(lastIndex), target);
+    highlightSql(text.slice(lastIndex), target, true);
   }
 
   function initializeSyntaxHighlighting() {
