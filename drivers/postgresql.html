@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PostgreSQL JDBC driver | Scriptella</title>
+  <meta name="description" content="Set up PostgreSQL with Scriptella using a pinned JDBC driver, a read-only ETL example, and Scriptella 1.7.0 compatibility results.">
+  <link rel="canonical" href="https://scriptella.org/drivers/postgresql.html">
+  <meta property="og:title" content="PostgreSQL JDBC driver | Scriptella">
+  <meta property="og:description" content="Set up PostgreSQL with Scriptella using a pinned JDBC driver, a read-only ETL example, and Scriptella 1.7.0 compatibility results.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Scriptella">
+  <meta property="og:url" content="https://scriptella.org/drivers/postgresql.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Scriptella lightweight Java ETL tool with SQL to JSON, CSV and database pipeline">
+  <meta property="og:image:width" content="1720">
+  <meta property="og:image:height" content="897">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta name="twitter:title" content="PostgreSQL JDBC driver | Scriptella">
+  <meta name="twitter:description" content="Set up PostgreSQL with Scriptella using a pinned JDBC driver, a read-only ETL example, and Scriptella 1.7.0 compatibility results.">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../favicon-192.png">
+  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../style.css?v=20261022">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="../index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="../images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="../reference/index.html" aria-current="page">Documentation</a></li>
+          <li><a href="../tutorial.html">Tutorial</a></li>
+          <li><a href="../installation.html">Install</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell docs-layout">
+    <nav class="docs-nav" aria-label="Documentation navigation">
+      <h2>Documentation</h2>
+      <ul>
+        <li><a href="../reference/index.html">Reference</a></li>
+        <li><a href="../reference/drivers.html">Drivers</a>
+          <ul>
+            <li><a href="postgresql.html" aria-current="page">PostgreSQL</a></li>
+            <li><a href="mariadb.html">MariaDB</a></li>
+            <li><a href="mysql.html">MySQL</a></li>
+            <li><a href="oracle.html">Oracle</a></li>
+            <li><a href="mssql.html">SQL Server</a></li>
+            <li><a href="sqlite.html">SQLite</a></li>
+          </ul>
+        </li>
+        <li><a href="../howto/index.html">How-to guides</a></li>
+        <li><a href="../faq.html">FAQ</a></li>
+        <li><a href="../docs/api/index.html">API documentation</a></li>
+        <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
+      </ul>
+    </nav>
+
+    <article class="page-content">
+      <h1>PostgreSQL JDBC driver</h1>
+      <p class="lede">Connect Scriptella to PostgreSQL using the built-in <code>postgresql</code> adapter and an external JDBC driver.</p>
+      <section>
+        <h2>Install the JDBC driver</h2>
+        <p>Download the <a href="https://jdbc.postgresql.org/download/">official JDBC driver</a> for Maven coordinate <code>org.postgresql:postgresql:42.7.13</code>. Place <code>postgresql-42.7.13.jar</code> in a <code>lib/</code> directory next to your ETL file.</p>
+        <p>JDBC class <code>org.postgresql.Driver</code>. The example below shows the JDBC URL format.</p>
+      </section>
+      <section>
+        <h2>Check the connection</h2>
+        <p>Replace the sample host and database or service name. Supply <code>SCRIPTELLA_DB_USER</code> and <code>SCRIPTELLA_DB_PASSWORD</code> through the process environment. Save this as <code>check.etl.xml</code>, then run <code>scriptella.sh check.etl.xml</code>. The read-only query passes the <code>connection_ok</code> column to the nested script, which prints <code>CONNECTION OK: 1</code>.</p>
+        <pre><code class="language-xml">&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
+&lt;etl&gt;
+    &lt;connection id="db" driver="postgresql"
+                url="jdbc:postgresql://db.example.com:5432/app"
+                user="${env.SCRIPTELLA_DB_USER}" password="${env.SCRIPTELLA_DB_PASSWORD}"
+                classpath="lib/postgresql-42.7.13.jar"/&gt;
+    &lt;connection id="console" driver="text"/&gt;
+    &lt;query connection-id="db"&gt;
+        SELECT 1 AS connection_ok;
+        &lt;script connection-id="console"&gt;CONNECTION OK: $connection_ok&lt;/script&gt;
+    &lt;/query&gt;
+&lt;/etl&gt;</code></pre>
+        <p><a href="../installation.html">Installation instructions</a> · <a href="../download.html">Download Scriptella</a></p>
+      </section>
+      <section>
+        <h2>Verified with Scriptella 1.7.0</h2>
+        <p><strong>PostgreSQL 17.11</strong> with JDBC driver <code>42.7.13</code>. Packaged validation passed parameterized writes and reads, migration in both directions with H2, commit, and rollback. The public Testcontainers check passed ETL copy, representative values, and rollback.</p>
+        <p><a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/core-database-compatibility.md">Compatibility evidence</a> · <a href="https://github.com/scriptella/scriptella-testcontainers/actions/runs/41696161604">Public Testcontainers run</a></p>
+      </section>
+      <section>
+        <h2>Configuration notes</h2>
+        <p>For large reads, configure a positive JDBC fetch size and keep autocommit off so pgJDBC can read through a cursor.</p>
+        <p><a href="../docs/api/scriptella/driver/postgresql/package-summary.html#package-description">Adapter Javadoc</a></p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="../reference/index.html">Documentation</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../docs/api/index.html">API Docs</a></li>
+          <li><a href="../docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="../benchmarks.html">Benchmarks</a></li>
+          <li><a href="../changes.html">Change History</a></li>
+          <li><a href="../license.html">License</a></li>
+          <li><a href="../support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>

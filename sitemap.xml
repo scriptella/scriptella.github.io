@@ -12,7 +12,14 @@
   <url><loc>https://scriptella.org/links.html</loc></url>
   <url><loc>https://scriptella.org/reference/</loc></url>
   <url><loc>https://scriptella.org/reference/drivers.html</loc></url>
+  <url><loc>https://scriptella.org/howto/index.html</loc></url>
   <url><loc>https://scriptella.org/howto/create-database.html</loc></url>
   <url><loc>https://scriptella.org/howto/initialize-database.html</loc></url>
   <url><loc>https://scriptella.org/howto/migrate-from-ant.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/postgresql.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/mariadb.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/mysql.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/oracle.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/mssql.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/sqlite.html</loc></url>
 </urlset>
