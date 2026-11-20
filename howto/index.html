@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>How-to guides | Scriptella</title>
-  <meta name="description" content="Step-by-step Scriptella guides for database setup, application startup, and migration from Ant.">
+  <title>Guides | Scriptella</title>
+  <meta name="description" content="Step-by-step Scriptella guides for CSV import, database setup, application startup, and migration from Ant.">
   <link rel="canonical" href="https://scriptella.org/howto/index.html">
-  <meta property="og:title" content="How-to guides | Scriptella">
-  <meta property="og:description" content="Step-by-step Scriptella guides for database setup, application startup, and migration from Ant.">
+  <meta property="og:title" content="Guides | Scriptella">
+  <meta property="og:description" content="Step-by-step Scriptella guides for CSV import, database setup, application startup, and migration from Ant.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Scriptella">
   <meta property="og:url" content="https://scriptella.org/howto/index.html">
@@ -18,8 +18,8 @@
   <meta property="og:image:height" content="897">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.jpg">
-  <meta name="twitter:title" content="How-to guides | Scriptella">
-  <meta name="twitter:description" content="Step-by-step Scriptella guides for database setup, application startup, and migration from Ant.">
+  <meta name="twitter:title" content="Guides | Scriptella">
+  <meta name="twitter:description" content="Step-by-step Scriptella guides for CSV import, database setup, application startup, and migration from Ant.">
   <link rel="icon" href="../favicon.ico" sizes="32x32">
   <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
   <link rel="apple-touch-icon" href="../favicon-192.png">
@@ -56,8 +56,9 @@
         <li><a href="../reference/index.html">Reference</a></li>
         <li><a href="../reference/drivers.html">Drivers</a></li>
         <li>
-          <a href="index.html" aria-current="page">How-to guides</a>
+          <a href="index.html" aria-current="page">Guides</a>
           <ul>
+            <li><a href="csv-to-postgresql.html">Import CSV into PostgreSQL</a></li>
             <li><a href="create-database.html">Create and initialize a database</a></li>
             <li><a href="initialize-database.html">Initialize on application startup</a></li>
             <li><a href="migrate-from-ant.html">Migrate from the Ant SQL task</a></li>
@@ -70,9 +71,11 @@
     </nav>
 
     <article class="page-content">
-      <h1>How-to guides</h1>
+      <h1>Guides</h1>
       <p class="lede">These guides cover selected tasks. For a general introduction to Scriptella, see the <a href="../tutorial.html">tutorial</a>.</p>
+      <h2>How-tos</h2>
       <div class="route-grid">
+        <a class="route-card" href="csv-to-postgresql.html"><strong>Import CSV into PostgreSQL</strong><small>Load a local CSV file with Scriptella and the PostgreSQL JDBC driver.</small></a>
         <a class="route-card" href="create-database.html"><strong>Create and initialize a database</strong><small>Create a schema and load initial data with Scriptella.</small></a>
         <a class="route-card" href="initialize-database.html"><strong>Initialize on application startup</strong><small>Run database setup when your Java application starts.</small></a>
         <a class="route-card" href="migrate-from-ant.html"><strong>Migrate from Ant</strong><small>Convert an Ant SQL task to a Scriptella ETL file.</small></a>

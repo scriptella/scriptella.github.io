@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Import CSV into PostgreSQL with Java and Scriptella | Scriptella</title>
+  <meta name="description" content="Import a local CSV file into PostgreSQL with Scriptella 1.7.0 and pgJDBC. Run a complete example with sample data, safe reruns, and rollback.">
+  <link rel="canonical" href="https://scriptella.org/howto/csv-to-postgresql.html">
+  <meta property="og:title" content="Import CSV into PostgreSQL with Java and Scriptella | Scriptella">
+  <meta property="og:description" content="Import a local CSV file into PostgreSQL with Scriptella 1.7.0 and pgJDBC. Run a complete example with sample data, safe reruns, and rollback.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Scriptella">
+  <meta property="og:url" content="https://scriptella.org/howto/csv-to-postgresql.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Scriptella lightweight Java ETL tool with SQL to JSON, CSV and database pipeline">
+  <meta property="og:image:width" content="1720">
+  <meta property="og:image:height" content="897">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta name="twitter:title" content="Import CSV into PostgreSQL with Java and Scriptella | Scriptella">
+  <meta name="twitter:description" content="Import a local CSV file into PostgreSQL with Scriptella 1.7.0 and pgJDBC. Run a complete example with sample data, safe reruns, and rollback.">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../favicon-192.png">
+  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../style.css?v=20261022">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="../index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="../images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="../reference/index.html" aria-current="page">Documentation</a></li>
+          <li><a href="../tutorial.html">Tutorial</a></li>
+          <li><a href="../installation.html">Install</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell docs-layout">
+    <nav class="docs-nav" aria-label="Documentation navigation">
+      <h2>Documentation</h2>
+      <ul>
+        <li><a href="../reference/index.html">Reference</a></li>
+        <li><a href="../reference/drivers.html">Drivers</a></li>
+        <li>
+          <a href="index.html">Guides</a>
+          <ul>
+            <li><a href="csv-to-postgresql.html" aria-current="page">Import CSV into PostgreSQL</a></li>
+            <li><a href="create-database.html">Create and initialize a database</a></li>
+            <li><a href="initialize-database.html">Initialize on application startup</a></li>
+            <li><a href="migrate-from-ant.html">Migrate from the Ant SQL task</a></li>
+          </ul>
+        </li>
+        <li><a href="../faq.html">FAQ</a></li>
+        <li><a href="../docs/api/index.html">API documentation</a></li>
+        <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
+      </ul>
+    </nav>
+
+    <article class="page-content">
+      <h1>Import CSV into PostgreSQL with Java and Scriptella</h1>
+      <p class="lede">Load a local CSV file into a PostgreSQL table using Scriptella and the PostgreSQL JDBC driver. The example inserts two contacts and updates them by ID on subsequent runs.</p>
+
+      <h2>Prerequisites</h2>
+      <p>Install <a href="../installation.html">Scriptella 1.7.0</a> and Java 17 or later. Use a PostgreSQL database named <code>demo</code> and a login with <code>INSERT</code>, <code>UPDATE</code>, and <code>SELECT</code> access to the destination table. <a href="../download.html">Download Scriptella</a> and get <code>postgresql-42.7.13.jar</code> from the <a href="../drivers/postgresql.html">PostgreSQL driver page</a>.</p>
+      <p>Create a working directory and place the JDBC JAR in its <code>lib/</code> subdirectory. The example resolves the JAR and CSV paths relative to the ETL file.</p>
+
+      <h2>Create the table and CSV file</h2>
+      <p>Connect to <code>demo</code> in your PostgreSQL client and run this SQL once with a role that can create tables in the <code>public</code> schema.</p>
+      <pre><code class="language-sql"><span class="syntax-keyword">CREATE</span> <span class="syntax-keyword">TABLE</span> public.csv_contacts (
+    id <span class="syntax-keyword">integer</span> <span class="syntax-keyword">PRIMARY</span> <span class="syntax-keyword">KEY</span>,
+    name <span class="syntax-keyword">text</span> <span class="syntax-keyword">NOT</span> <span class="syntax-keyword">NULL</span>,
+    email <span class="syntax-keyword">text</span> <span class="syntax-keyword">NOT</span> <span class="syntax-keyword">NULL</span>
+);</code></pre>
+      <p>Save the following as <code>contacts.csv</code> in UTF-8. The first row supplies the column names. Quotes keep the comma in the second contact’s name within one field.</p>
+      <pre><code>id,name,email
+1,Ada Lovelace,ada@example.com
+2,"Rivera, Sam",sam@example.com</code></pre>
+
+      <h2>Save and run the ETL</h2>
+      <p>Save this as <code>import.etl.xml</code> next to <code>contacts.csv</code>. Change the JDBC URL if your database uses a different host, port, or name. Scriptella binds the CSV fields as JDBC parameters and PostgreSQL casts the ID to an integer.</p>
+      <pre><code class="language-xml"><span class="syntax-tag">&lt;!DOCTYPE</span> etl SYSTEM <span class="syntax-string">"http://scriptella.org/dtd/etl.dtd"</span>&gt;
+<span class="syntax-tag">&lt;etl</span>&gt;
+    <span class="syntax-tag">&lt;connection</span> <span class="syntax-attribute">id</span>=<span class="syntax-string">"source"</span> <span class="syntax-attribute">driver</span>=<span class="syntax-string">"csv"</span> <span class="syntax-attribute">url</span>=<span class="syntax-string">"contacts.csv"</span>&gt;
+        encoding=UTF-8
+    <span class="syntax-tag">&lt;/connection</span>&gt;
+    <span class="syntax-tag">&lt;connection</span> <span class="syntax-attribute">id</span>=<span class="syntax-string">"target"</span> <span class="syntax-attribute">driver</span>=<span class="syntax-string">"postgresql"</span>
+                <span class="syntax-attribute">url</span>=<span class="syntax-string">"jdbc:postgresql://localhost:5432/demo"</span>
+                <span class="syntax-attribute">user</span>=<span class="syntax-string">"DEMO_USER"</span>
+                <span class="syntax-attribute">password</span>=<span class="syntax-string">"DEMO_PASSWORD"</span>
+                <span class="syntax-attribute">classpath</span>=<span class="syntax-string">"lib/postgresql-42.7.13.jar"</span>/&gt;
+    <span class="syntax-tag">&lt;query</span> <span class="syntax-attribute">connection-id</span>=<span class="syntax-string">"source"</span>&gt;
+        <span class="syntax-tag">&lt;script</span> <span class="syntax-attribute">connection-id</span>=<span class="syntax-string">"target"</span>&gt;
+            <span class="syntax-keyword">INSERT</span> <span class="syntax-keyword">INTO</span> public.csv_contacts (id, name, email)
+            <span class="syntax-keyword">VALUES</span> (<span class="syntax-keyword">CAST</span>(<span class="syntax-variable">?id</span> <span class="syntax-keyword">AS</span> <span class="syntax-keyword">integer</span>), <span class="syntax-variable">?name</span>, <span class="syntax-variable">?email</span>)
+            <span class="syntax-keyword">ON</span> <span class="syntax-keyword">CONFLICT</span> (id) <span class="syntax-keyword">DO</span> <span class="syntax-keyword">UPDATE</span>
+            <span class="syntax-keyword">SET</span> name = <span class="syntax-keyword">EXCLUDED</span>.name, email = <span class="syntax-keyword">EXCLUDED</span>.email;
+        <span class="syntax-tag">&lt;/script</span>&gt;
+    <span class="syntax-tag">&lt;/query</span>&gt;
+<span class="syntax-tag">&lt;/etl</span>&gt;</code></pre>
+      <p>Replace <code>DEMO_USER</code> and <code>DEMO_PASSWORD</code> with your local demo database credentials. Keep real passwords out of version control. For shared or deployed ETL files, set <code>SCRIPTELLA_DB_USER</code> and <code>SCRIPTELLA_DB_PASSWORD</code> in the process environment and use <code>user="${env.SCRIPTELLA_DB_USER}"</code> and <code>password="${env.SCRIPTELLA_DB_PASSWORD}"</code> in the connection.</p>
+      <p>From the working directory, run the launcher. On Windows, use <code>scriptella.bat</code>.</p>
+      <pre><code>scriptella.sh import.etl.xml</code></pre>
+
+      <h2>Verify the import</h2>
+      <pre><code class="language-sql"><span class="syntax-keyword">SELECT</span> id, name, email <span class="syntax-keyword">FROM</span> public.csv_contacts <span class="syntax-keyword">ORDER</span> <span class="syntax-keyword">BY</span> id;</code></pre>
+      <pre><code> id |     name     |      email
+----+--------------+-----------------
+  1 | Ada Lovelace | ada@example.com
+  2 | Rivera, Sam  | sam@example.com</code></pre>
+      <p>Run the same command again and expect the same two rows in a fresh table. An existing ID gets the name and email from the CSV. Rows whose IDs are absent from the CSV remain in the table.</p>
+
+      <h2>Transactions and troubleshooting</h2>
+      <p>This example uses one PostgreSQL transaction for the import. If a write fails, such as when a CSV ID cannot be cast to an integer, Scriptella rolls back the PostgreSQL changes from that run. Correct the input and rerun the command. The separate table creation step remains in effect.</p>
+      <p>For missing driver errors, check the JAR filename and its location under <code>lib/</code>. For connection or permission errors, verify the JDBC URL, the credentials, and the login’s table privileges. Check that the CSV header has the exact names used in the ETL.</p>
+
+      <h2>Related documentation</h2>
+      <ul>
+        <li><a href="../drivers/postgresql.html">PostgreSQL JDBC setup</a></li>
+        <li><a href="../reference/drivers.html#csv">CSV driver reference</a></li>
+        <li><a href="../reference/index.html">Scriptella technical reference</a></li>
+        <li><a href="https://github.com/scriptella/scriptella-etl/tree/scriptella-parent-1.7.0/samples/csv">CSV sample in the Scriptella ETL repository</a></li>
+      </ul>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="../reference/index.html">Documentation</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../docs/api/index.html">API Docs</a></li>
+          <li><a href="../docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="../benchmarks.html">Benchmarks</a></li>
+          <li><a href="../changes.html">Change History</a></li>
+          <li><a href="../license.html">License</a></li>
+          <li><a href="../support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>

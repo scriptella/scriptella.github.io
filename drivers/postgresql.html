@@ -64,7 +64,7 @@
             <li><a href="sqlite.html">SQLite</a></li>
           </ul>
         </li>
-        <li><a href="../howto/index.html">How-to guides</a></li>
+        <li><a href="../howto/index.html">Guides</a></li>
         <li><a href="../faq.html">FAQ</a></li>
         <li><a href="../docs/api/index.html">API documentation</a></li>
         <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
@@ -81,13 +81,13 @@
       </section>
       <section>
         <h2>Check the connection</h2>
-        <p>Replace the sample host and database or service name. Supply <code>SCRIPTELLA_DB_USER</code> and <code>SCRIPTELLA_DB_PASSWORD</code> through the process environment. Save this as <code>check.etl.xml</code>, then run <code>scriptella.sh check.etl.xml</code>. The read-only query passes the <code>connection_ok</code> column to the nested script, which prints <code>CONNECTION OK: 1</code>.</p>
+        <p>Replace the sample host and database or service name. Replace <code>DEMO_USER</code> and <code>DEMO_PASSWORD</code> with your local demo credentials. Save this as <code>check.etl.xml</code>, then run <code>scriptella.sh check.etl.xml</code>. The read-only query passes the <code>connection_ok</code> column to the nested script, which prints <code>CONNECTION OK: 1</code>.</p>
         <pre><code class="language-xml">&lt;?xml version="1.0"?&gt;
 &lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
 &lt;etl&gt;
     &lt;connection id="db" driver="postgresql"
                 url="jdbc:postgresql://db.example.com:5432/app"
-                user="${env.SCRIPTELLA_DB_USER}" password="${env.SCRIPTELLA_DB_PASSWORD}"
+                user="DEMO_USER" password="DEMO_PASSWORD"
                 classpath="lib/postgresql-42.7.13.jar"/&gt;
     &lt;connection id="console" driver="text"/&gt;
     &lt;query connection-id="db"&gt;
@@ -95,12 +95,17 @@
         &lt;script connection-id="console"&gt;CONNECTION OK: $connection_ok&lt;/script&gt;
     &lt;/query&gt;
 &lt;/etl&gt;</code></pre>
+        <p>Keep real passwords out of version control. For shared or deployed ETL files, set <code>SCRIPTELLA_DB_USER</code> and <code>SCRIPTELLA_DB_PASSWORD</code> in the process environment and use <code>user="${env.SCRIPTELLA_DB_USER}"</code> and <code>password="${env.SCRIPTELLA_DB_PASSWORD}"</code> in the connection.</p>
         <p><a href="../installation.html">Installation instructions</a> · <a href="../download.html">Download Scriptella</a></p>
       </section>
       <section>
         <h2>Verified with Scriptella 1.7.0</h2>
         <p><strong>PostgreSQL 17.11</strong> with JDBC driver <code>42.7.13</code>. Packaged validation passed parameterized writes and reads, migration in both directions with H2, commit, and rollback. The public Testcontainers check passed ETL copy, representative values, and rollback.</p>
         <p><a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/core-database-compatibility.md">Compatibility evidence</a> · <a href="https://github.com/scriptella/scriptella-testcontainers/actions/runs/41696161604">Public Testcontainers run</a></p>
+      </section>
+      <section>
+        <h2>Import a CSV file</h2>
+        <p>Follow the <a href="../howto/csv-to-postgresql.html">CSV import guide</a> for a runnable example with PostgreSQL and Scriptella.</p>
       </section>
       <section>
         <h2>Configuration notes</h2>

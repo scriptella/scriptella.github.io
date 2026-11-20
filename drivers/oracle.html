@@ -64,7 +64,7 @@
             <li><a href="sqlite.html">SQLite</a></li>
           </ul>
         </li>
-        <li><a href="../howto/index.html">How-to guides</a></li>
+        <li><a href="../howto/index.html">Guides</a></li>
         <li><a href="../faq.html">FAQ</a></li>
         <li><a href="../docs/api/index.html">API documentation</a></li>
         <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
@@ -81,13 +81,13 @@
       </section>
       <section>
         <h2>Check the connection</h2>
-        <p>Replace the sample host and database or service name. Supply <code>SCRIPTELLA_DB_USER</code> and <code>SCRIPTELLA_DB_PASSWORD</code> through the process environment. Save this as <code>check.etl.xml</code>, then run <code>scriptella.sh check.etl.xml</code>. The read-only query passes the <code>connection_ok</code> column to the nested script, which prints <code>CONNECTION OK: 1</code>.</p>
+        <p>Replace the sample host and database or service name. Replace <code>DEMO_USER</code> and <code>DEMO_PASSWORD</code> with your local demo credentials. Save this as <code>check.etl.xml</code>, then run <code>scriptella.sh check.etl.xml</code>. The read-only query passes the <code>connection_ok</code> column to the nested script, which prints <code>CONNECTION OK: 1</code>.</p>
         <pre><code class="language-xml">&lt;?xml version="1.0"?&gt;
 &lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
 &lt;etl&gt;
     &lt;connection id="db" driver="oracle"
                 url="jdbc:oracle:thin:@//db.example.com:1521/FREEPDB1"
-                user="${env.SCRIPTELLA_DB_USER}" password="${env.SCRIPTELLA_DB_PASSWORD}"
+                user="DEMO_USER" password="DEMO_PASSWORD"
                 classpath="lib/ojdbc17.jar"/&gt;
     &lt;connection id="console" driver="text"/&gt;
     &lt;query connection-id="db"&gt;
@@ -95,6 +95,7 @@
         &lt;script connection-id="console"&gt;CONNECTION OK: $connection_ok&lt;/script&gt;
     &lt;/query&gt;
 &lt;/etl&gt;</code></pre>
+        <p>Keep real passwords out of version control. For shared or deployed ETL files, set <code>SCRIPTELLA_DB_USER</code> and <code>SCRIPTELLA_DB_PASSWORD</code> in the process environment and use <code>user="${env.SCRIPTELLA_DB_USER}"</code> and <code>password="${env.SCRIPTELLA_DB_PASSWORD}"</code> in the connection.</p>
         <p><a href="../installation.html">Installation instructions</a> · <a href="../download.html">Download Scriptella</a></p>
       </section>
       <section>
