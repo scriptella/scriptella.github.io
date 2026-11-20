@@ -14,6 +14,7 @@
   <url><loc>https://scriptella.org/reference/drivers.html</loc></url>
   <url><loc>https://scriptella.org/howto/index.html</loc></url>
   <url><loc>https://scriptella.org/howto/csv-to-postgresql.html</loc></url>
+  <url><loc>https://scriptella.org/howto/postgresql-to-json.html</loc></url>
   <url><loc>https://scriptella.org/howto/create-database.html</loc></url>
   <url><loc>https://scriptella.org/howto/initialize-database.html</loc></url>
   <url><loc>https://scriptella.org/howto/migrate-from-ant.html</loc></url>

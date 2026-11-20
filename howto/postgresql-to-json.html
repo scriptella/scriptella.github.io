@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Export PostgreSQL query results to JSON or JSON Lines | Scriptella</title>
+  <meta name="description" content="Export PostgreSQL query results with Scriptella 1.7.0 as a JSON array or JSON Lines, preserving numbers, booleans, and nulls.">
+  <link rel="canonical" href="https://scriptella.org/howto/postgresql-to-json.html">
+  <meta property="og:title" content="Export PostgreSQL query results to JSON or JSON Lines | Scriptella">
+  <meta property="og:description" content="Export PostgreSQL query results with Scriptella 1.7.0 as a JSON array or JSON Lines, preserving numbers, booleans, and nulls.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Scriptella">
+  <meta property="og:url" content="https://scriptella.org/howto/postgresql-to-json.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Scriptella lightweight Java ETL tool with SQL to JSON, CSV and database pipeline">
+  <meta property="og:image:width" content="1720">
+  <meta property="og:image:height" content="897">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta name="twitter:title" content="Export PostgreSQL query results to JSON or JSON Lines | Scriptella">
+  <meta name="twitter:description" content="Export PostgreSQL query results with Scriptella 1.7.0 as a JSON array or JSON Lines, preserving numbers, booleans, and nulls.">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../favicon-192.png">
+  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../style.css?v=20261022">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="../index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="../images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="../reference/index.html" aria-current="page">Documentation</a></li>
+          <li><a href="../tutorial.html">Tutorial</a></li>
+          <li><a href="../installation.html">Install</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell docs-layout">
+    <nav class="docs-nav" aria-label="Documentation navigation">
+      <h2>Documentation</h2>
+      <ul>
+        <li><a href="../reference/index.html">Reference</a></li>
+        <li><a href="../reference/drivers.html">Drivers</a></li>
+        <li>
+          <a href="index.html">Guides</a>
+          <ul>
+            <li><a href="csv-to-postgresql.html">Import CSV into PostgreSQL</a></li>
+            <li><a href="postgresql-to-json.html" aria-current="page">Export PostgreSQL to JSON</a></li>
+            <li><a href="create-database.html">Create and initialize a database</a></li>
+            <li><a href="initialize-database.html">Initialize on application startup</a></li>
+            <li><a href="migrate-from-ant.html">Migrate from the Ant SQL task</a></li>
+          </ul>
+        </li>
+        <li><a href="../faq.html">FAQ</a></li>
+        <li><a href="../docs/api/index.html">API documentation</a></li>
+        <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
+      </ul>
+    </nav>
+
+    <article class="page-content">
+      <h1>Export PostgreSQL query results to JSON or JSON Lines</h1>
+      <p class="lede">Run a PostgreSQL query through Scriptella and write one JSON object per row. Choose a single JSON array for a document or JSON Lines for consumers that read one record at a time.</p>
+
+      <h2>Prerequisites</h2>
+      <p><a href="../download.html">Download Scriptella 1.7.0</a> and follow the <a href="../installation.html">installation instructions</a> for Java 17 or later. The binary distribution includes the JSON driver and its Jackson dependency. Download <code>postgresql-42.7.13.jar</code> from the <a href="../drivers/postgresql.html">PostgreSQL driver page</a> and place it in a <code>lib/</code> directory next to the ETL file.</p>
+      <p>Use a login that can connect to a PostgreSQL database named <code>demo</code>. To export your own data, give the login <code>SELECT</code> access to the source tables.</p>
+
+      <h2>Save and run the ETL</h2>
+      <p>Save this as <code>export.etl.xml</code>. Adjust the JDBC URL for your database and replace <code>DEMO_USER</code> and <code>DEMO_PASSWORD</code> with your local demo credentials.</p>
+      <aside class="note" aria-label="About the sample query"><strong>About the sample query.</strong> This example generates two rows directly in SQL so you can try the export without creating a table or loading sample data. To export your own data, replace the sample query with a <code>SELECT</code> from your PostgreSQL tables. You can reuse the JSON output connection. If your result columns have different names, update the template’s placeholders or alias the columns to match.</aside>
+      <pre><code class="language-xml"><span class="syntax-tag">&lt;!DOCTYPE</span> etl SYSTEM <span class="syntax-string">"http://scriptella.org/dtd/etl.dtd"</span>&gt;
+<span class="syntax-tag">&lt;etl</span>&gt;
+    <span class="syntax-tag">&lt;connection</span> <span class="syntax-attribute">id</span>=<span class="syntax-string">"source"</span> <span class="syntax-attribute">driver</span>=<span class="syntax-string">"postgresql"</span>
+                <span class="syntax-attribute">url</span>=<span class="syntax-string">"jdbc:postgresql://localhost:5432/demo"</span>
+                <span class="syntax-attribute">user</span>=<span class="syntax-string">"DEMO_USER"</span> <span class="syntax-attribute">password</span>=<span class="syntax-string">"DEMO_PASSWORD"</span>
+                <span class="syntax-attribute">classpath</span>=<span class="syntax-string">"lib/postgresql-42.7.13.jar"</span>/&gt;
+    <span class="syntax-tag">&lt;connection</span> <span class="syntax-attribute">id</span>=<span class="syntax-string">"output"</span> <span class="syntax-attribute">driver</span>=<span class="syntax-string">"json"</span> <span class="syntax-attribute">url</span>=<span class="syntax-string">"contacts.json"</span>/&gt;
+    <span class="syntax-tag">&lt;query</span> <span class="syntax-attribute">connection-id</span>=<span class="syntax-string">"source"</span>&gt;
+        <span class="syntax-keyword">SELECT</span> id, name, active, note
+        <span class="syntax-keyword">FROM</span> (<span class="syntax-keyword">VALUES</span>
+            (1, <span class="syntax-string">'Ada Lovelace'</span>, <span class="syntax-keyword">TRUE</span>, <span class="syntax-string">'Writes "notes"'</span>),
+            (2, <span class="syntax-string">'Sam Rivera'</span>, <span class="syntax-keyword">FALSE</span>, <span class="syntax-keyword">NULL</span>)
+        ) <span class="syntax-keyword">AS</span> contacts(id, name, active, note)
+        <span class="syntax-keyword">ORDER</span> <span class="syntax-keyword">BY</span> id;
+        <span class="syntax-tag">&lt;script</span> <span class="syntax-attribute">connection-id</span>=<span class="syntax-string">"output"</span>&gt;
+            {<span class="syntax-string">"id"</span>: <span class="syntax-variable">?{id}</span>, <span class="syntax-string">"name"</span>: <span class="syntax-variable">?{name}</span>, <span class="syntax-string">"active"</span>: <span class="syntax-variable">?{active}</span>, <span class="syntax-string">"note"</span>: <span class="syntax-variable">?{note}</span>}
+        <span class="syntax-tag">&lt;/script</span>&gt;
+    <span class="syntax-tag">&lt;/query</span>&gt;
+<span class="syntax-tag">&lt;/etl</span>&gt;</code></pre>
+      <p>For shared or deployed ETL files, keep real passwords out of version control. Set <code>SCRIPTELLA_DB_USER</code> and <code>SCRIPTELLA_DB_PASSWORD</code> in the process environment and use <code>user="${env.SCRIPTELLA_DB_USER}"</code> and <code>password="${env.SCRIPTELLA_DB_PASSWORD}"</code> in the connection.</p>
+      <p>From the working directory, run the launcher. On Windows, use <code>scriptella.bat</code>.</p>
+      <pre><code>scriptella.sh export.etl.xml</code></pre>
+
+      <h2>Check the JSON output</h2>
+      <p>Open <code>contacts.json</code> next to the ETL file. It contains one array with two objects. Whitespace may differ from this display.</p>
+      <pre><code class="language-json">[
+  {"id":1,"name":"Ada Lovelace","active":true,"note":"Writes \"notes\""},
+  {"id":2,"name":"Sam Rivera","active":false,"note":null}
+]</code></pre>
+      <p>Use an unquoted <code>?{column_name}</code> for each dynamic value, including strings. Scriptella quotes and escapes strings and preserves numbers, booleans, and nulls. A quoted <code>"?{name}"</code> is literal text. For JDBC dates or timestamps, convert the value explicitly to a formatted string or epoch number. See the <a href="https://github.com/scriptella/scriptella-etl/blob/scriptella-parent-1.7.0/docs/json.md">JSON driver guide</a> for examples.</p>
+
+      <h2>Write JSON Lines</h2>
+      <p>Change the output connection’s URL to <code>contacts.jsonl</code> and run the same command. The extension selects JSON Lines. The template stays the same, and each line is a complete JSON object.</p>
+      <pre><code class="language-json">{"id":1,"name":"Ada Lovelace","active":true,"note":"Writes \"notes\""}
+{"id":2,"name":"Sam Rivera","active":false,"note":null}</code></pre>
+
+      <h2>Reruns, empty results, and failures</h2>
+      <p>A run with rows replaces the destination when the first row is written. With zero rows, Scriptella never opens the output file. An existing file keeps its previous data, and a missing file stays absent.</p>
+      <p>The PostgreSQL query is read-only. File writes are outside the database transaction, so a failure can leave partial output in either format. For scheduled exports, write to a fresh staging filename on each run and publish only after Scriptella succeeds. If no file was created, explicitly publish <code>[]</code> for JSON or an empty file for JSON Lines when that is the agreed behavior.</p>
+
+      <h2>Related documentation</h2>
+      <ul>
+        <li><a href="../drivers/postgresql.html">PostgreSQL JDBC setup</a></li>
+        <li><a href="../reference/drivers.html#json">JSON driver reference</a></li>
+        <li><a href="../reference/index.html">Scriptella technical reference</a></li>
+        <li><a href="https://github.com/scriptella/scriptella-etl/tree/scriptella-parent-1.7.0/samples/json">Runnable JSON samples in the Scriptella ETL repository</a></li>
+      </ul>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="../reference/index.html">Documentation</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../docs/api/index.html">API Docs</a></li>
+          <li><a href="../docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="../benchmarks.html">Benchmarks</a></li>
+          <li><a href="../changes.html">Change History</a></li>
+          <li><a href="../license.html">License</a></li>
+          <li><a href="../support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>
