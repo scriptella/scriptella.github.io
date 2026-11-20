@@ -685,6 +685,18 @@ figcaption {
   margin-top: 1.5rem;
 }
 
+.page-shell.comparison-layout {
+  --comparison-start: max(1rem, (100% - var(--site-width)) / 2);
+  width: min(90rem, 100% - var(--comparison-start) - 1rem);
+  margin-inline-start: var(--comparison-start);
+}
+
+.comparison-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 34rem), 1fr));
+  gap: 1rem;
+}
+
 .link-card {
   padding: 1.1rem 1.2rem;
   background: var(--bg-surface);

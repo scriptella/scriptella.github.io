@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scriptella vs Spring Batch | Scriptella</title>
+  <meta name="description" content="Compare Scriptella and Spring Batch for Java ETL, from a replayable CSV import to a chunk-oriented job with persistent execution state and restart.">
+  <link rel="canonical" href="https://scriptella.org/compare/spring-batch.html">
+  <meta property="og:title" content="Scriptella vs Spring Batch | Scriptella">
+  <meta property="og:description" content="Compare Scriptella and Spring Batch for Java ETL, from a replayable CSV import to a chunk-oriented job with persistent execution state and restart.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Scriptella">
+  <meta property="og:url" content="https://scriptella.org/compare/spring-batch.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Scriptella lightweight Java ETL tool with SQL to JSON, CSV and database pipeline">
+  <meta property="og:image:width" content="1720">
+  <meta property="og:image:height" content="897">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta name="twitter:title" content="Scriptella vs Spring Batch | Scriptella">
+  <meta name="twitter:description" content="Compare Scriptella and Spring Batch for Java ETL, from a replayable CSV import to a chunk-oriented job with persistent execution state and restart.">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../favicon-192.png">
+  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../style.css?v=20261120">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="../index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="../images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="../reference/index.html" aria-current="page">Documentation</a></li>
+          <li><a href="../tutorial.html">Tutorial</a></li>
+          <li><a href="../installation.html">Install</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell docs-layout comparison-layout">
+    <nav class="docs-nav" aria-label="Documentation navigation">
+      <h2>Documentation</h2>
+      <ul>
+        <li><a href="../reference/index.html">Reference</a></li>
+        <li><a href="../reference/drivers.html">Drivers</a></li>
+        <li>
+          <a href="../howto/index.html">Guides</a>
+          <ul>
+            <li><a href="../howto/csv-to-postgresql.html">Import CSV into PostgreSQL</a></li>
+            <li><a href="../howto/postgresql-to-json.html">Export PostgreSQL to JSON</a></li>
+            <li><a href="../howto/create-database.html">Create and initialize a database</a></li>
+            <li><a href="../howto/initialize-database.html">Initialize on application startup</a></li>
+            <li><a href="../howto/migrate-from-ant.html">Migrate from the Ant SQL task</a></li>
+            <li><a href="spring-batch.html" aria-current="page">Scriptella vs Spring Batch</a></li>
+          </ul>
+        </li>
+        <li><a href="../faq.html">FAQ</a></li>
+        <li><a href="../docs/api/index.html">API documentation</a></li>
+        <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
+      </ul>
+    </nav>
+
+    <article class="page-content">
+      <h1>Scriptella vs Spring Batch</h1>
+      <p class="lede">Use Scriptella when SQL and simple mappings do most of the work and you can replay a failed load. Use Spring Batch when you want persisted job history, checkpoint-based restart, or Java processing and Spring services inside the job.</p>
+
+      <h2>The same CSV-to-PostgreSQL import</h2>
+      <p>A supplier sends a nightly <code>contacts.csv</code> with <code>id,name,email</code> headers. Both examples load it into <code>public.csv_contacts</code> and update the existing name and email on a matching ID. Use the same input, JDBC driver, and table schema from the <a href="../howto/csv-to-postgresql.html">CSV import guide</a>. The primary key makes replaying the file leave the same contact data.</p>
+
+      <div class="comparison-examples">
+        <section>
+          <h3>Scriptella 1.7.0</h3>
+          <p>Save this as <code>import.etl.xml</code> next to the CSV and run <code>scriptella.sh import.etl.xml</code>. Replace the demo credentials or use the environment-variable form from the guide.</p>
+          <pre><code class="language-xml"><span class="syntax-tag">&lt;!DOCTYPE</span> etl SYSTEM <span class="syntax-string">"http://scriptella.org/dtd/etl.dtd"</span>&gt;
+<span class="syntax-tag">&lt;etl</span>&gt;
+    <span class="syntax-tag">&lt;connection</span> <span class="syntax-attribute">id</span>=<span class="syntax-string">"source"</span> <span class="syntax-attribute">driver</span>=<span class="syntax-string">"csv"</span> <span class="syntax-attribute">url</span>=<span class="syntax-string">"contacts.csv"</span>&gt;
+        encoding=UTF-8
+    <span class="syntax-tag">&lt;/connection</span>&gt;
+    <span class="syntax-tag">&lt;connection</span> <span class="syntax-attribute">id</span>=<span class="syntax-string">"target"</span> <span class="syntax-attribute">driver</span>=<span class="syntax-string">"postgresql"</span>
+                <span class="syntax-attribute">url</span>=<span class="syntax-string">"jdbc:postgresql://localhost:5432/demo"</span>
+                <span class="syntax-attribute">user</span>=<span class="syntax-string">"DEMO_USER"</span>
+                <span class="syntax-attribute">password</span>=<span class="syntax-string">"DEMO_PASSWORD"</span>
+                <span class="syntax-attribute">classpath</span>=<span class="syntax-string">"lib/postgresql-42.7.13.jar"</span>/&gt;
+    <span class="syntax-tag">&lt;query</span> <span class="syntax-attribute">connection-id</span>=<span class="syntax-string">"source"</span>&gt;
+        <span class="syntax-tag">&lt;script</span> <span class="syntax-attribute">connection-id</span>=<span class="syntax-string">"target"</span>&gt;
+            <span class="syntax-keyword">INSERT</span> <span class="syntax-keyword">INTO</span> public.csv_contacts (id, name, email)
+            <span class="syntax-keyword">VALUES</span> (<span class="syntax-keyword">CAST</span>(<span class="syntax-variable">?id</span> <span class="syntax-keyword">AS</span> <span class="syntax-keyword">integer</span>), <span class="syntax-variable">?name</span>, <span class="syntax-variable">?email</span>)
+            <span class="syntax-keyword">ON</span> <span class="syntax-keyword">CONFLICT</span> (id) <span class="syntax-keyword">DO</span> <span class="syntax-keyword">UPDATE</span>
+            <span class="syntax-keyword">SET</span> name = <span class="syntax-keyword">EXCLUDED</span>.name, email = <span class="syntax-keyword">EXCLUDED</span>.email;
+        <span class="syntax-tag">&lt;/script</span>&gt;
+    <span class="syntax-tag">&lt;/query</span>&gt;
+<span class="syntax-tag">&lt;/etl</span>&gt;</code></pre>
+        </section>
+        <section>
+          <h3>Spring Batch 6.0</h3>
+          <p>This job bean belongs in a Spring configuration class. The example omits imports, application startup, and infrastructure setup. Supply a PostgreSQL <code>DataSource</code>, a transaction manager for it, and a JDBC <code>JobRepository</code> with its metadata schema initialized. For this example, use the same data source and transaction manager for the business writes and repository. Launch the job with an identifying delivery ID and retain the input file for restart. In a recurring deployment, resolve the file path from the delivery ID, for example with a step-scoped reader. See the <a href="https://docs.spring.io/spring-batch/reference/6.0/job/configuring-repository.html">JobRepository documentation</a>.</p>
+          <pre><code class="language-java">record Contact(int id, String name, String email) {}
+
+@Bean
+Job importContacts(JobRepository repository, DataSource dataSource,
+                   PlatformTransactionManager transactions) {
+    var reader = new FlatFileItemReaderBuilder&lt;Contact&gt;()
+        .name("contactsReader")
+        .resource(new FileSystemResource("contacts.csv"))
+        .encoding("UTF-8")
+        .linesToSkip(1)
+        .delimited().names("id", "name", "email")
+        .fieldSetMapper(fields -&gt; new Contact(
+            fields.readInt("id"), fields.readString("name"), fields.readString("email")))
+        .saveState(true)
+        .build();
+
+    var writer = new JdbcBatchItemWriterBuilder&lt;Contact&gt;()
+        .dataSource(dataSource)
+        .sql("""
+            INSERT INTO public.csv_contacts (id, name, email)
+            VALUES (?, ?, ?)
+            ON CONFLICT (id) DO UPDATE
+            SET name = EXCLUDED.name, email = EXCLUDED.email
+            """)
+        .itemPreparedStatementSetter((contact, statement) -&gt; {
+            statement.setInt(1, contact.id());
+            statement.setString(2, contact.name());
+            statement.setString(3, contact.email());
+        })
+        .build();
+
+    var step = new StepBuilder("loadContacts", repository)
+        .&lt;Contact, Contact&gt;chunk(100)
+        .transactionManager(transactions)
+        .reader(reader)
+        .writer(writer)
+        .build();
+
+    return new JobBuilder("importContacts", repository).start(step).build();
+}</code></pre>
+        </section>
+      </div>
+
+      <h2>What happens if the job fails?</h2>
+      <p>Suppose a temporary database error stops the load while writing row 251. With the Scriptella configuration above, the PostgreSQL transaction rolls back and a new run reads the file from the beginning. Spring Batch has already committed rows 1–200. When you restart the same failed job instance with the same input and the reader state intact, the step starts again at row 201. The example fails the step on an error. Retry and skip rules are separate configuration choices. See the <a href="https://docs.spring.io/spring-batch/reference/6.0/step/chunk-oriented-processing/restart.html">Spring Batch restart documentation</a>.</p>
+
+      <aside class="note" aria-label="Under consideration for future Scriptella releases">
+        <strong>Under consideration for future Scriptella releases</strong>
+        <ul>
+          <li>Optional checkpoints that could let reruns skip previously completed queries or scripts. <a href="https://github.com/scriptella/scriptella-etl/issues/80">Checkpointing proposal</a></li>
+          <li>Schema inspection and generation of editable database migration artifacts. <a href="https://github.com/scriptella/scriptella-etl/issues/79">Database migration proposal</a></li>
+        </ul>
+        <p>Scope and release timing are open.</p>
+      </aside>
+
+      <h2>Comparison at a glance</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th scope="col">Decision</th><th scope="col">Scriptella 1.7.0</th><th scope="col">Spring Batch 6.0</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Job definition</th><td>XML connections, queries, and scripts</td><td>Spring-managed jobs, steps, readers, and writers</td></tr>
+            <tr><th scope="row">Commit boundary</th><td>One PostgreSQL transaction in this example. JDBC batching and intermediate commits can be configured separately.</td><td>One transaction per chunk of up to 100 contacts in this example</td></tr>
+            <tr><th scope="row">Recovery state</th><td>Replay the input or track progress explicitly.</td><td>A persistent repository and stateful reader support checkpoint-based restart.</td></tr>
+            <tr><th scope="row">Error policy</th><td>Define SQL or script behavior and handle whole-job retries in the launcher or scheduler.</td><td>Configure retry or skip policies for selected exceptions.</td></tr>
+            <tr><th scope="row">Concurrent work</th><td>Split independent ETL runs and coordinate them externally.</td><td>Run independent steps in parallel or partition a step into separate worker executions.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Which should you choose?</h2>
+      <p>Choose Scriptella for a standalone import or export when the transformation fits naturally in SQL and recovery can be a safe replay. If you configure intermediate commits, earlier commits survive a later failure. The upsert makes this import replayable, and any additional side effects need their own replay strategy. See the <a href="../docs/api/scriptella/jdbc/package-summary.html">Scriptella JDBC reference</a>.</p>
+      <p>Choose Spring Batch when operators need job history and restart, or the steps need managed data sources, transactions, and Java domain services. For larger workloads, independent flows can run in parallel, and partitioned steps can assign separate files or nonoverlapping key ranges to workers. Those options help when work can be divided and the database, connection pool, and input can sustain the concurrency. Measure throughput and contention on your workload. See the <a href="https://docs.spring.io/spring-batch/reference/6.0/scalability.html">Spring Batch scaling guide</a>.</p>
+
+      <h2>Using both together</h2>
+      <p>If Spring Batch already coordinates a larger job, register a <code>Tasklet</code> that invokes the existing ETL file through <code>scriptella.execution.EtlExecutor</code>. Add Scriptella and its runtime drivers to the application and wire this bean into a tasklet step. The relative <code>import.etl.xml</code> path is resolved from the application’s working directory.</p>
+      <pre><code class="language-java">@Bean
+Tasklet importWithScriptella() {
+    return (contribution, chunkContext) -&gt; {
+        EtlExecutor.newExecutor(new File("import.etl.xml")).execute();
+        return RepeatStatus.FINISHED;
+    };
+}</code></pre>
+      <p>Let exceptions propagate so Spring Batch records a failed step. Restarting that failed step ordinarily reruns the entire ETL file. The Tasklet adds step-level status, while the ETL retains its own connection and commit boundaries. With the JDBC connection shown above, Scriptella’s commits are independent of the Spring Batch step transaction. Keep the operation safe to replay if the ETL commits before the step status is recorded. See the <a href="https://docs.spring.io/spring-batch/reference/6.0/step/tasklet.html">Spring Batch Tasklet documentation</a> and <a href="../docs/api/scriptella/execution/EtlExecutor.html">Scriptella Java API</a>.</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="../reference/index.html">Documentation</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../docs/api/index.html">API Docs</a></li>
+          <li><a href="../docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="../benchmarks.html">Benchmarks</a></li>
+          <li><a href="../changes.html">Change History</a></li>
+          <li><a href="../license.html">License</a></li>
+          <li><a href="../support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>
