@@ -19,6 +19,9 @@
   <url><loc>https://scriptella.org/howto/initialize-database.html</loc></url>
   <url><loc>https://scriptella.org/howto/migrate-from-ant.html</loc></url>
   <url><loc>https://scriptella.org/compare/spring-batch.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/csv.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/json.html</loc></url>
+  <url><loc>https://scriptella.org/drivers/text.html</loc></url>
   <url><loc>https://scriptella.org/drivers/postgresql.html</loc></url>
   <url><loc>https://scriptella.org/drivers/mariadb.html</loc></url>
   <url><loc>https://scriptella.org/drivers/mysql.html</loc></url>

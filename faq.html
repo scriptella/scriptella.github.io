@@ -54,7 +54,21 @@
       <h2>Documentation</h2>
       <ul>
         <li><a href="reference/index.html">Reference</a></li>
-        <li><a href="reference/drivers.html">Drivers</a></li>
+        <li><a href="reference/drivers.html">Drivers</a>
+          <ul>
+            <li class="docs-nav__group-label">Files &amp; formats</li>
+            <li><a href="drivers/csv.html">CSV</a></li>
+            <li><a href="drivers/json.html">JSON / JSONL</a></li>
+            <li><a href="drivers/text.html">Text</a></li>
+            <li class="docs-nav__group-label">Databases</li>
+            <li><a href="drivers/postgresql.html">PostgreSQL</a></li>
+            <li><a href="drivers/mariadb.html">MariaDB</a></li>
+            <li><a href="drivers/mysql.html">MySQL</a></li>
+            <li><a href="drivers/oracle.html">Oracle</a></li>
+            <li><a href="drivers/mssql.html">SQL Server</a></li>
+            <li><a href="drivers/sqlite.html">SQLite</a></li>
+          </ul>
+        </li>
         <li><a href="howto/index.html">Guides</a></li>
         <li><a href="faq.html" aria-current="page">FAQ</a></li>
         <li><a href="docs/api/index.html">API documentation</a></li>
@@ -106,14 +120,11 @@
       <p>Use a maintained third-party JDBC driver for Access or another database and declare it as a normal JDBC connection. If you still depend on the historical <code>driver="odbc"</code> adapter, remain on <a href="download.html#version-1-3">Scriptella 1.3</a>.</p>
 
       <h3 id="BIND_VARIABLES">1.3. What is the difference between $variable / ${expression} and ?variable / ?{expression} syntax.</h3>
-      <p>These two families do different work. <code>$name</code> and <code>${expression}</code> expand text. <code>?name</code> and <code>?{expression}</code> bind JDBC prepared-statement parameters. Binding-variable syntax varies between drivers. JDBC drivers use the following rules:</p>
       <ul>
-        <li><code>$variable</code> - inserts a value of the variable as text content.</li>
-        <li><code>${expression}</code> - braces are used for JEXL expressions. For example <code>${column1+column2}</code> inserts a sum of 2 columns.</li>
-        <li><code>?variable</code>, <code>?{expression}</code> - syntax is the same as in 2 previous examples, but the result of evaluation is set as a prepared statement parameter, thus increasing the performance and eliminating the need to escape values.</li>
+        <li><strong>Text substitution.</strong> In drivers that support it, <code>$variable</code> inserts a value as text and <code>${expression}</code> inserts the result of a JEXL expression as text.</li>
+        <li><strong>JDBC parameter binding.</strong> In SQL, <code>?variable</code> and <code>?{expression}</code> pass a value to a JDBC prepared statement as a bound parameter. See the <a href="reference/index.html#BIND_VARIABLES">reference manual</a>.</li>
+        <li><strong>JSON value placeholders.</strong> In JSON and JSON Lines output templates, an unquoted placeholder such as <code>?{row.id}</code> fills a complete JSON value position and preserves the value's type. The driver quotes and escapes strings automatically. See the <a href="drivers/json.html">JSON driver guide</a>.</li>
       </ul>
-      <aside class="note"><strong>Note:</strong> Currently <code>?{}</code> syntax is only supported by the JDBC drivers.</aside>
-      <p>See <a href="reference/index.html#BIND_VARIABLES">Reference Manual</a> for additional details.</p>
 
       <h3 id="SET_VARIABLE">1.4. How to share a mutable variable between script/query elements of an ETL file?</h3>
       <p>In general such practice in not recommended because often it's a sign of a bad design. It's like using GOTOs or global variables in programming languages. But in several cases using a global variable may help to achieve required goal. We propose 2 approaches:</p>

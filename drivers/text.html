@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Text driver | Scriptella</title>
+  <meta name="description" content="Parse text files with regex or generate formatted reports.">
+  <link rel="canonical" href="https://scriptella.org/drivers/text.html">
+  <meta property="og:title" content="Text driver | Scriptella">
+  <meta property="og:description" content="Parse text files with regex or generate formatted reports.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Scriptella">
+  <meta property="og:url" content="https://scriptella.org/drivers/text.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Scriptella lightweight Java ETL tool with SQL to JSON, CSV and database pipeline">
+  <meta property="og:image:width" content="1720">
+  <meta property="og:image:height" content="897">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta name="twitter:title" content="Text driver | Scriptella">
+  <meta name="twitter:description" content="Parse text files with regex or generate formatted reports.">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../favicon-192.png">
+  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../style.css?v=20261022">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="../index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="../images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="../reference/index.html" aria-current="page">Documentation</a></li>
+          <li><a href="../tutorial.html">Tutorial</a></li>
+          <li><a href="../installation.html">Install</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell docs-layout">
+    <nav class="docs-nav" aria-label="Documentation navigation">
+      <h2>Documentation</h2>
+      <ul>
+        <li><a href="../reference/index.html">Reference</a></li>
+        <li><a href="../reference/drivers.html">Drivers</a>
+          <ul>
+            <li class="docs-nav__group-label">Files &amp; formats</li>
+            <li><a href="csv.html">CSV</a></li>
+            <li><a href="json.html">JSON / JSONL</a></li>
+            <li><a href="text.html" aria-current="page">Text</a></li>
+            <li class="docs-nav__group-label">Databases</li>
+            <li><a href="postgresql.html">PostgreSQL</a></li>
+            <li><a href="mariadb.html">MariaDB</a></li>
+            <li><a href="mysql.html">MySQL</a></li>
+            <li><a href="oracle.html">Oracle</a></li>
+            <li><a href="mssql.html">SQL Server</a></li>
+            <li><a href="sqlite.html">SQLite</a></li>
+          </ul>
+        </li>
+        <li><a href="../howto/index.html">Guides</a></li>
+        <li><a href="../faq.html">FAQ</a></li>
+        <li><a href="../docs/api/index.html">API documentation</a></li>
+        <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
+      </ul>
+    </nav>
+
+    <article class="page-content">
+      <h1>Text driver</h1>
+      <p class="lede">Parse text files with regex or generate formatted reports.</p>
+      <section>
+        <h2>Configure the connection</h2>
+        <p>Use <code>driver="text"</code>. No additional runtime dependencies are required. Relative <code>url</code> paths resolve from the ETL file. Omit the URL to read standard input or write standard output.</p>
+        <p>Set <code>encoding=UTF-8</code> for portable results. The default is the system charset. The driver trims leading and trailing whitespace by default. Use <code>trim=false</code> when whitespace matters, such as in fixed-width records. Set <code>eol</code> to change the output line ending from LF.</p>
+      </section>
+      <section>
+        <h2>Extract records with a regular expression</h2>
+        <p>The driver applies Java regular expressions one line at a time. A match is available as <code>$column0</code>, and captured groups are available as <code>$column1</code>, <code>$column2</code>, and so on. Use anchors to match the entire line. Patterns cannot span input lines.</p>
+        <p>Save this fixed-format input as <code>legacy.txt</code>. The first line, <code>EXPORT BATCH</code>, is a title. The pattern matches only lines beginning with <code>ORDER </code> and captures the order ID and customer name.</p>
+        <pre><code>EXPORT BATCH
+ORDER 0042 Ada Lovelace
+ORDER 0087 Grace Hopper</code></pre>
+        <p>Save the ETL file beside it as <code>extract-text.etl.xml</code> and run <code>scriptella.sh extract-text.etl.xml</code>.</p>
+        <pre><code class="language-xml">&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
+&lt;etl&gt;
+    &lt;connection id="input" driver="text" url="legacy.txt"&gt;
+        encoding=UTF-8
+    &lt;/connection&gt;
+    &lt;connection id="output" driver="text" url="orders.txt"&gt;
+        encoding=UTF-8
+    &lt;/connection&gt;
+    &lt;query connection-id="input"&gt;
+        ^ORDER ([0-9]{4}) (.+)$
+        &lt;script connection-id="output"&gt;Order $column1 belongs to ${column2}.&lt;/script&gt;
+    &lt;/query&gt;
+&lt;/etl&gt;</code></pre>
+        <p>The resulting <code>orders.txt</code> contains the matching records.</p>
+        <pre><code>Order 0042 belongs to Ada Lovelace.
+Order 0087 belongs to Grace Hopper.</code></pre>
+      </section>
+      <section>
+        <h2>Generate a formatted report</h2>
+        <p>A Text script expands <code>$variable</code> and <code>${variable}</code> references. A script nested in a SQL query can use the query's column names. Configure <code>format.&lt;name&gt;.*</code> properties for numbers, dates, timestamps, locale and padding.</p>
+        <p>Save this as <code>report-text.etl.xml</code> and run <code>scriptella.sh report-text.etl.xml</code>.</p>
+        <pre><code class="language-xml">&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
+&lt;etl&gt;
+    &lt;properties&gt;
+        team=Operations
+        total=42
+    &lt;/properties&gt;
+    &lt;connection driver="text" url="report.txt"&gt;
+        encoding=UTF-8
+        format.total.pad_left=6
+    &lt;/connection&gt;
+    &lt;script&gt;
+        Monthly report for $team
+        Total | ${total} |
+    &lt;/script&gt;
+&lt;/etl&gt;</code></pre>
+        <p>The resulting <code>report.txt</code> pads the total to six characters.</p>
+        <pre><code>Monthly report for Operations
+Total |     42 |</code></pre>
+      </section>
+      <section>
+        <h2>Structured output</h2>
+        <p>Text substitution inserts values as-is, without escaping delimiters, quotes or other special characters. Use the <a href="csv.html">CSV driver</a> for delimited files and the <a href="json.html">JSON driver</a> for JSON or JSON Lines.</p>
+        <p>See the <a href="../docs/api/scriptella/driver/text/package-summary.html#package-description">Text driver Javadoc</a> for query and script syntax and the <a href="../docs/api/scriptella/driver/text/package-summary.html#formatting">formatting reference</a> for connection properties.</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="../reference/index.html">Documentation</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../docs/api/index.html">API Docs</a></li>
+          <li><a href="../docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="../benchmarks.html">Benchmarks</a></li>
+          <li><a href="../changes.html">Change History</a></li>
+          <li><a href="../license.html">License</a></li>
+          <li><a href="../support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>

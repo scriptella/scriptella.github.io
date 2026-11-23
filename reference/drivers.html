@@ -56,6 +56,11 @@
         <li><a href="index.html">Reference</a></li>
         <li><a href="drivers.html" aria-current="page">Drivers</a>
           <ul>
+            <li class="docs-nav__group-label">Files &amp; formats</li>
+            <li><a href="../drivers/csv.html">CSV</a></li>
+            <li><a href="../drivers/json.html">JSON / JSONL</a></li>
+            <li><a href="../drivers/text.html">Text</a></li>
+            <li class="docs-nav__group-label">Databases</li>
             <li><a href="../drivers/postgresql.html">PostgreSQL</a></li>
             <li><a href="../drivers/mariadb.html">MariaDB</a></li>
             <li><a href="../drivers/mysql.html">MySQL</a></li>
@@ -76,9 +81,16 @@
       <p class="lede">Built-in and community drivers for databases, files, directories, scripting languages, and application frameworks. See also the <a href="../docs/api/scriptella/driver/package-summary.html">driver package Javadoc</a>.</p>
 
       <section aria-labelledby="database-drivers">
-        <h2 id="database-drivers">Featured JDBC drivers</h2>
-        <p>Scriptella supports many more databases through JDBC, along with files, directories, scripting languages, and application frameworks. See the <a href="#jdbcbridge">full driver matrix below</a>.</p>
-        <p>See the guides for JDBC downloads, connection examples, and verified Scriptella 1.7.0 results. The <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/core-database-compatibility.md">core compatibility document</a> records the tested versions and scope.</p>
+        <h2 id="database-drivers">Featured drivers</h2>
+        <p>Read and write files or connect to a database. Explore the <a href="#jdbcbridge">JDBC adapters</a> and <a href="#nonjdbc">non-JDBC drivers</a> in the full tables below.</p>
+        <h3>Files and data formats</h3>
+        <div class="route-grid">
+          <a class="route-card" href="../drivers/csv.html"><strong>CSV</strong><small>Read and write delimited text</small></a>
+          <a class="route-card" href="../drivers/json.html"><strong>JSON / JSONL</strong><small>Read and write JSON documents and JSON Lines</small></a>
+          <a class="route-card" href="../drivers/text.html"><strong>Text</strong><small>Parse text files with regex or generate formatted reports.</small></a>
+        </div>
+        <h3>Databases</h3>
+        <p>These JDBC driver pages cover downloads, connection examples, and verified Scriptella 1.7.0 results. The <a href="https://github.com/scriptella/scriptella-etl/blob/master/docs/core-database-compatibility.md">core compatibility document</a> records the tested versions and scope.</p>
         <div class="route-grid">
           <a class="route-card" href="../drivers/postgresql.html"><strong>PostgreSQL</strong><small>PostgreSQL JDBC Driver (pgJDBC)</small></a>
           <a class="route-card" href="../drivers/mariadb.html"><strong>MariaDB</strong><small>MariaDB Connector/J</small></a>
