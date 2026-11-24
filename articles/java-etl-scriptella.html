@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ETL in Java: SQL-Based Data Pipelines with Scriptella | Scriptella</title>
+  <meta name="description" content="Compare Java ETL approaches and build a SQL-based CSV to PostgreSQL pipeline with Scriptella.">
+  <link rel="canonical" href="https://scriptella.org/articles/java-etl-scriptella.html">
+  <meta property="og:title" content="ETL in Java: SQL-Based Data Pipelines with Scriptella | Scriptella">
+  <meta property="og:description" content="Compare Java ETL approaches and build a SQL-based CSV to PostgreSQL pipeline with Scriptella.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Scriptella">
+  <meta property="og:url" content="https://scriptella.org/articles/java-etl-scriptella.html">
+  <meta property="og:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Scriptella lightweight Java ETL tool with SQL to JSON, CSV and database pipeline">
+  <meta property="og:image:width" content="1720">
+  <meta property="og:image:height" content="897">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://scriptella.org/images/scriptella-og.jpg">
+  <meta name="twitter:title" content="ETL in Java: SQL-Based Data Pipelines with Scriptella | Scriptella">
+  <meta name="twitter:description" content="Compare Java ETL approaches and build a SQL-based CSV to PostgreSQL pipeline with Scriptella.">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" href="../favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../favicon-192.png">
+  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../style.css?v=20261022">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="site-header__inner">
+        <a class="site-logo" href="../index.html" aria-label="Scriptella home">
+          <img class="site-logo__dark" src="../images/scriptella-logo.svg" width="190" height="38" alt="Scriptella">
+          <img class="site-logo__light" src="../images/scriptella-logo-light.svg" width="190" height="38" alt="Scriptella">
+        </a>
+        <ul>
+          <li><a href="../reference/index.html" aria-current="page">Documentation</a></li>
+          <li><a href="../tutorial.html">Tutorial</a></li>
+          <li><a href="../installation.html">Install</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+        </ul>
+        <div class="header-controls">
+        <button class="theme-toggle" type="button" data-theme-toggle data-theme-current="system" aria-label="Color theme: System. Switch to Light." title="System theme: switch to Light"><span class="visually-hidden">Change color theme</span></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page-shell docs-layout">
+    <nav class="docs-nav" aria-label="Documentation navigation">
+      <h2>Documentation</h2>
+      <ul>
+        <li><a href="../reference/index.html">Reference</a></li>
+        <li><a href="../reference/drivers.html">Drivers</a></li>
+        <li>
+          <a href="../howto/index.html">Guides</a>
+          <ul>
+            <li><a href="java-etl-scriptella.html" aria-current="page">ETL in Java with Scriptella</a></li>
+            <li><a href="../howto/csv-to-postgresql.html">Import CSV into PostgreSQL</a></li>
+            <li><a href="../howto/postgresql-to-json.html">Export PostgreSQL to JSON</a></li>
+            <li><a href="../howto/create-database.html">Create and initialize a database</a></li>
+            <li><a href="../howto/initialize-database.html">Initialize on application startup</a></li>
+            <li><a href="../howto/migrate-from-ant.html">Migrate from the Ant SQL task</a></li>
+            <li><a href="../compare/spring-batch.html">Scriptella vs Spring Batch</a></li>
+          </ul>
+        </li>
+        <li><a href="../faq.html">FAQ</a></li>
+        <li><a href="../docs/api/index.html">API documentation</a></li>
+        <li><a href="../docs/dtd/index.html">DTD documentation</a></li>
+      </ul>
+    </nav>
+
+    <article class="page-content">
+      <h1>ETL in Java: SQL-Based Data Pipelines with Scriptella</h1>
+      <p>Moving data between databases, importing CSV files, or transforming records is a common task in Java applications. The question is often not how to perform the transformation, but how much infrastructure you need around it.</p>
+      <p>You can write custom JDBC code, use a lightweight ETL tool, or adopt a batch-processing framework. Each approach has its place.</p>
+      <p>This guide compares those options and demonstrates how <a href="https://scriptella.org/">Scriptella</a>, an open-source Java ETL tool, handles SQL-based data pipelines without requiring a separate ETL server or visual designer.</p>
+      <h2>1. Choosing a Java ETL Approach: JDBC, Scriptella, or Spring Batch</h2>
+      <p>Consider a typical ETL task: read records from one data source, transform a few fields, and write them into a PostgreSQL database.</p>
+      <p>There are several ways to implement it.</p>
+      <h3>Option 1: Write custom JDBC code</h3>
+      <p>JDBC gives you direct control over database access and SQL execution.</p>
+      <p>A typical data migration might involve:</p>
+      <ol>
+<li>Open connections to the source and destination.</li>
+<li>Execute a query against the source.</li>
+<li>Iterate through the <code>ResultSet</code>.</li>
+<li>Transform each record.</li>
+<li>Insert records into the destination using prepared statements.</li>
+<li>Handle transactions, exceptions, and resource cleanup.</li>
+</ol>
+      <p>For small, application-specific jobs, this is often a reasonable choice. The code uses familiar Java APIs and doesn't require introducing a new ETL abstraction.</p>
+      <p>The tradeoff is maintenance. As the number of data sources and transformations grows, your code also needs to manage connection configuration, row iteration, batching, error handling, and execution.</p>
+      <p>If your job consists mostly of SQL, much of that Java code may be infrastructure rather than business logic.</p>
+      <h3>Option 2: Use a lightweight ETL tool</h3>
+      <p>A tool such as Scriptella moves the execution mechanics out of your application code.</p>
+      <p>Instead of writing a Java loop that reads and inserts rows, you declare the source and destination connections, provide SQL statements, and describe how the records flow between them.</p>
+      <p>Scriptella uses three main concepts:</p>
+      <ul>
+<li><strong>Connections</strong> define data sources and destinations.</li>
+<li><strong>Queries</strong> retrieve records and expose their values.</li>
+<li><strong>Scripts</strong> execute SQL or other supported operations.</li>
+</ul>
+      <p>These elements are declared in an XML file. SQL remains SQL; XML is used to connect the pieces.</p>
+      <p>Scriptella can work with JDBC databases, CSV, text, XML, JSON, and other supported sources. It runs as a command-line tool or can be embedded in a Java application.</p>
+      <p>This approach is useful when the main work is already expressible as SQL or simple data transformations.</p>
+      <p>The tradeoff is learning Scriptella's configuration and execution model. You still need to understand SQL, transactions, and the behavior of your data sources.</p>
+      <h3>Option 3: Use a batch-processing framework</h3>
+      <p>Frameworks such as <a href="https://spring.io/projects/spring-batch">Spring Batch</a> provide a more comprehensive model for batch applications.</p>
+      <p>They include concepts such as jobs, steps, readers, processors, writers, execution metadata, and restartable processing.</p>
+      <p>This becomes valuable when a pipeline has operational requirements beyond moving data:</p>
+      <ul>
+<li>Restarting long-running jobs after failure.</li>
+<li>Maintaining checkpoints and execution history.</li>
+<li>Coordinating multiple dependent processing steps.</li>
+<li>Implementing sophisticated skip and retry policies.</li>
+<li>Partitioning or parallelizing work.</li>
+</ul>
+      <p>The additional capabilities also introduce more concepts, configuration, and lifecycle management.</p>
+      <p>If you already use Spring extensively or need those capabilities, Spring Batch may be the appropriate choice.</p>
+      <p>If your requirement is simply to execute a sequence of SQL transformations and move rows between databases, a smaller tool may be sufficient.</p>
+      <h3>Comparing the approaches</h3>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Comparison table"><table>
+<thead><tr><th scope="col">Consideration</th><th scope="col">Custom JDBC</th><th scope="col">Scriptella</th><th scope="col">Spring Batch</th></tr></thead>
+<tbody>
+<tr><td>Primary abstraction</td><td>Java code</td><td>SQL and ETL configuration</td><td>Jobs and steps</td></tr>
+<tr><td>SQL support</td><td>Direct</td><td>Direct through JDBC</td><td>Through JDBC-based components</td></tr>
+<tr><td>Multiple data sources</td><td>Implement integration code</td><td>Built-in driver model</td><td>Configure readers and writers</td></tr>
+<tr><td>Custom Java logic</td><td>Full flexibility</td><td>Extensions and integrations</td><td>Full flexibility</td></tr>
+<tr><td>Job restartability</td><td>Implement yourself</td><td>Requires job-specific design</td><td>Framework-supported</td></tr>
+<tr><td>Execution model</td><td>Application-defined</td><td>Standalone or embedded</td><td>Batch application framework</td></tr>
+<tr><td>Best fit</td><td>Small custom jobs</td><td>SQL-centric ETL and migrations</td><td>Operationally complex batch processing</td></tr>
+</tbody></table></div>
+      <p>None of these approaches is universally better. The right choice depends on the work the pipeline must perform and the operational guarantees it requires.</p>
+      <h2>2. When SQL-Based ETL Makes Sense</h2>
+      <p>Many data pipelines spend most of their time performing operations databases already understand:</p>
+      <ul>
+<li>Selecting records using filters and joins.</li>
+<li>Converting values using SQL expressions.</li>
+<li>Copying records into reporting tables.</li>
+<li>Importing structured files.</li>
+<li>Updating data during migrations.</li>
+<li>Loading reference data during application setup.</li>
+</ul>
+      <p>For these jobs, SQL can be a useful common language.</p>
+      <p>Scriptella allows a source query to feed values directly into destination SQL statements. The database performs the SQL operations, while Scriptella handles connections, row iteration, and execution.</p>
+      <p>This can simplify jobs where transformations are mostly SQL-based and don't require extensive Java application logic.</p>
+      <p>Not every transformation belongs in SQL. Complex validation, business rules, or application-specific processing may be easier to implement and maintain in Java.</p>
+      <p>The advantage of SQL-based ETL is narrower: <strong>when SQL already describes the work clearly, you may not need a custom Java program around it.</strong></p>
+      <h2>3. Java ETL Example: Import CSV into PostgreSQL</h2>
+      <p>Build a small ETL job that imports customer records from a CSV file into PostgreSQL.</p>
+      <p>The objective is straightforward:</p>
+      <ul>
+<li>Read customer IDs and names from a CSV file.</li>
+<li>Create a destination table if it doesn't exist.</li>
+<li>Insert the customer records.</li>
+<li>Update existing records when the same IDs are imported again.</li>
+</ul>
+      <h3>Step 1: Prepare the source data</h3>
+      <p>Create a file named <code>customers.csv</code>:</p>
+      <pre><code class="language-csv">id,name
+1,Ada
+2,Grace
+3,Linus</code></pre>
+      <p>The first row defines the column names. Scriptella's CSV driver makes those columns available as variables during execution.</p>
+      <h3>Step 2: Define the ETL job</h3>
+      <p>Save the following as <code>import-customers.etl.xml</code>:</p>
+      <pre><code class="language-xml">&lt;!DOCTYPE etl SYSTEM "http://scriptella.org/dtd/etl.dtd"&gt;
+&lt;etl&gt;
+    &lt;connection
+        id="source"
+        driver="csv"
+        url="customers.csv"/&gt;
+
+    &lt;connection
+        id="target"
+        driver="postgresql"
+        url="jdbc:postgresql://localhost:5432/demo"
+        user="demo"
+        password="${env.PG_PASSWORD}"
+        classpath="lib/postgresql.jar"/&gt;
+
+    &lt;script connection-id="target"&gt;
+        CREATE TABLE IF NOT EXISTS customers (
+            id INTEGER PRIMARY KEY,
+            name VARCHAR(100) NOT NULL
+        );
+    &lt;/script&gt;
+
+    &lt;query connection-id="source"&gt;
+        &lt;script connection-id="target"&gt;
+            INSERT INTO customers (id, name)
+            VALUES (CAST(?id AS INTEGER), ?name)
+            ON CONFLICT (id)
+            DO UPDATE SET name = EXCLUDED.name;
+        &lt;/script&gt;
+    &lt;/query&gt;
+&lt;/etl&gt;</code></pre>
+      <p>The example contains two connections: one for reading CSV data and another for writing to PostgreSQL.</p>
+      <p>The first script creates the destination table if needed.</p>
+      <p>The query then reads the CSV file. For each row, Scriptella executes the nested SQL statement against PostgreSQL.</p>
+      <p>The <code>?id</code> and <code>?name</code> expressions are JDBC prepared-statement parameters. Values are bound rather than inserted into SQL as unescaped text.</p>
+      <p>The cast converts the CSV ID, which is bound as a string, to the integer type required by PostgreSQL.</p>
+      <p>The PostgreSQL <code>ON CONFLICT</code> clause makes this particular import repeatable: existing customer IDs are updated instead of causing duplicate-key errors.</p>
+      <p>These are ordinary PostgreSQL SQL expressions, not a separate Scriptella transformation language.</p>
+      <h3>Step 3: Run from the command line</h3>
+      <p>Install <a href="https://scriptella.org/download.html">Scriptella</a>, which requires Java 17 or newer.</p>
+      <p>For this example, you also need:</p>
+      <ul>
+<li>A running PostgreSQL database named <code>demo</code>.</li>
+<li>A database user named <code>demo</code> with permission to create and write the destination table.</li>
+<li>A compatible PostgreSQL JDBC driver.</li>
+</ul>
+      <p>Place the JDBC driver at <code>lib/postgresql.jar</code> relative to the ETL file, and supply the database password through the <code>PG_PASSWORD</code> environment variable.</p>
+      <p>For example, the working directory can contain:</p>
+      <pre><code class="language-text">import-example/
+  customers.csv
+  import-customers.etl.xml
+  lib/
+    postgresql.jar</code></pre>
+      <p>On macOS or Linux, run the ETL job from that directory:</p>
+      <pre><code class="language-bash">scriptella.sh import-customers.etl.xml</code></pre>
+      <p>On Windows, use <code>scriptella.bat</code> instead.</p>
+      <h3>Step 4: Run from Java</h3>
+      <p>To run the same XML configuration and input CSV from a Java application, add Scriptella 1.7.0 to your Maven dependencies:</p>
+      <pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.scriptella&lt;/groupId&gt;
+        &lt;artifactId&gt;scriptella-core&lt;/artifactId&gt;
+        &lt;version&gt;1.7.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.scriptella&lt;/groupId&gt;
+        &lt;artifactId&gt;scriptella-drivers&lt;/artifactId&gt;
+        &lt;version&gt;1.7.0&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+      <p>The PostgreSQL JDBC driver is also required. Keep it at <code>lib/postgresql.jar</code> relative to the ETL file as shown above; the XML connection loads it for both execution methods. Set <code>PG_PASSWORD</code> in the Java process environment.</p>
+      <p>Run this class with the ETL file in the working directory:</p>
+      <pre><code class="language-java">import java.io.File;
+import scriptella.execution.EtlExecutor;
+
+public class ImportCustomers {
+    public static void main(String[] args) throws Exception {
+        EtlExecutor.newExecutor(new File("import-customers.etl.xml")).execute();
+    }
+}</code></pre>
+      <h3>Step 5: Verify the results</h3>
+      <p>You can then verify the imported records:</p>
+      <pre><code class="language-sql">SELECT id, name FROM customers ORDER BY id;</code></pre>
+      <p>Expected result:</p>
+      <pre><code class="language-text"> id | name
+----+-------
+  1 | Ada
+  2 | Grace
+  3 | Linus</code></pre>
+      <p>Both approaches execute the same ETL configuration. You can run it from the command line or invoke it from a Java application with just a few lines of code.</p>
+      <p>This example is deliberately simple. Production imports still need appropriate validation, error handling, and transaction design.</p>
+      <p>A PostgreSQL upsert makes repeated imports safe for matching IDs, but it doesn't automatically resolve issues such as deleted source records or partially completed multi-system migrations.</p>
+      <h3>What changes for database-to-database ETL?</h3>
+      <p>The same execution pattern can read from one JDBC database and write to another.</p>
+      <p>For example, a source query might be:</p>
+      <pre><code class="language-sql">SELECT id, TRIM(name) AS name
+FROM customers
+WHERE active = true;</code></pre>
+      <p>Each resulting row exposes its columns to a nested destination script.</p>
+      <p>You can use different JDBC connections for PostgreSQL, MariaDB, MySQL, Oracle, and other supported databases.</p>
+      <p>The ETL structure stays largely the same. You change the connections, queries, and destination SQL to match your use case.</p>
+      <p>For a complete database-to-database example, see the <a href="https://scriptella.org/tutorial.html">Scriptella tutorial</a>.</p>
+      <h2>4. Performance: Scriptella vs JDBC and Native Imports</h2>
+      <p>Reducing implementation code doesn't mean performance stops mattering.</p>
+      <p>Scriptella executes operations through data-source drivers, including JDBC. It introduces an execution layer around the SQL statements, and that layer has a cost.</p>
+      <p>How much does it matter?</p>
+      <p>Scriptella 1.7.0 was benchmarked against handwritten JDBC, Pandas, and native database import commands using a one-million-row CSV import.</p>
+      <h3>Importing one million CSV rows</h3>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Comparison table"><table>
+<thead><tr><th scope="col">Approach</th><th scope="col">PostgreSQL</th><th scope="col">MariaDB</th></tr></thead>
+<tbody>
+<tr><td>Scriptella 1.7.0</td><td>8.747 s</td><td>7.950 s</td></tr>
+<tr><td>Handwritten JDBC</td><td>7.642 s</td><td>5.755 s</td></tr>
+<tr><td>Pandas</td><td>31.551 s</td><td>20.377 s</td></tr>
+<tr><td>Native import</td><td>1.750 s (COPY)</td><td>3.287 s (LOAD DATA LOCAL)</td></tr>
+</tbody></table></div>
+      <p>The benchmark used pre-created tables, no indexes or transformations, and one transaction per import. Scriptella and JDBC used batches of 1,000 rows.</p>
+      <p>These are results from a particular benchmark environment, not universal throughput guarantees. The reported values are medians of two runs.</p>
+      <p>The findings are straightforward.</p>
+      <p><strong>Handwritten JDBC was faster than Scriptella.</strong> For PostgreSQL, the measured median difference was approximately 1.1 seconds over a million rows. Two runs are not enough to establish how stable that difference would be across repeated measurements.</p>
+      <p><strong>Native database import commands were considerably faster.</strong> PostgreSQL COPY completed the same benchmark workload in 1.75 seconds.</p>
+      <p>This shouldn't be surprising. Native bulk-import commands use database-specific mechanisms and have different parsing and error semantics.</p>
+      <p>If the task is simply to load a CSV file into PostgreSQL as quickly as possible, COPY is an obvious option to evaluate.</p>
+      <p>If the task involves moving records across different systems, applying SQL transformations, and maintaining reusable ETL configurations, Scriptella addresses a different problem.</p>
+      <p>The relevant question is whether its execution overhead is acceptable for the job, compared with the implementation and maintenance work it saves.</p>
+      <p>These measurements are for bulk-import workloads, not the small upsert example above. They should not be interpreted as a benchmark of upsert performance.</p>
+      <p>Full methodology and reproducible results are available in the <a href="https://scriptella.org/benchmarks.html">Scriptella benchmarks</a>.</p>
+      <p>For additional context, see the PVR Labs article <a href="https://pvrlabs.xyz/articles/importing-a-million-csv-rows.html">Importing a Million CSV Rows</a>, which explores import approaches in a separate experiment.</p>
+      <p>For release details, see the <a href="https://github.com/scriptella/scriptella-etl/blob/master/CHANGELOG.md">Scriptella changelog</a>.</p>
+      <h2>5. When Scriptella Is Not the Right Choice</h2>
+      <p>Scriptella is intentionally focused on scripting and ETL execution. That focus makes it practical for certain workloads, but it also defines its limits.</p>
+      <p><strong>Continuous streaming.</strong> If your application processes a continuous stream of events with low-latency requirements, a streaming architecture is generally more appropriate than a conventional ETL job.</p>
+      <p><strong>Distributed processing.</strong> Workloads that require distributing transformations across many machines may benefit from systems designed for distributed execution.</p>
+      <p><strong>Complex restartable batch jobs.</strong> If a large job must persist execution state, resume from checkpoints, and coordinate sophisticated retry policies, Spring Batch provides a more suitable built-in foundation. Scriptella jobs can be designed for safe reruns, but this is not equivalent to general-purpose checkpoint-based restartability.</p>
+      <p><strong>Database replication.</strong> For continuous one-to-one database replication, a dedicated replication or change-data-capture tool is usually a better choice.</p>
+      <p><strong>Complex Java transformations.</strong> When most of the processing is application-specific Java logic rather than SQL or supported data-source operations, custom Java code may be simpler and easier to maintain.</p>
+      <p>Using a smaller tool is only beneficial when it matches the problem. Avoiding a framework shouldn't become a goal in itself.</p>
+      <h2>6. Frequently Asked Questions</h2>
+      <h3>Is Scriptella still maintained?</h3>
+      <p>Yes. Scriptella 1.7.0 was released in November 2026, adding improvements to SQL execution performance, JSON and JSON Lines support, execution reporting, and command-line progress reporting.</p>
+      <p>You can find the latest releases and development activity in the <a href="https://github.com/scriptella/scriptella-etl">GitHub repository</a>.</p>
+      <h3>How is Scriptella different from Spring Batch?</h3>
+      <p>Scriptella focuses on SQL-centric scripting and ETL execution. Its main building blocks are connections, queries, and scripts.</p>
+      <p>Spring Batch provides a more comprehensive framework for batch jobs, including job metadata, step coordination, restartability, and configurable retry and skip behavior.</p>
+      <p>Scriptella is a reasonable option for simpler SQL-oriented data jobs. Spring Batch is generally better suited to workflows that need more sophisticated batch-processing infrastructure.</p>
+      <h3>Is Scriptella free and open source?</h3>
+      <p>Yes. Scriptella is open source and distributed under the Apache License 2.0 license.</p>
+      <p>You can download the binary release, inspect the source code, and use it in commercial or noncommercial projects under the terms of that license.</p>
+      <h2>7. Getting Started with Scriptella</h2>
+      <p>If your workload is primarily SQL-based and doesn't require the capabilities discussed above, Scriptella may be a practical fit.</p>
+      <p>Scriptella is an open-source ETL and script execution tool for Java. Its design follows a simple principle: use SQL and the capabilities of existing data sources for the actual work, while keeping the execution and connection configuration separate.</p>
+      <p>You can run it from the command line, integrate it into a Java application, or automate it as part of an existing deployment workflow.</p>
+      <p>To explore further:</p>
+      <ul>
+<li><a href="https://scriptella.org/download.html">Download Scriptella</a> - get the latest stable release.</li>
+<li><a href="https://scriptella.org/tutorial.html">Scriptella tutorial</a> - learn the basic ETL execution model.</li>
+<li><a href="https://scriptella.org/reference/drivers.html">Drivers and providers</a> - explore supported databases and other data sources.</li>
+<li><a href="https://scriptella.org/reference/">Reference documentation</a> - configuration, scripting, and execution details.</li>
+<li><a href="https://github.com/scriptella/scriptella-etl">GitHub repository</a> - source code, issues, and contributions.</li>
+</ul>
+      <h3>Final thoughts</h3>
+      <p>Java offers several reasonable ways to build ETL pipelines.</p>
+      <p>Custom JDBC code provides flexibility and direct control. A framework such as Spring Batch provides comprehensive batch-processing infrastructure. Scriptella occupies a space between them: SQL-oriented data movement and transformation without requiring a larger execution platform.</p>
+      <p>For jobs that primarily read, transform, and write structured data, that can be a useful middle ground.</p>
+      <p><strong>The objective is not to use the smallest tool possible. It's to use the simplest approach that meets the workload's requirements.</strong></p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p><strong>Scriptella</strong> · Licensed under the Apache License, Version 2.0.</p>
+      <p class="site-footer__credit">Built by <a class="pvrlabs-wordmark" href="https://pvrlabs.xyz" aria-label="PVR Labs"><span class="pvrlabs-wordmark__accent">PVR</span><span class="pvrlabs-wordmark__light">Labs</span></a></p>
+      <nav aria-label="Footer navigation">
+        <ul>
+          <li><a href="../reference/index.html">Documentation</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../docs/api/index.html">API Docs</a></li>
+          <li><a href="../docs/dtd/index.html">DTD Reference</a></li>
+          <li><a href="https://github.com/scriptella/scriptella-etl">GitHub</a></li>
+          <li><a href="../benchmarks.html">Benchmarks</a></li>
+          <li><a href="../changes.html">Change History</a></li>
+          <li><a href="../license.html">License</a></li>
+          <li><a href="../support.html">Support</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- StatCounter: existing Scriptella project configuration -->
+  <script>
+    var sc_project = 10775960;
+    var sc_invisible = 1;
+    var sc_security = "53eaed1c";
+  </script>
+  <script defer src="https://secure.statcounter.com/counter/counter.js"></script>
+  <!-- End StatCounter -->
+</body>
+</html>
