@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://scriptella.org/</loc></url>
+  <url><loc>https://scriptella.org/tools/etl-viewer.html</loc></url>
   <url><loc>https://scriptella.org/download.html</loc></url>
   <url><loc>https://scriptella.org/benchmarks.html</loc></url>
   <url><loc>https://scriptella.org/faq.html</loc></url>

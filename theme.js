@@ -168,13 +168,34 @@
   }
 
   function highlightXml(text, target) {
-    var tagPattern = /<!--[\s\S]*?-->|<[^>]+>/g;
+    var tagPattern = /<!--|<!\[CDATA\[([\s\S]*?)(\]\]>|$)|<[^<>]+>/g;
+    var fallbackTag = /<[^<>]+>/y;
+    var lastCommentEnd = text.lastIndexOf("-->");
     var lastIndex = 0;
     var match;
     while ((match = tagPattern.exec(text)) !== null) {
+      var tag = match[0];
+      if (tag === "<!--") {
+        if (match.index + tag.length <= lastCommentEnd) {
+          tagPattern.lastIndex = text.indexOf("-->", tagPattern.lastIndex) + 3;
+          tag = text.slice(match.index, tagPattern.lastIndex);
+        } else {
+          fallbackTag.lastIndex = match.index;
+          var fallback = fallbackTag.exec(text);
+          if (!fallback) continue;
+          tag = fallback[0];
+          tagPattern.lastIndex = fallbackTag.lastIndex;
+        }
+      }
       highlightSql(text.slice(lastIndex, match.index), target, true);
-      highlightXmlTag(match[0], target);
-      lastIndex = match.index + match[0].length;
+      if (match[1] !== undefined) {
+        appendToken(target, "<![CDATA[", "syntax-punctuation");
+        highlightSql(match[1], target);
+        appendToken(target, match[2], "syntax-punctuation");
+      } else {
+        highlightXmlTag(tag, target);
+      }
+      lastIndex = tagPattern.lastIndex;
     }
     highlightSql(text.slice(lastIndex), target, true);
   }
@@ -207,9 +228,21 @@
     });
   }
 
+  function initializeViewerLinks() {
+    document.querySelectorAll("a[data-etl-example]").forEach(function (link) {
+      var example = link.parentElement.previousElementSibling;
+      var code = example && example.querySelector("code.language-xml");
+      if (code) {
+        link.hash = "etl=" + encodeURIComponent(code.textContent);
+        link.parentElement.hidden = false;
+      }
+    });
+  }
+
   function initializePage() {
     initializeControls();
     initializeCopyButtons();
+    initializeViewerLinks();
     initializeSyntaxHighlighting();
   }
 

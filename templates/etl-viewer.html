@@ -1,0 +1,232 @@
+<!--
+Source template for tools/etl-viewer.html.
+Regenerate after changes to this template, theme.js, or style.css:
+
+    node tools/build-etl-viewer.mjs
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+  <link rel="icon" href="data:,">
+  <title>Scriptella ETL Viewer</title>
+  <style id="highlight-styles">
+<!-- SHARED_STYLES -->
+  </style>
+  <style>
+    main { max-width: 64rem; margin: 2rem auto; padding-inline: 1rem; }
+    h1, h2, label { color: var(--text-primary); }
+    a { color: var(--accent); }
+    .offline { border-left: 3px solid var(--accent); padding: .75rem 1rem; background: var(--bg-surface); margin-bottom: 1rem; }
+    textarea { display: block; width: 100%; min-height: 16rem; resize: vertical; padding: .75rem; background: var(--bg-code); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--radius); font: .92rem/1.55 var(--font-mono); tab-size: 4; }
+    .actions { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; margin-block: .75rem; }
+    button { font: inherit; color: var(--text-primary); background: var(--bg-raised); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: .3rem .65rem; cursor: pointer; }
+    button:disabled { opacity: .55; cursor: default; }
+    #status { min-height: 1.65em; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Scriptella ETL Viewer</h1>
+    <div class="offline">
+      <strong>FULLY OFFLINE</strong><br>
+      Your ETL scripts never leave your browser. All processing happens locally on your device. No uploads, tracking or external dependencies.
+    </div>
+    <div class="actions">
+      <label for="file">Open a local XML file</label>
+      <input type="file" id="file" accept=".xml,text/xml,application/xml">
+      <button type="button" id="sample">Load sample</button>
+      <a id="download-viewer" href="etl-viewer.html" download="etl-viewer.html">Save offline HTML</a>
+    </div>
+    <label for="source">Paste or edit ETL source</label>
+    <textarea id="source" wrap="off" spellcheck="false" autocomplete="off" aria-describedby="source-note"></textarea>
+    <small id="source-note">Input limit is 256 KiB. Editing converts line endings to LF.</small>
+    <h2>Highlighted output</h2>
+    <div class="actions">
+      <button type="button" id="copy" disabled>Copy highlighted HTML</button>
+      <button type="button" id="export" disabled>Export HTML</button>
+    </div>
+    <p id="status" role="status"></p>
+    <div id="manual-copy" hidden>
+      <label for="html-source">Highlighted HTML</label>
+      <textarea id="html-source" readonly></textarea>
+    </div>
+    <pre tabindex="0" aria-label="Highlighted ETL source"><code id="output"></code></pre>
+  </main>
+  <script>
+  (function () {
+    "use strict";
+
+<!-- SHARED_HIGHLIGHTER -->
+
+    document.getElementById("download-viewer").href = location.href.split("#")[0];
+
+    const input = document.getElementById("source");
+    const file = document.getElementById("file");
+    const output = document.getElementById("output");
+    const status = document.getElementById("status");
+    const manualCopy = document.getElementById("manual-copy");
+    const htmlSource = document.getElementById("html-source");
+    const copy = document.getElementById("copy");
+    const exportButton = document.getElementById("export");
+    const sample = <!-- SAMPLE_XML -->;
+    const maxInputBytes = 256 * 1024;
+    const inputLimitMessage = "ETL input exceeds 256 KiB. Use a smaller script.";
+    const utf8 = new TextEncoder();
+    let source = "";
+    let revision = 0;
+
+    function render() {
+      manualCopy.hidden = true;
+      htmlSource.value = "";
+      if (source.length > maxInputBytes || utf8.encode(source).length > maxInputBytes) {
+        output.replaceChildren();
+        copy.disabled = exportButton.disabled = true;
+        status.textContent = inputLimitMessage;
+        return;
+      }
+      const highlighted = document.createDocumentFragment();
+      highlightXml(source, highlighted);
+      output.replaceChildren(highlighted);
+      copy.disabled = exportButton.disabled = source.length === 0;
+    }
+
+    function load(text) {
+      // Textarea values normalize CRLF and CR. Keep the original for output.
+      source = text;
+      input.value = text;
+      status.textContent = "";
+      render();
+    }
+
+    input.addEventListener("input", () => {
+      revision++;
+      source = input.value;
+      status.textContent = "";
+      render();
+    });
+
+    function decodeXml(buffer) {
+      const bytes = new Uint8Array(buffer);
+      const [first, second, third, fourth] = bytes;
+      let encoding = "utf-8";
+      if ((first === 0xff && second === 0xfe && third === 0 && fourth === 0) ||
+          (first === 0 && second === 0 && third === 0xfe && fourth === 0xff)) {
+        throw new Error("UTF-32 files are unsupported.");
+      }
+      if ((first === 0xff && second === 0xfe) || (first === 0x3c && second === 0)) {
+        encoding = "utf-16le";
+      } else if ((first === 0xfe && second === 0xff) || (first === 0 && second === 0x3c)) {
+        encoding = "utf-16be";
+      }
+
+      // Read the declaration before strict UTF-8 decoding so legacy XML can
+      // report its declared encoding even when the body contains invalid UTF-8.
+      const header = new TextDecoder(encoding).decode(bytes);
+      const declaration = /^<\?xml\s+[^?]*\?>/.exec(header)?.[0];
+      const declared = /\bencoding\s*=\s*(['"])([\w.-]+)\1/i.exec(declaration || "")?.[2].toLowerCase();
+      if (declared && declared !== encoding &&
+          !(declared === "utf-16" && encoding.startsWith("utf-16"))) {
+        throw new Error("The XML declares " + declared + ", which does not match a supported file encoding.");
+      }
+
+      try {
+        const text = new TextDecoder(encoding, { fatal: true }).decode(bytes);
+        if (!text.includes("\0")) return text;
+      } catch {
+        // Report undecodable bytes through the same file-open status.
+      }
+      throw new Error("The file is not valid UTF-8 or UTF-16 XML text.");
+    }
+
+    file.addEventListener("change", async () => {
+      const selected = file.files[0];
+      if (!selected) return;
+      file.value = "";
+      const opening = ++revision;
+      if (selected.size > maxInputBytes) {
+        status.textContent = inputLimitMessage;
+        return;
+      }
+      let bytes;
+      try {
+        bytes = await selected.arrayBuffer();
+      } catch {
+        if (opening === revision) status.textContent = "Could not read the selected file.";
+        return;
+      }
+      if (opening !== revision) return;
+      try {
+        load(decodeXml(bytes));
+      } catch (error) {
+        status.textContent = error.message + " Save it as UTF-8 or UTF-16 and try again.";
+      }
+    });
+
+    document.getElementById("sample").addEventListener("click", () => {
+      revision++;
+      load(sample);
+    });
+
+    function standaloneHtml() {
+      const css = document.getElementById("highlight-styles").textContent;
+      const markup = output.innerHTML.replace(/\r/g, "&#13;");
+      return '<!doctype html>\n<html lang="en"><meta charset="utf-8">' +
+        '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+        '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; img-src data:">' +
+        '<link rel="icon" href="data:,"><title>Highlighted Scriptella ETL</title>' +
+        '<style>' + css + '</style><pre><code>' + markup + '</code></pre></html>';
+    }
+
+    exportButton.addEventListener("click", () => {
+      const url = URL.createObjectURL(new Blob([standaloneHtml()], { type: "text/html" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "etl-highlighted.html";
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      status.textContent = "Highlighted HTML exported.";
+    });
+
+    copy.addEventListener("click", async () => {
+      const html = standaloneHtml();
+      try {
+        await navigator.clipboard.writeText(html);
+        status.textContent = "Highlighted HTML copied.";
+      } catch {
+        manualCopy.hidden = false;
+        htmlSource.value = html;
+        htmlSource.focus();
+        htmlSource.select();
+        status.textContent = "Use your browser’s copy command to copy the selected HTML.";
+      }
+    });
+
+    function loadFragment() {
+      if (!location.hash.startsWith("#etl=")) return;
+      revision++;
+      const fragment = location.hash.slice(5);
+      try {
+        history.replaceState(null, "", location.href.split("#")[0]);
+      } catch {
+        // Some browsers disallow rewriting file URLs. Continue loading the example.
+      }
+      if (fragment.length > 128 * 1024) {
+        status.textContent = "This example link is too large. Paste the source or open a local file.";
+      } else {
+        try {
+          load(decodeURIComponent(fragment));
+        } catch {
+          status.textContent = "This example link contains invalid URL encoding.";
+        }
+      }
+    }
+
+    window.addEventListener("hashchange", loadFragment);
+    loadFragment();
+  }());
+  </script>
+</body>
+</html>
