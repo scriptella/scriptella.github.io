@@ -450,13 +450,44 @@ a:hover {
 .release-note {
   display: grid;
   grid-template-columns: minmax(15rem, 0.75fr) minmax(0, 1.25fr);
-  gap: clamp(1.5rem, 5vw, 4rem);
+  gap: 1.5rem clamp(1.5rem, 5vw, 4rem);
   padding-block: 1.25rem;
   border-block: 1px solid var(--border);
 }
 
 .release-note h2 {
   margin-top: 0;
+}
+
+.release-note__earlier {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem clamp(1.5rem, 5vw, 4rem);
+  font-size: 0.9rem;
+}
+
+.release-note__earlier > div {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+
+.release-note__earlier h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+}
+
+.release-note__footer {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.release-note__footer p {
+  margin: 0 0 0.5rem;
+}
+
+.release-note__footer p:last-child {
+  margin-bottom: 0;
 }
 
 .check-list {

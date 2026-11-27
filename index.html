@@ -208,16 +208,27 @@
 
       <section id="News" class="release-note" aria-labelledby="news-title">
         <div>
-          <h2 id="news-title">Scriptella 1.7.0</h2>
+          <h2 id="news-title">Scriptella 1.7.0 (<time datetime="2026-11-03">November 3, 2026</time>)</h2>
+          <p><a href="changes.html">Full release history</a></p>
         </div>
         <div id="Scriptella+1.7.0">
-          <p>Scriptella 1.7.0 reduces repeated SQL parsing overhead in data imports and adds JSON and JSON Lines, execution reports, and optional CLI progress. Java 17 remains the minimum runtime.</p>
-          <p><a href="changes.html#version_1.7.0">What is new in 1.7.0</a> · <a href="download.html#version-1-7-0">Download 1.7.0</a></p>
+          <p>Scriptella spends less time parsing repeated SQL statements during data imports. It can now read and write JSON and JSON Lines, generate execution reports, and optionally show progress on the command line.</p>
+          <p><a href="changes.html#version_1.7.0">What’s new in 1.7.0</a> · <a href="download.html#version-1-7-0">Download 1.7.0</a></p>
+          <p>All three releases require Java 17 or later.</p>
         </div>
-        <div id="Scriptella+1.6">
-          <p>Scriptella 1.6 added direct SQL execution from the CLI and Java API, shared environment-variable configuration, and file-backed SQLite support while keeping Java 17 as the minimum runtime.</p>
-          <p><a href="changes.html#version_1.6">What is new in 1.6</a> · <a href="download.html#version-1-6">Download 1.6</a></p>
-          <p id="Scriptella+1.4+%28August+14%2C+2026%29">Earlier release: Scriptella 1.5 (September 8, 2026). <a href="download.html#version-1-5">Download 1.5</a>.</p>
+        <div class="release-note__footer">
+          <div class="release-note__earlier">
+            <div id="Scriptella+1.6">
+              <h3>Scriptella 1.6 (<time datetime="2026-10-05">October 5, 2026</time>)</h3>
+              <p>Run SQL files directly from the command line or Java API, share configuration through environment variables, and use file-backed SQLite databases.</p>
+              <p><a href="changes.html#version_1.6">What’s new in 1.6</a> · <a href="download.html#version-1-6">Download 1.6</a></p>
+            </div>
+            <div id="Scriptella+1.4+%28August+14%2C+2026%29">
+              <h3>Scriptella 1.5 (<time datetime="2026-09-08">September 8, 2026</time>)</h3>
+              <p>Updated JDBC driver support, clearer driver error messages, and an experimental option to check ETL configuration before running it.</p>
+              <p><a href="changes.html#version_1.5">What’s new in 1.5</a> · <a href="download.html#version-1-5">Download 1.5</a></p>
+            </div>
+          </div>
         </div>
       </section>
       <aside class="github-prompt" aria-label="Support Scriptella">
