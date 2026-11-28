@@ -230,10 +230,7 @@
 
   function initializeViewerLinks() {
     document.querySelectorAll("a[data-etl-example]").forEach(function (link) {
-      var exampleId = link.getAttribute("data-etl-example");
-      var example = exampleId
-        ? document.getElementById(exampleId)
-        : link.parentElement.previousElementSibling;
+      var example = link.parentElement.previousElementSibling;
       var code = example && example.querySelector("code.language-xml");
       if (code) {
         link.hash = "etl=" + encodeURIComponent(code.textContent);
